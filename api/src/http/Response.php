@@ -13,7 +13,7 @@ declare(strict_types=1);
  * ensinar, de forma simples e prática, os principais conceitos da arquitetura REST
  * e do padrão de projeto MVC (Model-View-Controller).
  *
- * A API realiza o CRUD completo (Create, Read, Update, Delete) das tabelas `cargo` e `funcionario`,
+ * A API realiza o CRUD completo (Create, Read, Update, Delete) das tabelas `banda`, `shows` e `participacao`,
  * sendo ideal para estudantes e desenvolvedores que estão começando com PHP moderno e boas práticas de organização.
  *
  * A construção passo a passo desta API está disponível gratuitamente na playlist do YouTube:
