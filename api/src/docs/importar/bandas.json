@@ -1,0 +1,32 @@
+{
+  "bandas": [
+    {
+      "id": 3,
+      "nome": "Alice in Chains",
+      "pais_origem": "Estados Unidos",
+      "ano_formacao": 1987,
+      "genero": "Grunge"
+    },
+    {
+      "id": 2,
+      "nome": "Black Sabbath",
+      "pais_origem": "Reino Unido",
+      "ano_formacao": 1968,
+      "genero": "Heavy Metal"
+    },
+    {
+      "id": 4,
+      "nome": "Megadeth",
+      "pais_origem": "Estados Unidos",
+      "ano_formacao": 1983,
+      "genero": "Thrash Metal"
+    },
+    {
+      "id": 1,
+      "nome": "Slayer",
+      "pais_origem": "Estados Unidos",
+      "ano_formacao": 1981,
+      "genero": "Thrash Metal"
+    }
+  ]
+}

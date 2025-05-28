@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<participacoes>
+    <participacao>
+        <id_banda>1</id_banda>
+        <id_show>1</id_show>
+        <ordem_apresentacao>2</ordem_apresentacao>
+        <tempo_execucao_min>70</tempo_execucao_min>
+    </participacao>
+    <participacao>
+        <id_banda>2</id_banda>
+        <id_show>2</id_show>
+        <ordem_apresentacao>1</ordem_apresentacao>
+        <tempo_execucao_min>80</tempo_execucao_min>
+    </participacao>
+    <participacao>
+        <id_banda>3</id_banda>
+        <id_show>2</id_show>
+        <ordem_apresentacao>3</ordem_apresentacao>
+        <tempo_execucao_min>60</tempo_execucao_min>
+    </participacao>
+    <participacao>
+        <id_banda>4</id_banda>
+        <id_show>3</id_show>
+        <ordem_apresentacao>1</ordem_apresentacao>
+        <tempo_execucao_min>75</tempo_execucao_min>
+    </participacao>
+</participacoes>

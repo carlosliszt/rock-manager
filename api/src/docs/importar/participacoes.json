@@ -1,0 +1,28 @@
+{
+  "participacoes": [
+    {
+      "id_banda": 1,
+      "id_show": 1,
+      "ordem_apresentacao": 2,
+      "tempo_execucao_min": 70
+    },
+    {
+      "id_banda": 2,
+      "id_show": 2,
+      "ordem_apresentacao": 1,
+      "tempo_execucao_min": 80
+    },
+    {
+      "id_banda": 3,
+      "id_show": 2,
+      "ordem_apresentacao": 3,
+      "tempo_execucao_min": 60
+    },
+    {
+      "id_banda": 4,
+      "id_show": 3,
+      "ordem_apresentacao": 1,
+      "tempo_execucao_min": 75
+    }
+  ]
+}

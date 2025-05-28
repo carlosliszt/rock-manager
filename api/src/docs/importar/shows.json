@@ -1,0 +1,22 @@
+{
+  "shows": [
+    {
+      "id": 2,
+      "local": "Rock in Rio - Brasil",
+      "data": "2022-09-02",
+      "publico_estimado": 100000
+    },
+    {
+      "id": 1,
+      "local": "Download Festival - Inglaterra",
+      "data": "2023-06-10",
+      "publico_estimado": 85000
+    },
+    {
+      "id": 3,
+      "local": "Hellfest - Fran\u00e7a",
+      "data": "2024-07-15",
+      "publico_estimado": 60000
+    }
+  ]
+}

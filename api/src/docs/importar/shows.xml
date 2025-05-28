@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<shows>
+    <show>
+        <id>2</id>
+        <local>Rock in Rio - Brasil</local>
+        <data>2022-09-02</data>
+        <publico_estimado>100000</publico_estimado>
+    </show>
+    <show>
+        <id>1</id>
+        <local>Download Festival - Inglaterra</local>
+        <data>2023-06-10</data>
+        <publico_estimado>85000</publico_estimado>
+    </show>
+    <show>
+        <id>3</id>
+        <local>Hellfest - Fran&#xE7;a</local>
+        <data>2024-07-15</data>
+        <publico_estimado>60000</publico_estimado>
+    </show>
+</shows>

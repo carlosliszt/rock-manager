@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<bandas>
+    <banda>
+        <id>3</id>
+        <nome>Alice in Chains</nome>
+        <pais_origem>Estados Unidos</pais_origem>
+        <ano_formacao>1987</ano_formacao>
+        <genero>Grunge</genero>
+    </banda>
+    <banda>
+        <id>2</id>
+        <nome>Black Sabbath</nome>
+        <pais_origem>Reino Unido</pais_origem>
+        <ano_formacao>1968</ano_formacao>
+        <genero>Heavy Metal</genero>
+    </banda>
+    <banda>
+        <id>4</id>
+        <nome>Megadeth</nome>
+        <pais_origem>Estados Unidos</pais_origem>
+        <ano_formacao>1983</ano_formacao>
+        <genero>Thrash Metal</genero>
+    </banda>
+    <banda>
+        <id>1</id>
+        <nome>Slayer</nome>
+        <pais_origem>Estados Unidos</pais_origem>
+        <ano_formacao>1981</ano_formacao>
+        <genero>Thrash Metal</genero>
+    </banda>
+</bandas>
