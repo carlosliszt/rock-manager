@@ -102,7 +102,7 @@ class ParticipacaoController
                 success: false,
                 message: "Não foi possível atualizar a participação.",
                 error: [
-                    'codigoError' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Não é possível atualizar a participação',
                 ],
                 httpCode: 400
@@ -121,7 +121,7 @@ class ParticipacaoController
                 success: false,
                 message: 'Não foi possível excluir a participação',
                 error: [
-                    'cod' => 'delete_error',
+                    'code' => 'delete_error',
                     'message' => 'A participação não pode ser excluída'
                 ],
                 httpCode: 400

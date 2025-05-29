@@ -104,7 +104,7 @@ class BandaController
                 success: false,
                 message: "Não foi possível atualizar a banda.",
                 error: [
-                    'codigoError' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Não é possível atualizar para uma banda que já existe',
                 ],
                 httpCode: 400
@@ -123,7 +123,7 @@ class BandaController
                 success: false,
                 message: 'Não foi possível excluir a banda',
                 error: [
-                    'cod' => 'delete_error',
+                    'code' => 'delete_error',
                     'message' => 'A banda não pode ser excluída'
                 ],
                 httpCode: 400

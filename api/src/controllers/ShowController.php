@@ -102,7 +102,7 @@ class ShowController
                 success: false,
                 message: "Não foi possível atualizar o show.",
                 error: [
-                    'codigoError' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Não é possível atualizar para um show que já existe',
                 ],
                 httpCode: 400
@@ -121,7 +121,7 @@ class ShowController
                 success: false,
                 message: 'Não foi possível excluir o show',
                 error: [
-                    'cod' => 'delete_error',
+                    'code' => 'delete_error',
                     'message' => 'O show não pode ser excluído'
                 ],
                 httpCode: 400

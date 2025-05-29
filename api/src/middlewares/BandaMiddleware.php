@@ -202,7 +202,7 @@ class BandaMiddleware
                 success: false,
                 message: 'A página fornecida não é um número',
                 error: [
-                    'cod' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Página inválida',
                 ],
                 httpCode: 400
@@ -213,7 +213,7 @@ class BandaMiddleware
                 success: false,
                 message: 'Identificação da página inválida',
                 error: [
-                    'cod' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Página inválida',
                 ],
                 httpCode: 400
@@ -230,7 +230,7 @@ class BandaMiddleware
                 success: false,
                 message: 'O limite fornecido não é um número',
                 error: [
-                    'cod' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Limite inválido',
                 ],
                 httpCode: 400
@@ -241,7 +241,7 @@ class BandaMiddleware
                 success: false,
                 message: 'O limite não pode ser menor ou igual a zero',
                 error: [
-                    'cod' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Limite inválido',
                 ],
                 httpCode: 400

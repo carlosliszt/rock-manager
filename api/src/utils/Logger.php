@@ -1,6 +1,6 @@
 <?php
 /**
- * Classe [Roteador]
+ * Classe [Logger]
  *
  * Responsável por registrar mensagens de erro e exceções em um arquivo de log.
  * 
