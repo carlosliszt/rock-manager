@@ -1,6 +1,6 @@
 <?php
-/*
-* API REST didática desenvolvida com o objetivo de
+/**
+* API REST didática desenvolvida para
 * ensinar, de forma simples e prática, os principais conceitos da arquitetura REST
 * e do padrão de projeto MVC (Model-View-Controller).
 *
