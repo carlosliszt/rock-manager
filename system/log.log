@@ -1,0 +1,17 @@
+[2025-05-29 22:41:59.000] [Throwable] 
+ Throwable:
+Message: SQLSTATE[HY000]: General error: 1364 Field 'id' doesn't have a default value
+Code: HY000
+File: C:\xampp\htdocs\api\src\DAO\BandaDAO.php
+Line: 17
+Trace:
+#0 C:\xampp\htdocs\api\src\DAO\BandaDAO.php(17): PDOStatement->execute()
+#1 C:\xampp\htdocs\api\src\controllers\BandaController.php(74): BandaDAO->create(Object(Banda))
+#2 C:\xampp\htdocs\api\src\routes\Roteador.php(109): BandaController->store(Object(stdClass))
+#3 C:\xampp\htdocs\api\src\routes\Router.php(459): Roteador->{closure}()
+#4 C:\xampp\htdocs\api\src\routes\Router.php(441): Router->invoke(Object(Closure), Array)
+#5 C:\xampp\htdocs\api\src\routes\Router.php(288): Router->handle(Array, true)
+#6 C:\xampp\htdocs\api\src\routes\Roteador.php(333): Router->run()
+#7 C:\xampp\htdocs\api.php(25): Roteador->start()
+#8 {main} 
+ **************************************************************************************************** 

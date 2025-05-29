@@ -4,7 +4,7 @@ USE `rock_bands`;
 
 CREATE TABLE Banda
 (
-    id           INT PRIMARY KEY,
+    id           INT PRIMARY KEY AUTO_INCREMENT,
     nome         VARCHAR(100) NOT NULL,
     pais_origem  VARCHAR(50),
     ano_formacao INT,
@@ -13,7 +13,7 @@ CREATE TABLE Banda
 
 CREATE TABLE Shows
 (
-    id               INT PRIMARY KEY,
+    id               INT PRIMARY KEY AUTO_INCREMENT,
     local            VARCHAR(100) NOT NULL,
     data             DATE         NOT NULL,
     publico_estimado INT

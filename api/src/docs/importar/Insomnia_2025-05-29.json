@@ -1,0 +1,675 @@
+type: collection.insomnia.rest/5.0
+name: RockBand API
+meta:
+  id: wrk_b11b4c6603374090a6c5b7d9ab6fb031
+  created: 1748550797252
+  modified: 1748550797252
+collection:
+  - name: bandas
+    meta:
+      id: fld_5b7711662f714c33bfd1eeb8c43aa7e2
+      created: 1748550850697
+      modified: 1748551573777
+      sortKey: -1748550850697
+    children:
+      - url: localhost/bandas
+        name: /bandas
+        meta:
+          id: req_836d15845c1b4841a6fbe48920e6dcac
+          created: 1748550853961
+          modified: 1748551560133
+          isPrivate: false
+          sortKey: -1748550853961
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/1
+        name: /bandas/:id
+        meta:
+          id: req_406fba98fd494a05b7a825eb19ab8de9
+          created: 1748550906196
+          modified: 1748550953454
+          isPrivate: false
+          sortKey: -1748550853861
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas?page=1&limit=10
+        name: /bandas?page=1&limit=10
+        meta:
+          id: req_f6396a3a70d843e1bade87cd783b5907
+          created: 1748551049878
+          modified: 1748551092246
+          isPrivate: false
+          sortKey: -1748550853761
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas
+        name: /bandas
+        meta:
+          id: req_2a1b066848db48808921643661251705
+          created: 1748551119622
+          modified: 1748551455922
+          isPrivate: false
+          sortKey: -1748550853661
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "banda": {
+                "nome": "Queen",
+                "pais_origem": "Reino Unido",
+                "ano_formacao": 1970,
+                "genero": "Rock"
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/exportar/csv
+        name: /bandas/exportar/csv
+        meta:
+          id: req_c473aa7363bd4bf99204bf487f8f45b3
+          created: 1748551190784
+          modified: 1748551237827
+          isPrivate: false
+          sortKey: -1748550853748.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/exportar/json
+        name: /bandas/exportar/json
+        meta:
+          id: req_d82ba01a1da5408b8a0c7c91fcae816d
+          created: 1748551226298
+          modified: 1748551242427
+          isPrivate: false
+          sortKey: -1748550853736
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/exportar/xml
+        name: /bandas/exportar/xml
+        meta:
+          id: req_3d35ab27ac824006bc6aa30672be12d3
+          created: 1748551232391
+          modified: 1748551245881
+          isPrivate: false
+          sortKey: -1748550853711
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/5
+        name: /bandas/:id
+        meta:
+          id: req_3a93b47e77844f1a9b07ba24cc892ecb
+          created: 1748551433086
+          modified: 1748551467131
+          isPrivate: false
+          sortKey: -1748550853561
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "banda": {
+                "nome": "Queen",
+                "pais_origem": "Reino Unido",
+                "ano_formacao": 1971,
+                "genero": "Rock Clássico"
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/bandas/5
+        name: /bandas/:id
+        meta:
+          id: req_2eccedea249b428984de3d949dccc0ce
+          created: 1748551489558
+          modified: 1748552003701
+          isPrivate: false
+          sortKey: -1747243725061.5
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: shows
+    meta:
+      id: fld_07c189f9c35e4afbaf9a23e2e665bcf5
+      created: 1748551568602
+      modified: 1748551568602
+      sortKey: -1747237716967.5
+    children:
+      - url: localhost/shows
+        name: /shows
+        meta:
+          id: req_666be96cdc184a00af79e60ddca4f51b
+          created: 1748551568602
+          modified: 1748551583640
+          isPrivate: false
+          sortKey: -1748550853961
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/1
+        name: /shows/:id
+        meta:
+          id: req_ff9f3d2dd62543b4bd387144b78a7c56
+          created: 1748551568603
+          modified: 1748551600002
+          isPrivate: false
+          sortKey: -1748550853861
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows
+        name: /shows
+        meta:
+          id: req_1f5903836acf4da8ba61c48714672042
+          created: 1748551568604
+          modified: 1748551733052
+          isPrivate: false
+          sortKey: -1748550853661
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "show": {
+                "local": "Wacken Open Air - Alemanha",
+                "data": "2024-08-01",
+                "publico_estimado": 75000
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows?page=1&limit=10
+        name: /shows?page=1&limit=10
+        meta:
+          id: req_ee3346ddf145492cac8458fba19ab092
+          created: 1748551568604
+          modified: 1748551616163
+          isPrivate: false
+          sortKey: -1748550853761
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/exportar/csv
+        name: /shows/exportar/csv
+        meta:
+          id: req_2bd5ef173a654968981836a398a28346
+          created: 1748551568605
+          modified: 1748551651658
+          isPrivate: false
+          sortKey: -1748550853748.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/exportar/json
+        name: /shows/exportar/json
+        meta:
+          id: req_99d269abac4b468895955ddcf860d378
+          created: 1748551568605
+          modified: 1748551655792
+          isPrivate: false
+          sortKey: -1748550853736
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/exportar/xml
+        name: /shows/exportar/xml
+        meta:
+          id: req_70ca1cefb50f41ad84fc0a0303c2414f
+          created: 1748551568606
+          modified: 1748551659877
+          isPrivate: false
+          sortKey: -1748550853711
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/4
+        name: /shows/:id
+        meta:
+          id: req_b4714f2824eb40b297c5688eb3eb8c8c
+          created: 1748551568606
+          modified: 1748551753852
+          isPrivate: false
+          sortKey: -1748550853561
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "show": {
+                "local": "Download Festival - Inglaterra (Atualizado)",
+                "data": "2023-06-11",
+                "publico_estimado": 90000
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/4
+        name: /shows/:id
+        meta:
+          id: req_14ad89e98f46439798f02a0dd876efe2
+          created: 1748551568607
+          modified: 1748552007313
+          isPrivate: false
+          sortKey: -1747243725061.5
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: participacoes
+    meta:
+      id: fld_48ef0eba69104b738649084cc4459773
+      created: 1748551782500
+      modified: 1748551782500
+      sortKey: -1746581150102.75
+    children:
+      - url: localhost/participacoes
+        name: /participacoes
+        meta:
+          id: req_b065fa1eb7bc43328d9c9fcbeb041b19
+          created: 1748551782500
+          modified: 1748551828300
+          isPrivate: false
+          sortKey: -1748550853961
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes/1/1
+        name: /participacoes/:id/:id
+        meta:
+          id: req_c0ad491eb4564e669ea5a48bb8f549a5
+          created: 1748551782501
+          modified: 1748551856416
+          isPrivate: false
+          sortKey: -1748550853861
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes
+        name: /participacoes
+        meta:
+          id: req_5a4ee54c351d4f9da8c17a9f3c02cb89
+          created: 1748551782502
+          modified: 1748551968709
+          isPrivate: false
+          sortKey: -1748550853661
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "participacao": {
+                "id_banda": 1,
+                "id_show": 1,
+                "ordem_apresentacao": 3,
+                "tempo_execucao_min": 60
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes?page=1&limit=10
+        name: /participacoes?page=1&limit=10
+        meta:
+          id: req_41ce41a877944dbfa11d6b64c68273d9
+          created: 1748551782503
+          modified: 1748551869866
+          isPrivate: false
+          sortKey: -1748550853761
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes/exportar/csv
+        name: /participacoes/exportar/csv
+        meta:
+          id: req_a9ceff285dca420fa4cdcfa7f3e7ab14
+          created: 1748551782503
+          modified: 1748551886561
+          isPrivate: false
+          sortKey: -1748550853748.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes/exportar/json
+        name: /participacoes/exportar/json
+        meta:
+          id: req_32d42ebce4e04730bf1712510a65a92d
+          created: 1748551782504
+          modified: 1748551891282
+          isPrivate: false
+          sortKey: -1748550853736
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes/exportar/xml
+        name: /participacoes/exportar/xml
+        meta:
+          id: req_3adaffeb18134f229b0f1160ba61e797
+          created: 1748551782504
+          modified: 1748551894486
+          isPrivate: false
+          sortKey: -1748550853711
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/shows/1/2
+        name: /participacoes/:id/:id
+        meta:
+          id: req_7a5e059ef12f4aa5b9b0e1c9014061a2
+          created: 1748551782505
+          modified: 1748551975523
+          isPrivate: false
+          sortKey: -1748550853561
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "participacao": {
+                "ordem_apresentacao": 4,
+                "tempo_execucao_min": 65
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost/participacoes/1/2
+        name: /participacoes/:id/:id
+        meta:
+          id: req_98f43235846f4a9d8406d7eae958da4c
+          created: 1748551782506
+          modified: 1748552012417
+          isPrivate: false
+          sortKey: -1747243725061.5
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.1.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - url: localhost/backup
+    name: /backup
+    meta:
+      id: req_ea7629d40e9a4b1195616c479ac30ecf
+      created: 1748551539773
+      modified: 1748551551004
+      isPrivate: false
+      sortKey: -1748551539773
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_9c12aa168724a0abd7259af215c7b1e9578e281b
+    created: 1748550797255
+    modified: 1748550797255
+environments:
+  name: Base Environment
+  meta:
+    id: env_9c12aa168724a0abd7259af215c7b1e9578e281b
+    created: 1748550797254
+    modified: 1748550797254
+    isPrivate: false
