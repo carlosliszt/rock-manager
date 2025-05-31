@@ -15,3 +15,22 @@ Trace:
 #7 C:\xampp\htdocs\api.php(25): Roteador->start()
 #8 {main} 
  **************************************************************************************************** 
+[2025-05-30 15:54:37.000] [Throwable] 
+ Throwable:
+Message: SQLSTATE[HY000] [1049] Unknown database 'rock_bands'
+Code: 1049
+File: C:\xampp\htdocs\api\src\db\Database.php
+Line: 161
+Trace:
+#0 C:\xampp\htdocs\api\src\db\Database.php(161): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 C:\xampp\htdocs\api\src\db\Database.php(109): Database::connect()
+#2 C:\xampp\htdocs\api\src\DAO\BandaDAO.php(35): Database::getConnection()
+#3 C:\xampp\htdocs\api\src\controllers\BandaController.php(13): BandaDAO->readAll()
+#4 C:\xampp\htdocs\api\src\routes\Roteador.php(83): BandaController->index()
+#5 C:\xampp\htdocs\api\src\routes\Router.php(459): Roteador->{closure}()
+#6 C:\xampp\htdocs\api\src\routes\Router.php(441): Router->invoke(Object(Closure), Array)
+#7 C:\xampp\htdocs\api\src\routes\Router.php(288): Router->handle(Array, true)
+#8 C:\xampp\htdocs\api\src\routes\Roteador.php(333): Router->run()
+#9 C:\xampp\htdocs\api.php(25): Roteador->start()
+#10 {main} 
+ **************************************************************************************************** 

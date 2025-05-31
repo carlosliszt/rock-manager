@@ -135,7 +135,7 @@ class BandaController
     public function exportCSV(): never
     {
         $bandaDAO = new BandaDAO();
-        $bandas = $bandaDAO->readAll();
+        $bandas = $bandaDAO->readAll(false);
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="bandas.csv"');
         $saida = fopen('php://output', 'w');
@@ -156,7 +156,7 @@ class BandaController
     public function exportJSON(): never
     {
         $bandaDAO = new BandaDAO();
-        $bandas = $bandaDAO->readAll();
+        $bandas = $bandaDAO->readAll(false);
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Disposition: attachment; filename="bandas.json"');
         echo json_encode(['bandas' => $bandas]);
@@ -166,7 +166,7 @@ class BandaController
     public function exportXML(): never
     {
         $bandaDAO = new BandaDAO();
-        $bandas = $bandaDAO->readAll();
+        $bandas = $bandaDAO->readAll(false);
         header('Content-Type: application/xml; charset=utf-8');
         header('Content-Disposition: attachment; filename="bandas.xml"');
         $xml = new SimpleXMLElement('<bandas/>');

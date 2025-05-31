@@ -133,7 +133,7 @@ class ShowController
     public function exportCSV(): never
     {
         $showDAO = new ShowDAO();
-        $shows = $showDAO->readAll();
+        $shows = $showDAO->readAll(false);
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="shows.csv"');
         $saida = fopen('php://output', 'w');
@@ -153,7 +153,7 @@ class ShowController
     public function exportJSON(): never
     {
         $showDAO = new ShowDAO();
-        $shows = $showDAO->readAll();
+        $shows = $showDAO->readAll(false);
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Disposition: attachment; filename="shows.json"');
         echo json_encode(['shows' => $shows]);
@@ -163,7 +163,7 @@ class ShowController
     public function exportXML(): never
     {
         $showDAO = new ShowDAO();
-        $shows = $showDAO->readAll();
+        $shows = $showDAO->readAll(false);
         header('Content-Type: application/xml; charset=utf-8');
         header('Content-Disposition: attachment; filename="shows.xml"');
         $xml = new SimpleXMLElement('<shows/>');

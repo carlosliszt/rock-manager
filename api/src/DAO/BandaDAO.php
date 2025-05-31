@@ -28,10 +28,10 @@ class BandaDAO
         return $statement->rowCount() > 0;
     }
 
-    public function readAll(): array
+    public function readAll(bool $ordered = true): array
     {
         $resultados = [];
-        $query = 'SELECT id, nome, pais_origem, ano_formacao, genero FROM Banda ORDER BY nome ASC';
+        $query = 'SELECT id, nome, pais_origem, ano_formacao, genero FROM Banda'.($ordered? ' ORDER BY nome ASC' : '');
         $statement = Database::getConnection()->query($query);
         while ($linha = $statement->fetch(PDO::FETCH_OBJ)) {
             $banda = new Banda(
@@ -45,6 +45,7 @@ class BandaDAO
         }
         return $resultados;
     }
+
 
     public function readByName(string $nome): ?Banda
     {

@@ -48,10 +48,11 @@ class ShowDAO
         return $resultados;
     }
 
-    public function readAll(): array
+    public function readAll(bool $ordered = true): array
     {
         $resultados = [];
-        $query = 'SELECT id, local, data, publico_estimado FROM Shows ORDER BY data ASC';
+        $query = 'SELECT id, local, data, publico_estimado FROM Shows'.
+                 ($ordered ? ' ORDER BY data ASC' : '');
         $statement = Database::getConnection()->query($query);
         while ($linha = $statement->fetch(PDO::FETCH_OBJ)) {
             $show = new Show(
