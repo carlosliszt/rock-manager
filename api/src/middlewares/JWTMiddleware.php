@@ -28,7 +28,7 @@ class JWTMiddleware
                 success: false,
                 message: 'Token Inválido',
                 error: [
-                    'codigoError' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'Não foi fornecido um token',
                 ],
                 httpCode: 401
@@ -42,7 +42,7 @@ class JWTMiddleware
                 success: false,
                 message: 'Token Inválido',
                 error: [
-                    'codigoError' => 'validation_error',
+                    'code' => 'validation_error',
                     'message' => 'O token fornecido não é válido',
                 ],
                 httpCode: 401
