@@ -10,7 +10,10 @@ require_once "api/src/middlewares/ShowMiddleware.php";
 require_once "api/src/controllers/ParticipacaoController.php";
 require_once "api/src/middlewares/ParticipacaoMiddleware.php";
 
+require "api/src/middlewares/JWTMiddleware.php";
+
 require_once "api/src/utils/Logger.php";
+require_once "api/src/utils/JWTToken.php";
 require_once "api/src/http/Response.php";
 
 class Roteador
@@ -26,6 +29,7 @@ class Roteador
         $this->setupParticipacaoRoutes();
         $this->setupBackupRoutes();
         $this->setup404Route();
+        $this->setupTestRoutes();
     }
 
     private function setup404Route(): void
@@ -64,8 +68,32 @@ class Roteador
             ],
             httpCode: 500
         ))->send();
+    }
 
-        exit();
+    private function setupTestRoutes() : void {
+        $this->router->post('/test', function (): never {
+
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+
+            header('Content-Type: application/json');
+            $requestBody = file_get_contents("php://input");
+
+            $token = new JWTToken();
+
+            $tokenStr = $token->generateToken($token->stringJsonToStdClass($requestBody));
+
+            (new Response(
+                success: true,
+                message: "Token gerado com sucesso",
+                data: [
+                    'token' => $tokenStr
+                ],
+                httpCode: 200
+            ))->send();
+
+            exit();
+        });
     }
 
     // --- Rotas de Bandas ---
@@ -100,6 +128,10 @@ class Roteador
 
         $this->router->post('/bandas', function (): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $bandaMiddleware = new BandaMiddleware();
                 $stdBanda = $bandaMiddleware->stringJsonToStdClass($requestBody);
@@ -115,6 +147,10 @@ class Roteador
 
         $this->router->put('/bandas/(\d+)', function ($id): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $bandaMiddleware = new BandaMiddleware();
                 $stdBanda = $bandaMiddleware->stringJsonToStdClass($requestBody);
@@ -132,6 +168,10 @@ class Roteador
 
         $this->router->delete('/bandas/(\d+)', function ($id): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 (new BandaMiddleware())->isValidId($id)->hasBandaById($id);
                 (new BandaController())->destroy((int)$id);
             } catch (Throwable $throwable) {
@@ -180,6 +220,10 @@ class Roteador
 
         $this->router->post('/shows', function (): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $showMiddleware = new ShowMiddleware();
                 $stdShow = $showMiddleware->stringJsonToStdClass($requestBody);
@@ -196,6 +240,10 @@ class Roteador
 
         $this->router->put('/shows/(\d+)', function ($id): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $showMiddleware = new ShowMiddleware();
                 $stdShow = $showMiddleware->stringJsonToStdClass($requestBody);
@@ -214,6 +262,10 @@ class Roteador
 
         $this->router->delete('/shows/(\d+)', function ($id): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 (new ShowMiddleware())->isValidId($id)->hasShowById($id);
                 (new ShowController())->destroy((int)$id);
             } catch (Throwable $throwable) {
@@ -264,6 +316,10 @@ class Roteador
 
         $this->router->post('/participacoes', function (): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $participacaoMiddleware = new ParticipacaoMiddleware();
                 $stdParticipacao = $participacaoMiddleware->stringJsonToStdClass($requestBody);
@@ -279,6 +335,10 @@ class Roteador
 
         $this->router->put('/participacoes/(\d+)/(\d+)', function ($id_banda, $id_show): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 $requestBody = file_get_contents("php://input");
                 $participacaoMiddleware = new ParticipacaoMiddleware();
                 $stdParticipacao = $participacaoMiddleware->stringJsonToStdClass($requestBody);
@@ -296,6 +356,10 @@ class Roteador
 
         $this->router->delete('/participacoes/(\d+)/(\d+)', function ($id_banda, $id_show): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 (new ParticipacaoMiddleware())
                     ->isValidIds($id_banda, $id_show)
                     ->hasParticipacaoByIds($id_banda, $id_show);
@@ -319,6 +383,10 @@ class Roteador
     {
         $this->router->get('/backup', function (): never {
             try {
+
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+
                 require_once "api/src/db/Database.php";
                 Database::backup();
             } catch (Throwable $throwable) {

@@ -21,5 +21,6 @@
 */
 
 require_once "api/src/routes/Roteador.php";
+require_once "vendor/autoload.php";
 
 (new Roteador())->start();
