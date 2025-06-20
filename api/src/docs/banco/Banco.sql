@@ -2,7 +2,7 @@ DROP SCHEMA IF EXISTs `rock_bands`;
 CREATE SCHEMA IF NOT EXISTS `rock_bands` DEFAULT CHARACTER SET utf8;
 USE `rock_bands`;
 
-CREATE TABLE Banda
+CREATE TABLE IF NOT EXISTS Banda
 (
     id           INT PRIMARY KEY AUTO_INCREMENT,
     nome         VARCHAR(100) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE Banda
     genero       VARCHAR(50)
 );
 
-CREATE TABLE Shows
+CREATE TABLE IF NOT EXISTS Shows
 (
     id               INT PRIMARY KEY AUTO_INCREMENT,
     local            VARCHAR(100) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE Shows
     publico_estimado INT
 );
 
-CREATE TABLE Participacao
+CREATE TABLE IF NOT EXISTS Participacao
 (
     id_banda           INT,
     id_show            INT,
@@ -28,6 +28,16 @@ CREATE TABLE Participacao
     PRIMARY KEY (id_banda, id_show),
     FOREIGN KEY (id_banda) REFERENCES Banda (id),
     FOREIGN KEY (id_show) REFERENCES Shows (id)
+);
+
+CREATE TABLE IF NOT EXISTS Usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  ativo TINYINT(1) DEFAULT 1,
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO Banda (id, nome, pais_origem, ano_formacao, genero)

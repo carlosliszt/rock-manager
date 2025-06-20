@@ -3,7 +3,6 @@
 class Show implements \JsonSerializable
 {
 
-
     public function __construct(
         private int $id,
         private string $local,

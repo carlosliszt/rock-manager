@@ -10,7 +10,10 @@ require_once "api/src/middlewares/ShowMiddleware.php";
 require_once "api/src/controllers/ParticipacaoController.php";
 require_once "api/src/middlewares/ParticipacaoMiddleware.php";
 
-require "api/src/middlewares/JWTMiddleware.php";
+require_once "api/src/middlewares/JWTMiddleware.php";
+
+require_once "api/src/controllers/UsuarioController.php";
+require_once "api/src/middlewares/UsuarioMiddleware.php";
 
 require_once "api/src/utils/Logger.php";
 require_once "api/src/utils/JWTToken.php";
@@ -30,6 +33,7 @@ class Roteador
         $this->setupBackupRoutes();
         $this->setup404Route();
         $this->setupTestRoutes();
+        $this->setupLoginRoutes();
     }
 
     private function setup404Route(): void
@@ -94,6 +98,36 @@ class Roteador
 
             exit();
         });
+    }
+
+    private function setupLoginRoutes(): void
+    {
+        $this->router->post('/login', function (): never {
+            try {
+                $requestBody = file_get_contents("php://input");
+                (new UsuarioController())->login(json_decode($requestBody));
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao realizar login');
+            }
+        });
+
+        $this->router->post('/register', function (): never {
+            try {
+                $requestBody = file_get_contents("php://input");
+                $usuarioMiddleware = new UsuarioMiddleware();
+                $stdUsuario = $usuarioMiddleware->stringJsonToStdClass($requestBody);
+                $usuarioMiddleware
+                    ->isValidUsername($stdUsuario->usuario->username)
+                    ->isValidEmail($stdUsuario->usuario->email)
+                    ->isValidSenha($stdUsuario->usuario->senha)
+                    ->hasNotUsuarioByEmail($stdUsuario->usuario->email)
+                    ->hasNotUsername($stdUsuario->usuario->username);
+                (new UsuarioController())->register($stdUsuario);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao registrar usuário');
+            }
+        });
+
     }
 
     // --- Rotas de Bandas ---
