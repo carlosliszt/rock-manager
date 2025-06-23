@@ -66,6 +66,27 @@ class ParticipacaoDAO
         );
     }
 
+    public function readByBanda(int $id_banda): array 
+    {
+        $query = '
+        SELECT 
+            p.id_banda,
+            b.nome AS nome_banda,
+            p.id_show,
+            s.local AS nome_show,
+            p.ordem_apresentacao,
+            p.tempo_execucao_min
+        FROM Participacao p
+        JOIN Banda b ON p.id_banda = b.id
+        JOIN Shows s ON p.id_show = s.id
+        WHERE p.id_banda = :id_banda
+    ';
+        $stmt = Database::getConnection()->prepare($query);
+        $stmt->bindParam(':id_banda', $id_banda, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function readByPage(int $page, int $limit): array
     {
         $offset = ($page - 1) * $limit;

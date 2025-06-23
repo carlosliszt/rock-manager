@@ -41,6 +41,43 @@ class ParticipacaoController
         exit();
     }
 
+    public function showByBand(int $id_banda): never
+    {
+        $participacaoDAO = new ParticipacaoDAO();
+        $participacoes = $participacaoDAO->readByBanda($id_banda);
+
+        if (empty($participacoes)) {
+            (new Response(
+                success: false,
+                message: 'Nenhuma participação encontrada para a banda',
+                httpCode: 404
+            ))->send();
+            exit();
+        }
+
+        $nomeBanda = $participacoes[0]->nome_banda ?? null;
+        $shows = array_map(function($p) {
+            return [
+                'id_show' => $p->id_show,
+                'nome_show' => $p->nome_show,
+                'ordem_apresentacao' => $p->ordem_apresentacao,
+                'tempo_execucao_min' => $p->tempo_execucao_min
+            ];
+        }, $participacoes);
+
+        (new Response(
+            success: true,
+            message: 'Shows da banda encontrados com sucesso',
+            data: [
+                'id_banda' => $id_banda,
+                'nome_banda' => $nomeBanda,
+                'shows' => $shows
+            ],
+            httpCode: 200
+        ))->send();
+        exit();
+    }
+
     public function listPaginated(int $page = 1, int $limit = 10): never
     {
         if ($page < 1) $page = 1;

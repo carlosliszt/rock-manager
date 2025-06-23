@@ -50,6 +50,26 @@ class ParticipacaoMiddleware
         return $stdParticipacao;
     }
 
+    public function hasShowsByBanda($id_banda): self
+    {
+        $participacaoDAO = new ParticipacaoDAO();
+        $participacoes = $participacaoDAO->readByBanda($id_banda);
+
+        if (empty($participacoes)) {
+            (new Response(
+                success: false,
+                message: 'A banda não possui shows cadastrados',
+                error: [
+                    'code' => 'banda_sem_shows',
+                    'message' => 'Nenhum show encontrado para a banda informada'
+                ],
+                httpCode: 404
+            ))->send();
+            exit();
+        }
+        return $this;
+    }
+
     public function isValidIds($id_banda, $id_show): self
     {
         if (!isset($id_banda) || !isset($id_show)) {

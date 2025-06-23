@@ -34,3 +34,34 @@ Trace:
 #9 C:\xampp\htdocs\api.php(25): Roteador->start()
 #10 {main} 
  **************************************************************************************************** 
+[2025-06-23 04:55:39.000] [Throwable] 
+ Throwable:
+Message: UsuarioBandaDAO::existeVinculo(): Argument #1 ($id_usuario) must be of type int, null given, called in C:\xampp\htdocs\api\src\routes\Roteador.php on line 288
+Code: 0
+File: C:\xampp\htdocs\api\src\DAO\UsuarioBandaDAO.php
+Line: 110
+Trace:
+#0 C:\xampp\htdocs\api\src\routes\Roteador.php(288): UsuarioBandaDAO->existeVinculo(NULL, '1')
+#1 C:\xampp\htdocs\api\src\routes\Router.php(459): Roteador->{closure}('1')
+#2 C:\xampp\htdocs\api\src\routes\Router.php(441): Router->invoke(Object(Closure), Array)
+#3 C:\xampp\htdocs\api\src\routes\Router.php(288): Router->handle(Array, true)
+#4 C:\xampp\htdocs\api\src\routes\Roteador.php(566): Router->run()
+#5 C:\xampp\htdocs\index.php(26): Roteador->start()
+#6 {main} 
+ **************************************************************************************************** 
+[2025-06-23 05:23:14.000] [Throwable] 
+ Throwable:
+Message: Call to a member function query() on null
+Code: 0
+File: C:\xampp\htdocs\api\src\DAO\UsuarioBandaDAO.php
+Line: 36
+Trace:
+#0 C:\xampp\htdocs\api\src\controllers\UsuarioBandaController.php(12): UsuarioBandaDAO->readAll()
+#1 C:\xampp\htdocs\api\src\routes\Roteador.php(121): UsuarioBandaController->index()
+#2 C:\xampp\htdocs\api\src\routes\Router.php(459): Roteador->{closure}()
+#3 C:\xampp\htdocs\api\src\routes\Router.php(441): Router->invoke(Object(Closure), Array)
+#4 C:\xampp\htdocs\api\src\routes\Router.php(288): Router->handle(Array, true)
+#5 C:\xampp\htdocs\api\src\routes\Roteador.php(970): Router->run()
+#6 C:\xampp\htdocs\index.php(26): Roteador->start()
+#7 {main} 
+ **************************************************************************************************** 
