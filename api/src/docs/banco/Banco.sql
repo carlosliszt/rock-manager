@@ -30,14 +30,25 @@ CREATE TABLE IF NOT EXISTS Participacao
     FOREIGN KEY (id_show) REFERENCES Shows (id)
 );
 
-CREATE TABLE IF NOT EXISTS Usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(100) NOT NULL UNIQUE,
-  email VARCHAR(150) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  role VARCHAR(50) DEFAULT 'user',
-  ativo TINYINT(1) DEFAULT 1,
-  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS Usuarios
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    username      VARCHAR(100) NOT NULL UNIQUE,
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role          VARCHAR(50) DEFAULT 'user',
+    ativo         TINYINT(1)  DEFAULT 1,
+    criado_em     DATETIME    DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS UsuarioBanda
+(
+    id_usuario INT,
+    id_banda   INT,
+    funcao     VARCHAR(50),
+    PRIMARY KEY (id_usuario, id_banda),
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios (id),
+    FOREIGN KEY (id_banda) REFERENCES Banda (id)
 );
 
 INSERT INTO Banda (id, nome, pais_origem, ano_formacao, genero)

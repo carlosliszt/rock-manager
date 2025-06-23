@@ -36,7 +36,7 @@ class Logger
     /**
      * Registra uma mensagem de erro genérica no log.
      *
-     * @param string rrorMessage A mensagem de erro a ser registrada.
+     * @param string $errorMessage A mensagem de erro a ser registrada.
      */
     public static function logError(string $errorMessage): void
     {
@@ -46,7 +46,7 @@ class Logger
     /**
      * Registra uma exceção ou erro (Throwable) no log.
      *
-     * @param Throwable xception A exceção capturada.
+     * @param Throwable $throwable A exceção capturada.
      */
     public static function log(Throwable $throwable): void
     {

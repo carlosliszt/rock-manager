@@ -12,6 +12,9 @@ require_once "api/src/middlewares/ParticipacaoMiddleware.php";
 
 require_once "api/src/middlewares/JWTMiddleware.php";
 
+require_once "api/src/controllers/UsuarioBandaController.php";
+require_once "api/src/middlewares/UsuarioBandaMiddleware.php";
+
 require_once "api/src/controllers/UsuarioController.php";
 require_once "api/src/middlewares/UsuarioMiddleware.php";
 
@@ -32,7 +35,7 @@ class Roteador
         $this->setupParticipacaoRoutes();
         $this->setupBackupRoutes();
         $this->setup404Route();
-        $this->setupTestRoutes();
+        $this->setupUsuarioBandaRoutes();
         $this->setupLoginRoutes();
     }
 
@@ -74,32 +77,6 @@ class Roteador
         ))->send();
     }
 
-    private function setupTestRoutes() : void {
-        $this->router->post('/test', function (): never {
-
-            $tokenMiddleware = new JWTMiddleware();
-            $payload = $tokenMiddleware->isValidToken();
-
-            header('Content-Type: application/json');
-            $requestBody = file_get_contents("php://input");
-
-            $token = new JWTToken();
-
-            $tokenStr = $token->generateToken($token->stringJsonToStdClass($requestBody));
-
-            (new Response(
-                success: true,
-                message: "Token gerado com sucesso",
-                data: [
-                    'token' => $tokenStr
-                ],
-                httpCode: 200
-            ))->send();
-
-            exit();
-        });
-    }
-
     private function setupLoginRoutes(): void
     {
         $this->router->post('/login', function (): never {
@@ -130,10 +107,221 @@ class Roteador
 
     }
 
+    private function setupUsuarioBandaRoutes(): void
+    {
+        $this->router->get('/bands/members', function (): never {
+            try {
+                $control = new UsuarioBandaController();
+                if (isset($_GET['page']) && isset($_GET['limit'])) {
+                    (new UsuarioBandaMiddleware())
+                        ->isValidPage($_GET['page'])
+                        ->isValidLimit($_GET['limit']);
+                    $control->listPaginated((int)$_GET['page'], (int)$_GET['limit']);
+                } else {
+                    $control->index();
+                }
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro na seleção de dados');
+            }
+            exit();
+        });
+
+        $this->router->get('/bands/(\d+)/members', function ($id_banda): never {
+            try {
+                (new BandaMiddleware())->isValidId($id_banda)->hasBandaById($id_banda);
+                (new UsuarioBandaMiddleware())
+                    ->hasMembersInBanda($id_banda);
+                (new UsuarioBandaController())->showByBand((int)$id_banda);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar membros da banda');
+            }
+            exit();
+        });
+
+        $this->router->get('/bands/members/(\d+)/(\d+)', function ($id_usuario, $id_banda): never {
+            try {
+                (new UsuarioBandaMiddleware())
+                    ->isValidIds($id_usuario, $id_banda)
+                    ->hasVinculoByIds($id_usuario, $id_banda);
+                (new UsuarioBandaController())->show((int)$id_usuario, (int)$id_banda);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro na seleção de dados');
+            }
+            exit();
+        });
+
+        $this->router->post('/bands/members', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'musician' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas gerentes ou admin podem criar vínculos'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                $requestBody = file_get_contents("php://input");
+                $middleware = new UsuarioBandaMiddleware();
+                $stdVinculo = $middleware->stringJsonToStdClass($requestBody);
+                $middleware
+                    ->isValidIds($stdVinculo->usuario_banda->id_usuario, $stdVinculo->usuario_banda->id_banda)
+                    ->isValidFuncao($stdVinculo->usuario_banda->funcao)
+                    ->hasNotVinculoByIds($stdVinculo->usuario_banda->id_usuario, $stdVinculo->usuario_banda->id_banda);
+                (new UsuarioBandaController())->store($stdVinculo);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao inserir vínculo');
+            }
+            exit();
+        });
+
+        $this->router->put('/bands/members/(\d+)/(\d+)', function ($id_usuario, $id_banda): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'musician' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas gerentes ou admin podem editar vínculos'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                $requestBody = file_get_contents("php://input");
+                $middleware = new UsuarioBandaMiddleware();
+                $stdVinculo = $middleware->stringJsonToStdClass($requestBody);
+                $middleware
+                    ->isValidIds($id_usuario, $id_banda)
+                    ->isValidFuncao($stdVinculo->usuario_banda->funcao)
+                    ->hasVinculoByIds($id_usuario, $id_banda);
+                $stdVinculo->usuario_banda->id_usuario = (int)$id_usuario;
+                $stdVinculo->usuario_banda->id_banda = (int)$id_banda;
+                (new UsuarioBandaController())->edit($stdVinculo);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro na atualização do vínculo');
+            }
+            exit();
+        });
+
+        $this->router->delete('/bands/members/(\d+)/(\d+)', function ($id_usuario, $id_banda): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'musician' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas gerentes ou admin podem excluir vínculos'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new UsuarioBandaMiddleware())
+                    ->isValidIds($id_usuario, $id_banda)
+                    ->hasVinculoByIds($id_usuario, $id_banda);
+                (new UsuarioBandaController())->destroy((int)$id_usuario, (int)$id_banda);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro na exclusão do vínculo');
+            }
+            exit();
+        });
+
+        $this->router->get('/bands/members/exportar/csv', fn (): never => (new UsuarioBandaController())->exportCSV());
+        $this->router->get('/bands/members/exportar/json', fn (): never => (new UsuarioBandaController())->exportJSON());
+        $this->router->get('/bands/members/exportar/xml', fn (): never => (new UsuarioBandaController())->exportXML());
+
+        $this->router->post('/bands/members/importar/csv', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar vínculos'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new UsuarioBandaController())->importCSV($_FILES['csv']);
+            exit();
+        });
+
+        $this->router->post('/bands/members/importar/json', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar vínculos'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new UsuarioBandaController())->importJson($_FILES['json']);
+            exit();
+        });
+
+        $this->router->post('/bands/members/importar/xml', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar vínculos'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new UsuarioBandaController())->importXML($_FILES['xml']);
+            exit();
+        });
+    }
+
     // --- Rotas de Bandas ---
     private function setupBandaRoutes(): void
     {
-        $this->router->get('/bandas', function (): never {
+        $this->router->get('/bands', function (): never {
             try {
                 $bandaControl = new BandaController();
                 if (isset($_GET['page']) && isset($_GET['limit'])) {
@@ -150,7 +338,7 @@ class Roteador
             exit();
         });
 
-        $this->router->get('/bandas/(\d+)', function ($id): never {
+        $this->router->get('/bands/(\d+)', function ($id): never {
             try {
                 (new BandaMiddleware())->isValidId($id)->hasBandaById($id);
                 (new BandaController())->show((int)$id);
@@ -160,11 +348,26 @@ class Roteador
             exit();
         });
 
-        $this->router->post('/bandas', function (): never {
+        $this->router->post('/bands', function (): never {
             try {
 
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+
+                $role = $payload->role ?? null;
+
+               if($role !== 'admin' && $role != "musician") {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas músicos ou admin podem criar bandas'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+               }
 
                 $requestBody = file_get_contents("php://input");
                 $bandaMiddleware = new BandaMiddleware();
@@ -179,11 +382,28 @@ class Roteador
             exit();
         });
 
-        $this->router->put('/bandas/(\d+)', function ($id): never {
+        $this->router->put('/bands/(\d+)', function ($id): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $id_usuario = $payload->id ?? null;
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    $usuarioBandaDAO = new UsuarioBandaDAO();
+                    if (!$usuarioBandaDAO->existeVinculo($id_usuario, $id)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não está vinculado à banda',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Apenas membros da banda podem alterar'
+                            ],
+                            httpCode: 403
+                        ))->send();
+                        exit();
+                    }
+                }
 
                 $requestBody = file_get_contents("php://input");
                 $bandaMiddleware = new BandaMiddleware();
@@ -200,11 +420,28 @@ class Roteador
             exit();
         });
 
-        $this->router->delete('/bandas/(\d+)', function ($id): never {
+        $this->router->delete('/bands/(\d+)', function ($id): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $id_usuario = $payload->id_usuario ?? null;
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    $usuarioBandaDAO = new UsuarioBandaDAO();
+                    if (!$usuarioBandaDAO->existeVinculo($id_usuario, $id)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não está vinculado à banda',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Apenas membros da banda podem excluir'
+                            ],
+                            httpCode: 403
+                        ))->send();
+                        exit();
+                    }
+                }
 
                 (new BandaMiddleware())->isValidId($id)->hasBandaById($id);
                 (new BandaController())->destroy((int)$id);
@@ -214,12 +451,74 @@ class Roteador
             exit();
         });
 
-        $this->router->get('/bandas/exportar/csv', fn (): never => (new BandaController())->exportCSV());
-        $this->router->get('/bandas/exportar/json', fn (): never => (new BandaController())->exportJSON());
-        $this->router->get('/bandas/exportar/xml', fn (): never => (new BandaController())->exportXML());
-        $this->router->post('/bandas/importar/csv', fn (): never => (new BandaController())->importCSV($_FILES['csv']));
-        $this->router->post('/bandas/importar/json', fn (): never => (new BandaController())->importJson($_FILES['json']));
-        $this->router->post('/bandas/importar/xml', fn (): never => (new BandaController())->importXML($_FILES['xml']));
+        $this->router->get('/bands/exportar/csv', fn (): never => (new BandaController())->exportCSV());
+        $this->router->get('/bands/exportar/json', fn (): never => (new BandaController())->exportJSON());
+        $this->router->get('/bands/exportar/xml', fn (): never => (new BandaController())->exportXML());
+        $this->router->post('/bands/importar/csv', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar bandas'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new BandaController())->importCSV($_FILES['csv']);
+            exit();
+        });
+
+        $this->router->post('/bands/importar/json', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar bandas'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new BandaController())->importJson($_FILES['json']);
+            exit();
+        });
+
+        $this->router->post('/bands/importar/xml', function (): never {
+            $tokenMiddleware = new JWTMiddleware();
+            $payload = $tokenMiddleware->isValidToken();
+            $role = $payload->role ?? null;
+
+            if ($role !== 'admin') {
+                (new Response(
+                    success: false,
+                    message: 'Ação não permitida',
+                    error: [
+                        'code' => 'authorization_error',
+                        'message' => 'Apenas admin pode importar bandas'
+                    ],
+                    httpCode: 403
+                ))->send();
+                exit();
+            }
+
+            (new BandaController())->importXML($_FILES['xml']);
+            exit();
+        });
     }
 
     // --- Rotas de Shows ---
@@ -254,9 +553,22 @@ class Roteador
 
         $this->router->post('/shows', function (): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem criar shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
 
                 $requestBody = file_get_contents("php://input");
                 $showMiddleware = new ShowMiddleware();
@@ -274,9 +586,22 @@ class Roteador
 
         $this->router->put('/shows/(\d+)', function ($id): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem editar shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
 
                 $requestBody = file_get_contents("php://input");
                 $showMiddleware = new ShowMiddleware();
@@ -296,9 +621,22 @@ class Roteador
 
         $this->router->delete('/shows/(\d+)', function ($id): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem excluir shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
 
                 (new ShowMiddleware())->isValidId($id)->hasShowById($id);
                 (new ShowController())->destroy((int)$id);
@@ -311,9 +649,84 @@ class Roteador
         $this->router->get('/shows/exportar/csv', fn (): never => (new ShowController())->exportCSV());
         $this->router->get('/shows/exportar/json', fn (): never => (new ShowController())->exportJSON());
         $this->router->get('/shows/exportar/xml', fn (): never => (new ShowController())->exportXML());
-        $this->router->post('/shows/importar/csv', fn (): never => (new ShowController())->importCSV($_FILES['csv']));
-        $this->router->post('/shows/importar/json', fn (): never => (new ShowController())->importJson($_FILES['json']));
-        $this->router->post('/shows/importar/xml', fn (): never => (new ShowController())->importXML($_FILES['xml']));
+
+        $this->router->post('/shows/importar/csv', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem importar shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ShowController())->importCSV($_FILES['csv']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar shows');
+            }
+            exit();
+        });
+
+        $this->router->post('/shows/importar/json', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem importar shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ShowController())->importJson($_FILES['json']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar shows');
+            }
+            exit();
+        });
+
+        $this->router->post('/shows/importar/xml', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'organizador' && $role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas organizadores ou admins podem importar shows'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ShowController())->importXML($_FILES['xml']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar shows');
+            }
+            exit();
+        });
     }
 
     // --- Rotas de Participações ---
@@ -348,15 +761,48 @@ class Roteador
             exit();
         });
 
+        $this->router->get('/bands/(\d+)/shows', function ($id_banda): never {
+            try {
+                (new BandaMiddleware())->isValidId($id_banda)->hasBandaById($id_banda);
+                (new ParticipacaoMiddleware())
+                    ->hasShowsByBanda($id_banda);
+                (new ParticipacaoController())->showByBand((int)$id_banda);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar participacoes da banda');
+            }
+            exit();
+        });
+
         $this->router->post('/participacoes', function (): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $id_usuario = $payload->id ?? null;
+                $role = $payload->role ?? null;
 
                 $requestBody = file_get_contents("php://input");
                 $participacaoMiddleware = new ParticipacaoMiddleware();
                 $stdParticipacao = $participacaoMiddleware->stringJsonToStdClass($requestBody);
+
+                $id_banda = $stdParticipacao->participacao->id_banda;
+
+                if ($role !== 'admin' && $role !== 'organizador') {
+                    require_once 'api/src/dao/UsuarioBandaDAO.php';
+                    $usuarioBandaDAO = new UsuarioBandaDAO();
+                    if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
+                        (new Response(
+                            success: false,
+                            message: 'Ação não permitida',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Apenas organizadores, admin ou membros da banda podem criar participações'
+                            ],
+                            httpCode: 403
+                        ))->send();
+                        exit();
+                    }
+                }
+
                 $participacaoMiddleware
                     ->isValidIds($stdParticipacao->participacao->id_banda, $stdParticipacao->participacao->id_show)
                     ->hasNotParticipacaoByIds($stdParticipacao->participacao->id_banda, $stdParticipacao->participacao->id_show);
@@ -366,12 +812,41 @@ class Roteador
             }
             exit();
         });
-
         $this->router->put('/participacoes/(\d+)/(\d+)', function ($id_banda, $id_show): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $id_usuario = $payload->id ?? null;
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    if (!isset($id_usuario) || !is_numeric($id_usuario)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não autenticado',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Token inválido ou usuário não identificado'
+                            ],
+                            httpCode: 401
+                        ))->send();
+                        exit();
+                    }
+                    require_once 'api/src/dao/UsuarioBandaDAO.php';
+                    $usuarioBandaDAO = new UsuarioBandaDAO();
+                    if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não está vinculado à banda',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Apenas membros da banda ou admin podem editar participações'
+                            ],
+                            httpCode: 403
+                        ))->send();
+                        exit();
+                    }
+                }
 
                 $requestBody = file_get_contents("php://input");
                 $participacaoMiddleware = new ParticipacaoMiddleware();
@@ -390,9 +865,39 @@ class Roteador
 
         $this->router->delete('/participacoes/(\d+)/(\d+)', function ($id_banda, $id_show): never {
             try {
-
                 $tokenMiddleware = new JWTMiddleware();
                 $payload = $tokenMiddleware->isValidToken();
+                $id_usuario = $payload->id ?? null;
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    if (!isset($id_usuario) || !is_numeric($id_usuario)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não autenticado',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Token inválido ou usuário não identificado'
+                            ],
+                            httpCode: 401
+                        ))->send();
+                        exit();
+                    }
+                    require_once 'api/src/dao/UsuarioBandaDAO.php';
+                    $usuarioBandaDAO = new UsuarioBandaDAO();
+                    if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
+                        (new Response(
+                            success: false,
+                            message: 'Usuário não está vinculado à banda',
+                            error: [
+                                'code' => 'authorization_error',
+                                'message' => 'Apenas membros da banda ou admin podem excluir participações'
+                            ],
+                            httpCode: 403
+                        ))->send();
+                        exit();
+                    }
+                }
 
                 (new ParticipacaoMiddleware())
                     ->isValidIds($id_banda, $id_show)
@@ -407,9 +912,84 @@ class Roteador
         $this->router->get('/participacoes/exportar/csv', fn (): never => (new ParticipacaoController())->exportCSV());
         $this->router->get('/participacoes/exportar/json', fn (): never => (new ParticipacaoController())->exportJSON());
         $this->router->get('/participacoes/exportar/xml', fn (): never => (new ParticipacaoController())->exportXML());
-        $this->router->post('/participacoes/importar/csv', fn (): never => (new ParticipacaoController())->importCSV($_FILES['csv']));
-        $this->router->post('/participacoes/importar/json', fn (): never => (new ParticipacaoController())->importJson($_FILES['json']));
-        $this->router->post('/participacoes/importar/xml', fn (): never => (new ParticipacaoController())->importXML($_FILES['xml']));
+
+        $this->router->post('/participacoes/importar/csv', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode importar participações'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ParticipacaoController())->importCSV($_FILES['csv']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar participações');
+            }
+            exit();
+        });
+
+        $this->router->post('/participacoes/importar/json', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode importar participações'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ParticipacaoController())->importJson($_FILES['json']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar participações');
+            }
+            exit();
+        });
+
+        $this->router->post('/participacoes/importar/xml', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+
+                if ($role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode importar participações'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+
+                (new ParticipacaoController())->importXML($_FILES['xml']);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao importar participações');
+            }
+            exit();
+        });
     }
 
     // --- Backup ---
