@@ -1,6 +1,7 @@
 class AdminPanel {
     constructor() {
         this.init();
+        this.mockUsers = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
     }
     
     init() {
@@ -95,8 +96,6 @@ class AdminPanel {
     
     async loadUsers() {
 
-        let mockUsers = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
-
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS, {
                 headers: getDefaultHeaders()
@@ -105,7 +104,7 @@ class AdminPanel {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    mockUsers = data.data.usuarios;
+                    this.mockUsers = data.data.usuarios;
                 }
             }
         } catch (error) {
@@ -115,7 +114,7 @@ class AdminPanel {
         const tbody = document.querySelector('#usersTable tbody');
         tbody.innerHTML = '';
         
-        mockUsers.forEach(user => {
+        this.mockUsers.forEach(user => {
             const row = this.createUserRow(user);
             tbody.appendChild(row);
         });
@@ -630,13 +629,7 @@ class AdminPanel {
     }
     
     getMockUserById(userId) {
-        const mockUsers = [
-            { id: 1, username: 'admin', email: 'admin@rockapi.com', role: 'admin', status: 'Ativo', created_at: '2025-01-01' },
-            { id: 2, username: 'musician', email: 'musician@rockapi.com', role: 'musician', status: 'Ativo', created_at: '2025-01-02' },
-            { id: 3, username: 'organizer', email: 'organizer@rockapi.com', role: 'organizador', status: 'Ativo', created_at: '2025-01-03' },
-            { id: 4, username: 'user', email: 'user@rockapi.com', role: 'user', status: 'Ativo', created_at: '2025-01-04' }
-        ];
-        return mockUsers.find(user => user.id === userId);
+        return this.mockUsers.find(user => user.id === userId);
     }
     
     toggleUserStatus(userId) {
