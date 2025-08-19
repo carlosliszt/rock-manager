@@ -105,4 +105,25 @@ class UsuarioController
         }
     }
 
+    function index(): never
+    {
+        $usuarios = $this->usuarioDAO->readAll();
+
+        if (empty($usuarios)) {
+            (new Response(
+                success: false,
+                message: 'Nenhum usuário encontrado.',
+                httpCode: 404
+            ))->send();
+        } else {
+            $data = array_map(fn($usuario) => $usuario->jsonSerialize(), $usuarios);
+            (new Response(
+                success: true,
+                message: 'Usuários encontrados.',
+                data: ['usuarios' => $data],
+                httpCode: 200
+            ))->send();
+        }
+    }
+
 }

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock API - Documentação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-music-note-beamed"></i> Rock API</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="docs.html">
+                            <i class="bi bi-book"></i> Documentação
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid mt-5 pt-3">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="card sticky-top" style="top: 80px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Índice</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <a href="#introducao" class="list-group-item list-group-item-action">Introdução</a>
+                            <a href="#caracteristicas" class="list-group-item list-group-item-action">Características</a>
+                            <a href="#como-usar" class="list-group-item list-group-item-action">Como Usar</a>
+                            <a href="#bandas" class="list-group-item list-group-item-action">Gestão de Bandas</a>
+                            <a href="#shows" class="list-group-item list-group-item-action">Gestão de Shows</a>
+                            <a href="#participacoes" class="list-group-item list-group-item-action">Gestão de Participações</a>
+                            <a href="#autenticacao" class="list-group-item list-group-item-action">Autenticação</a>
+                            <a href="#exportacao" class="list-group-item list-group-item-action">Exportação</a>
+                            <a href="#troubleshooting" class="list-group-item list-group-item-action">Solução de Problemas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Introduction -->
+                        <section id="introducao" class="mb-5">
+                            <h1 class="display-5 mb-4"><i class="bi bi-music-note-beamed"></i> Rock API - Frontend</h1>
+                            <p class="lead">
+                                Bem-vindo à documentação do frontend da Rock API! Este sistema foi desenvolvido para 
+                                facilitar a gestão de bandas, shows e participações em eventos musicais.
+                            </p>
+                            
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i>
+                                <strong>Sobre o Projeto:</strong> Esta API REST didática foi desenvolvida para ensinar, 
+                                de forma simples e prática, os principais conceitos da arquitetura REST e do padrão MVC.
+                            </div>
+                        </section>
+
+                        <!-- Features -->
+                        <section id="caracteristicas" class="mb-5">
+                            <h2><i class="bi bi-star"></i> Características Principais</h2>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="bi bi-table"></i> Visualização de Dados</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-check-circle text-success"></i> Tabelas responsivas</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Ordenação por colunas</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Paginação inteligente</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Busca em tempo real</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="bi bi-pencil-square"></i> Manipulação de Dados</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-check-circle text-success"></i> Criação de registros</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Edição inline</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Exclusão segura</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Validação de formulários</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="bi bi-shield-check"></i> Autenticação</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-check-circle text-success"></i> Login seguro</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Registro de usuários</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Controle de acesso</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Diferentes perfis de usuário</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="bi bi-download"></i> Exportação</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-check-circle text-success"></i> Exportação em CSV</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Exportação em JSON</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Exportação em XML</li>
+                                                <li><i class="bi bi-check-circle text-success"></i> Download direto</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- How to Use -->
+                        <section id="como-usar" class="mb-5">
+                            <h2><i class="bi bi-play-circle"></i> Como Usar</h2>
+                            
+                            <div class="accordion" id="howToAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                                            <i class="bi bi-1-circle me-2"></i> Primeiro Acesso
+                                        </button>
+                                    </h2>
+                                    <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#howToAccordion">
+                                        <div class="accordion-body">
+                                            <ol>
+                                                <li>Acesse a página de <a href="login.html">login</a></li>
+                                                <li>Se não tiver conta, clique em "Criar Conta"</li>
+                                                <li>Preencha os dados e selecione seu tipo de usuário:
+                                                    <ul>
+                                                        <li><strong>Músico:</strong> Pode gerenciar bandas e participações</li>
+                                                        <li><strong>Organizador:</strong> Pode gerenciar shows e eventos</li>
+                                                        <li><strong>Admin:</strong> Acesso completo ao sistema</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Faça login com suas credenciais</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                                            <i class="bi bi-2-circle me-2"></i> Navegação
+                                        </button>
+                                    </h2>
+                                    <div id="step2" class="accordion-collapse collapse" data-bs-parent="#howToAccordion">
+                                        <div class="accordion-body">
+                                            <p>Use o menu superior para navegar entre as seções:</p>
+                                            <ul>
+                                                <li><strong>Dashboard:</strong> Visão geral com estatísticas e ações rápidas</li>
+                                                <li><strong>Bandas:</strong> Gestão completa de bandas de rock</li>
+                                                <li><strong>Shows:</strong> Gerenciamento de eventos e apresentações</li>
+                                                <li><strong>Participações:</strong> Vinculação de bandas a shows</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                                            <i class="bi bi-3-circle me-2"></i> Funcionalidades Básicas
+                                        </button>
+                                    </h2>
+                                    <div id="step3" class="accordion-collapse collapse" data-bs-parent="#howToAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li><strong>Busca:</strong> Digite na barra de busca para filtrar resultados</li>
+                                                <li><strong>Ordenação:</strong> Clique nos cabeçalhos das tabelas para ordenar</li>
+                                                <li><strong>Paginação:</strong> Use os botões na parte inferior das tabelas</li>
+                                                <li><strong>Ações:</strong> Use os botões "Editar" e "Excluir" em cada linha</li>
+                                                <li><strong>Modais:</strong> Formulários aparecem em janelas modais para melhor UX</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Bands Section -->
+                        <section id="bandas" class="mb-5">
+                            <h2><i class="bi bi-people"></i> Gestão de Bandas</h2>
+                            <p>A seção de bandas permite gerenciar todas as informações sobre as bandas de rock.</p>
+                            
+                            <h4>Campos Disponíveis:</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Tipo</th>
+                                            <th>Obrigatório</th>
+                                            <th>Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Nome</td>
+                                            <td>Texto</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Nome da banda</td>
+                                        </tr>
+                                        <tr>
+                                            <td>País de Origem</td>
+                                            <td>Texto</td>
+                                            <td><i class="bi bi-x-circle text-danger"></i></td>
+                                            <td>País onde a banda foi formada</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ano de Formação</td>
+                                            <td>Número</td>
+                                            <td><i class="bi bi-x-circle text-danger"></i></td>
+                                            <td>Ano em que a banda foi formada</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gênero Musical</td>
+                                            <td>Texto</td>
+                                            <td><i class="bi bi-x-circle text-danger"></i></td>
+                                            <td>Estilo musical da banda</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Shows Section -->
+                        <section id="shows" class="mb-5">
+                            <h2><i class="bi bi-calendar-event"></i> Gestão de Shows</h2>
+                            <p>Gerencie eventos, concertos e apresentações musicais.</p>
+                            
+                            <h4>Campos Disponíveis:</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Tipo</th>
+                                            <th>Obrigatório</th>
+                                            <th>Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Local</td>
+                                            <td>Texto</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Local onde o show será realizado</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Data</td>
+                                            <td>Data</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Data de realização do show</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Público Estimado</td>
+                                            <td>Número</td>
+                                            <td><i class="bi bi-x-circle text-danger"></i></td>
+                                            <td>Quantidade estimada de público</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Participations Section -->
+                        <section id="participacoes" class="mb-5">
+                            <h2><i class="bi bi-link-45deg"></i> Gestão de Participações</h2>
+                            <p>Vincule bandas a shows, definindo ordem de apresentação e tempo de execução.</p>
+                            
+                            <h4>Campos Disponíveis:</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Tipo</th>
+                                            <th>Obrigatório</th>
+                                            <th>Descrição</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Banda</td>
+                                            <td>Seleção</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Banda que participará do show</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Show</td>
+                                            <td>Seleção</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Show em que a banda participará</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ordem de Apresentação</td>
+                                            <td>Número</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Ordem em que a banda se apresentará</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tempo de Execução</td>
+                                            <td>Número</td>
+                                            <td><i class="bi bi-check-circle text-success"></i></td>
+                                            <td>Duração da apresentação em minutos</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Authentication -->
+                        <section id="autenticacao" class="mb-5">
+                            <h2><i class="bi bi-shield-check"></i> Sistema de Autenticação</h2>
+                            
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <strong>Importante:</strong> É necessário estar logado para usar as funcionalidades do sistema.
+                            </div>
+
+                            <h4>Tipos de Usuário:</h4>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-music-note display-4 text-primary"></i>
+                                            <h5 class="card-title">Músico</h5>
+                                            <p class="card-text">Pode gerenciar bandas e criar participações.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-calendar-event display-4 text-success"></i>
+                                            <h5 class="card-title">Organizador</h5>
+                                            <p class="card-text">Pode gerenciar shows e eventos musicais.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-gear display-4 text-warning"></i>
+                                            <h5 class="card-title">Admin</h5>
+                                            <p class="card-text">Acesso completo a todas as funcionalidades.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Export -->
+                        <section id="exportacao" class="mb-5">
+                            <h2><i class="bi bi-download"></i> Exportação de Dados</h2>
+                            <p>O sistema permite exportar dados em diferentes formatos:</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-filetype-csv display-4 text-info"></i>
+                                            <h5 class="card-title">CSV</h5>
+                                            <p class="card-text">Ideal para planilhas (Excel, Google Sheets)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-filetype-json display-4 text-warning"></i>
+                                            <h5 class="card-title">JSON</h5>
+                                            <p class="card-text">Para integração com outros sistemas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-filetype-xml display-4 text-danger"></i>
+                                            <h5 class="card-title">XML</h5>
+                                            <p class="card-text">Formato estruturado para intercâmbio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Troubleshooting -->
+                        <section id="troubleshooting" class="mb-5">
+                            <h2><i class="bi bi-question-circle"></i> Solução de Problemas</h2>
+                            
+                            <div class="accordion" id="troubleshootingAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem1">
+                                            Não consigo fazer login
+                                        </button>
+                                    </h2>
+                                    <div id="problem1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li>Verifique se o email e senha estão corretos</li>
+                                                <li>Certifique-se de que possui uma conta registrada</li>
+                                                <li>Limpe o cache do navegador</li>
+                                                <li>Verifique a conexão com a internet</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem2">
+                                            Os dados não carregam
+                                        </button>
+                                    </h2>
+                                    <div id="problem2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li>Atualize a página (F5 ou Ctrl+R)</li>
+                                                <li>Verifique sua conexão com a internet</li>
+                                                <li>Verifique se o token de autenticação não expirou</li>
+                                                <li>Faça logout e login novamente</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem3">
+                                            Erro ao salvar dados
+                                        </button>
+                                    </h2>
+                                    <div id="problem3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li>Verifique se todos os campos obrigatórios foram preenchidos</li>
+                                                <li>Certifique-se de que possui permissão para a ação</li>
+                                                <li>Verifique se os dados inseridos são válidos</li>
+                                                <li>Tente novamente após alguns segundos</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Footer -->
+                        <footer class="border-top pt-4 mt-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted">
+                                        <i class="bi bi-music-note-beamed"></i> Rock API Frontend - Sistema de Gestão Musical
+                                    </p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <p class="text-muted">
+                                        Desenvolvido com <i class="bi bi-heart text-danger"></i> usando Bootstrap 5
+                                    </p>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Update active sidebar link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.list-group-item[href^="#"]');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

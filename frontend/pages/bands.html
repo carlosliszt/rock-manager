@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandas - Rock Manager Frontend</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="bands.html"><i class="bi bi-people"></i> Bandas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="band-members.html"><i class="bi bi-person-plus"></i> Membros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shows.html"><i class="bi bi-calendar-event"></i> Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="participations.html"><i class="bi bi-link-45deg"></i> Participações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="username"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="loginMenu">
+                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1><i class="bi bi-people"></i> Gerenciamento de Bandas</h1>
+                        <p class="text-muted">Gerencie todas as bandas cadastradas no sistema</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="refreshBands()">
+                            <i class="bi bi-arrow-clockwise"></i> Atualizar
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-download"></i> Exportar
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="exportBands('csv')"><i class="bi bi-file-earmark-text"></i> CSV</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="exportBands('json')"><i class="bi bi-file-earmark-code"></i> JSON</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="exportBands('xml')"><i class="bi bi-file-earmark-code-fill"></i> XML</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bandModal" onclick="showAddBandModal()" id="addBandBtn">
+                            <i class="bi bi-plus-circle"></i> Nova Banda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="searchBands" class="form-label">Pesquisar Bandas</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchBands" placeholder="Nome da banda...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="filterGenre" class="form-label">Filtrar por Gênero</label>
+                    <select class="form-select" id="filterGenre">
+                        <option value="">Todos os gêneros</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="filterCountry" class="form-label">Filtrar por País</label>
+                    <select class="form-select" id="filterCountry">
+                        <option value="">Todos os países</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="pageSize" class="form-label">Itens por página</label>
+                    <select class="form-select" id="pageSize">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Section -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0"><i class="bi bi-upload"></i> Importar Bandas</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="file" class="form-control" id="importFile" accept=".csv,.json,.xml">
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="importFormat">
+                                    <option value="csv">CSV</option>
+                                    <option value="json">JSON</option>
+                                    <option value="xml">XML</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary w-100" onclick="importBands()">
+                                    <i class="bi bi-upload"></i> Importar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bands Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Lista de Bandas</h5>
+                        <span class="badge bg-primary" id="totalBandsCount">0 bandas</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="cursor-pointer" onclick="sortBands('id')">
+                                            ID <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortBands('nome')">
+                                            Nome <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortBands('genero')">
+                                            Gênero <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortBands('pais_origem')">
+                                            País <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortBands('ano_formacao')">
+                                            Ano Formação <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bandsTableBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Carregando...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Carregando bandas...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <nav aria-label="Paginação de bandas">
+                    <ul class="pagination justify-content-center" id="bandsPagination">
+                        <!-- Pagination items will be inserted here -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Band Modal -->
+    <div class="modal fade" id="bandModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bandModalTitle">
+                        <i class="bi bi-plus-circle"></i> Nova Banda
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bandForm">
+                        <input type="hidden" id="bandId" name="id">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bandName" class="form-label">Nome da Banda *</label>
+                                    <input type="text" class="form-control" id="bandName" name="nome" required>
+                                    <div class="invalid-feedback" id="bandNameError"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bandGenre" class="form-label">Gênero Musical</label>
+                                    <input type="text" class="form-control" id="bandGenre" name="genero" placeholder="Rock, Pop, Metal...">
+                                    <div class="invalid-feedback" id="bandGenreError"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bandCountry" class="form-label">País de Origem</label>
+                                    <input type="text" class="form-control" id="bandCountry" name="pais_origem" placeholder="Brasil, EUA, Reino Unido...">
+                                    <div class="invalid-feedback" id="bandCountryError"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bandYear" class="form-label">Ano de Formação</label>
+                                    <input type="number" class="form-control" id="bandYear" name="ano_formacao" min="1900" max="2025">
+                                    <div class="invalid-feedback" id="bandYearError"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <small>* Campos obrigatórios</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="bandForm" class="btn btn-primary" id="saveBandBtn">
+                        <span class="btn-text">Salvar</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteBandModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir a banda <strong id="deleteBandName"></strong>?</p>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDeleteBand()">
+                        <span class="btn-text">Excluir</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/bands.js"></script>
+</body>
+</html>

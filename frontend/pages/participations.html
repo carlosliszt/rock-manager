@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participações - Rock Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bands.html"><i class="bi bi-people"></i> Bandas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="band-members.html"><i class="bi bi-person-plus"></i> Membros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shows.html"><i class="bi bi-calendar-event"></i> Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="participations.html"><i class="bi bi-link-45deg"></i> Participações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="username"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="loginMenu">
+                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1><i class="bi bi-link-45deg"></i> Gerenciamento de Participações</h1>
+                        <p class="text-muted">Gerencie as participações de bandas em shows</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="refreshParticipations()">
+                            <i class="bi bi-arrow-clockwise"></i> Atualizar
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-download"></i> Exportar
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="exportParticipations('csv')"><i class="bi bi-file-earmark-text"></i> CSV</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="exportParticipations('json')"><i class="bi bi-file-earmark-code"></i> JSON</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="exportParticipations('xml')"><i class="bi bi-file-earmark-code-fill"></i> XML</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#participationModal" onclick="showAddParticipationModal()" id="addParticipationBtn">
+                            <i class="bi bi-plus-circle"></i> Nova Participação
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="searchParticipations" class="form-label">Pesquisar</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchParticipations" placeholder="Banda ou local...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="filterBand" class="form-label">Filtrar por Banda</label>
+                    <select class="form-select" id="filterBand">
+                        <option value="">Todas as bandas</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="filterShow" class="form-label">Filtrar por Show</label>
+                    <select class="form-select" id="filterShow">
+                        <option value="">Todos os shows</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="pageSize" class="form-label">Itens por página</label>
+                    <select class="form-select" id="pageSize">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Section -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card border-warning">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0"><i class="bi bi-upload"></i> Importar Participações</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="file" class="form-control" id="importFile" accept=".csv,.json,.xml">
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="importFormat">
+                                    <option value="csv">CSV</option>
+                                    <option value="json">JSON</option>
+                                    <option value="xml">XML</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-warning w-100" onclick="importParticipations()">
+                                    <i class="bi bi-upload"></i> Importar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participations Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Lista de Participações</h5>
+                        <span class="badge bg-warning text-dark" id="totalParticipationsCount">0 participações</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="cursor-pointer" onclick="sortParticipations('id_banda')">
+                                            Banda <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortParticipations('show_local')">
+                                            Show <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortParticipations('data_show')">
+                                            Data <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortParticipations('ordem_apresentacao')">
+                                            Ordem <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th class="cursor-pointer" onclick="sortParticipations('tempo_execucao_min')">
+                                            Duração (min) <i class="bi bi-chevron-expand text-muted"></i>
+                                        </th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="participationsTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="visually-hidden">Carregando...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Carregando participações...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <nav aria-label="Paginação de participações">
+                    <ul class="pagination justify-content-center" id="participationsPagination">
+                        <!-- Pagination items will be inserted here -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participation Modal -->
+    <div class="modal fade" id="participationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="participationModalTitle">
+                        <i class="bi bi-plus-circle"></i> Nova Participação
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="participationForm">
+                        <input type="hidden" id="originalBandId" name="originalBandId">
+                        <input type="hidden" id="originalShowId" name="originalShowId">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="participationBand" class="form-label">Banda *</label>
+                                    <select class="form-select" id="participationBand" name="id_banda" required>
+                                        <option value="">Selecione uma banda...</option>
+                                    </select>
+                                    <div class="invalid-feedback" id="participationBandError"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="participationShow" class="form-label">Show *</label>
+                                    <select class="form-select" id="participationShow" name="id_show" required>
+                                        <option value="">Selecione um show...</option>
+                                    </select>
+                                    <div class="invalid-feedback" id="participationShowError"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="participationOrder" class="form-label">Ordem de Apresentação *</label>
+                                    <input type="number" class="form-control" id="participationOrder" name="ordem_apresentacao" min="1" required>
+                                    <div class="invalid-feedback" id="participationOrderError"></div>
+                                    <div class="form-text">Posição da banda na ordem de apresentação do show</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="participationDuration" class="form-label">Duração (minutos) *</label>
+                                    <input type="number" class="form-control" id="participationDuration" name="tempo_execucao_min" min="1" required>
+                                    <div class="invalid-feedback" id="participationDurationError"></div>
+                                    <div class="form-text">Tempo estimado de apresentação da banda</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <small>* Campos obrigatórios</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="participationForm" class="btn btn-warning" id="saveParticipationBtn">
+                        <span class="btn-text">Salvar</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteParticipationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir a participação da banda <strong id="deleteParticipationBand"></strong> no show <strong id="deleteParticipationShow"></strong>?</p>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteParticipationBtn" onclick="confirmDeleteParticipation()">
+                        <span class="btn-text">Excluir</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/participations.js"></script>
+</body>
+</html>

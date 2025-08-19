@@ -37,6 +37,7 @@ class Roteador
         $this->setup404Route();
         $this->setupUsuarioBandaRoutes();
         $this->setupLoginRoutes();
+        $this->setupUsuarioRoutes();
     }
 
     private function setup404Route(): void
@@ -75,6 +76,18 @@ class Roteador
             ],
             httpCode: 500
         ))->send();
+    }
+
+    private function setupUsuarioRoutes(): void
+    {
+        $this->router->get('/users', function (): never {
+            try {
+                (new UsuarioController())->index();
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar usuários');
+            }
+            exit();
+        });
     }
 
     private function setupLoginRoutes(): void

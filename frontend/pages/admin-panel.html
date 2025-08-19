@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Rock Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bands.html"><i class="bi bi-people"></i> Bandas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="band-members.html"><i class="bi bi-person-plus"></i> Membros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shows.html"><i class="bi bi-calendar-event"></i> Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="participations.html"><i class="bi bi-link-45deg"></i> Participações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="api-coverage.html"><i class="bi bi-check2-square"></i> Cobertura API</a>
+                    </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link active" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="username"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="user-profile.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="loginMenu">
+                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1><i class="bi bi-gear text-danger"></i> Painel Administrativo</h1>
+                <p class="text-muted">Gerencie o sistema Rock Manager - Acesso restrito a administradores</p>
+            </div>
+        </div>
+
+        <!-- System Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Total de Usuários</h5>
+                                <h2 class="mb-0" id="totalUsers">-</h2>
+                            </div>
+                            <i class="bi bi-people fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Total de Bandas</h5>
+                                <h2 class="mb-0" id="totalBands">-</h2>
+                            </div>
+                            <i class="bi bi-music-note-list fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Total de Shows</h5>
+                                <h2 class="mb-0" id="totalShows">-</h2>
+                            </div>
+                            <i class="bi bi-calendar-event fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Participações</h5>
+                                <h2 class="mb-0" id="totalParticipations">-</h2>
+                            </div>
+                            <i class="bi bi-link-45deg fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tools -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3><i class="bi bi-tools"></i> Ferramentas Administrativas</h3>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <!-- System Management -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="bi bi-server"></i> Gerenciamento do Sistema</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" onclick="adminPanel.exportBackup()">
+                                <i class="bi bi-download"></i> Fazer Backup do Sistema
+                            </button>
+                            <button type="button" class="btn btn-outline-warning" onclick="adminPanel.viewLogs()">
+                                <i class="bi bi-file-text"></i> Ver Logs do Sistema
+                            </button>
+                            <button type="button" class="btn btn-outline-info" onclick="adminPanel.systemInfo()">
+                                <i class="bi bi-info-circle"></i> Informações do Sistema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-database"></i> Gerenciamento de Dados</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" onclick="adminPanel.exportAllData()">
+                                <i class="bi bi-download"></i> Exportar Todos os Dados
+                            </button>
+                            <button type="button" class="btn btn-outline-warning" onclick="adminPanel.importData()">
+                                <i class="bi bi-upload"></i> Importar Dados
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" onclick="adminPanel.cleanupData()">
+                                <i class="bi bi-trash"></i> Limpeza de Dados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-people"></i> Gerenciamento de Usuários</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome de Usuário</th>
+                                        <th>Email</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Data de Criação</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Carregando...</span>
+                                            </div>
+                                            <p class="mt-2">Carregando usuários...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="bi bi-clock-history"></i> Atividade Recente do Sistema</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="systemActivity">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Carregando...</span>
+                                </div>
+                                <p class="mt-2">Carregando atividades do sistema...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Access Denied Modal -->
+    <div class="modal fade" id="accessDeniedModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Acesso Negado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Você não tem permissão para acessar o painel administrativo.</p>
+                    <p>Apenas usuários com privilégios de administrador podem acessar esta área.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <a href="../index.html" class="btn btn-primary">Voltar ao Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin-panel.js"></script>
+</body>
+</html>

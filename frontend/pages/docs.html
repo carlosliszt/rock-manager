@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação - Rock Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bands.html"><i class="bi bi-people"></i> Bandas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="band-members.html"><i class="bi bi-person-plus"></i> Membros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shows.html"><i class="bi bi-calendar-event"></i> Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="participations.html"><i class="bi bi-link-45deg"></i> Participações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="username"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="loginMenu">
+                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1><i class="bi bi-book text-primary"></i> Documentação do Rock Manager</h1>
+                <p class="lead text-muted">Guia completo para utilizar todas as funcionalidades do sistema</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-list"></i> Índice</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><a href="#introduction" class="text-decoration-none">1. Introdução</a></li>
+                                    <li><a href="#getting-started" class="text-decoration-none">2. Primeiros Passos</a></li>
+                                    <li><a href="#authentication" class="text-decoration-none">3. Autenticação</a></li>
+                                    <li><a href="#dashboard" class="text-decoration-none">4. Dashboard</a></li>
+                                    <li><a href="#bands" class="text-decoration-none">5. Gerenciamento de Bandas</a></li>
+                                    <li><a href="#shows" class="text-decoration-none">6. Gerenciamento de Shows</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><a href="#participations" class="text-decoration-none">7. Gerenciamento de Participações</a></li>
+                                    <li><a href="#search-filter" class="text-decoration-none">8. Busca e Filtros</a></li>
+                                    <li><a href="#import-export" class="text-decoration-none">9. Importação e Exportação</a></li>
+                                    <li><a href="#permissions" class="text-decoration-none">10. Permissões de Usuário</a></li>
+                                    <li><a href="#mobile" class="text-decoration-none">11. Uso em Dispositivos Móveis</a></li>
+                                    <li><a href="#troubleshooting" class="text-decoration-none">12. Solução de Problemas</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <section id="introduction" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-info-circle text-primary"></i> 1. Introdução</h2>
+                </div>
+                <div class="card-body">
+                    <p>O Rock Manager é uma interface web completa e moderna para gerenciar bandas, shows e participações em eventos musicais. O sistema foi desenvolvido utilizando tecnologias web padrão e o framework Bootstrap para garantir uma experiência responsiva e intuitiva.</p>
+                    
+                    <h5>Principais Funcionalidades:</h5>
+                    <ul>
+                        <li><strong>Dashboard Interativo:</strong> Visão geral das estatísticas e atividades recentes</li>
+                        <li><strong>Gerenciamento de Bandas:</strong> CRUD completo com busca e filtros avançados</li>
+                        <li><strong>Gerenciamento de Shows:</strong> Criação e controle de eventos musicais</li>
+                        <li><strong>Participações:</strong> Vinculação de bandas aos shows com controle de ordem e duração</li>
+                        <li><strong>Autenticação:</strong> Sistema de login com diferentes níveis de permissão</li>
+                        <li><strong>Import/Export:</strong> Funcionalidades para importar e exportar dados em CSV, JSON e XML</li>
+                        <li><strong>Design Responsivo:</strong> Interface adaptável para desktop, tablet e smartphone</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started -->
+        <section id="getting-started" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-play-circle text-success"></i> 2. Primeiros Passos</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Acesso ao Sistema:</h5>
+                    <ol>
+                        <li>Acesse a página inicial do sistema através do navegador</li>
+                        <li>Clique em "Login" no menu superior direito</li>
+                        <li>Utilize uma das credenciais de demonstração ou crie uma conta</li>
+                        <li>Após o login, você será redirecionado para o Dashboard</li>
+                    </ol>
+
+                    <h5>Credenciais de Demonstração:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Administrador</h6>
+                                    <p class="card-text">
+                                        <strong>Email:</strong> admin@rockapi.com<br>
+                                        <strong>Senha:</strong> admin123<br>
+                                        <small class="text-muted">Acesso completo a todas as funcionalidades</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Músico</h6>
+                                    <p class="card-text">
+                                        <strong>Email:</strong> musician@rockapi.com<br>
+                                        <strong>Senha:</strong> music123<br>
+                                        <small class="text-muted">Pode gerenciar bandas e participações</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-shield-check text-warning"></i> 3. Autenticação</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Sistema de Login:</h5>
+                    <p>O sistema utiliza autenticação baseada em JWT (JSON Web Tokens) para garantir a segurança dos dados.</p>
+
+                    <h5>Tipos de Usuário:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Permissões</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge bg-danger">Admin</span></td>
+                                    <td>Acesso total</td>
+                                    <td>Pode criar, editar e excluir qualquer registro</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-info">Músico</span></td>
+                                    <td>Bandas e participações</td>
+                                    <td>Pode gerenciar bandas e suas participações em shows</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-success">Organizador</span></td>
+                                    <td>Shows e participações</td>
+                                    <td>Pode criar shows e gerenciar participações</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-secondary">Usuário</span></td>
+                                    <td>Apenas visualização</td>
+                                    <td>Pode visualizar dados mas não pode modificar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5>Registro de Novo Usuário:</h5>
+                    <ol>
+                        <li>Na página de login, clique em "Criar conta"</li>
+                        <li>Preencha os dados solicitados</li>
+                        <li>Escolha o tipo de usuário apropriado</li>
+                        <li>Após o registro, faça login com as credenciais criadas</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-speedometer2 text-info"></i> 4. Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <p>O Dashboard é a página principal do sistema, oferecendo uma visão geral dos dados e ações rápidas.</p>
+
+                    <h5>Elementos do Dashboard:</h5>
+                    <ul>
+                        <li><strong>Cartões de Estatísticas:</strong> Mostram contadores de bandas, shows, participações e usuários</li>
+                        <li><strong>Ações Rápidas:</strong> Botões para acessar rapidamente as principais funcionalidades</li>
+                        <li><strong>Atividade Recente:</strong> Lista das últimas bandas e shows cadastrados</li>
+                        <li><strong>Navegação:</strong> Menu principal para acessar todas as seções do sistema</li>
+                    </ul>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-lightbulb"></i>
+                        <strong>Dica:</strong> O Dashboard é atualizado automaticamente a cada 5 minutos, mas você pode clicar no botão "Atualizar" nas páginas específicas para obter dados mais recentes.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bands -->
+        <section id="bands" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-people text-primary"></i> 5. Gerenciamento de Bandas</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Funcionalidades Disponíveis:</h5>
+                    
+                    <h6><i class="bi bi-plus-circle"></i> Criar Nova Banda:</h6>
+                    <ol>
+                        <li>Clique no botão "Nova Banda"</li>
+                        <li>Preencha as informações obrigatórias (nome é obrigatório)</li>
+                        <li>Adicione informações opcionais como gênero, país e ano de formação</li>
+                        <li>Clique em "Salvar" para cadastrar a banda</li>
+                    </ol>
+
+                    <h6><i class="bi bi-pencil"></i> Editar Banda:</h6>
+                    <ol>
+                        <li>Na lista de bandas, clique no ícone de edição (lápis)</li>
+                        <li>Modifique as informações desejadas</li>
+                        <li>Clique em "Atualizar" para salvar as alterações</li>
+                    </ol>
+
+                    <h6><i class="bi bi-trash"></i> Excluir Banda:</h6>
+                    <ol>
+                        <li>Clique no ícone de exclusão (lixeira) na linha da banda</li>
+                        <li>Confirme a exclusão no modal que aparece</li>
+                        <li><strong>Atenção:</strong> A exclusão é irreversível</li>
+                    </ol>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <strong>Importante:</strong> Para criar, editar ou excluir bandas, você precisa ter permissões de Músico ou Admin.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shows -->
+        <section id="shows" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-calendar-event text-success"></i> 6. Gerenciamento de Shows</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Criação de Shows:</h5>
+                    <ol>
+                        <li>Clique em "Novo Show"</li>
+                        <li>Preencha o local (obrigatório) e a data (obrigatória)</li>
+                        <li>Opcionalmente, adicione o público estimado</li>
+                        <li>Salve o show para criá-lo</li>
+                    </ol>
+
+                    <h5>Status dos Shows:</h5>
+                    <ul>
+                        <li><span class="badge bg-success">Agendado</span> - Shows futuros</li>
+                        <li><span class="badge bg-warning">Hoje</span> - Shows que acontecem hoje</li>
+                        <li><span class="badge bg-secondary">Realizado</span> - Shows que já aconteceram</li>
+                    </ul>
+
+                    <h5>Visualização de Detalhes:</h5>
+                    <p>Clique no ícone de visualização (olho) para ver informações detalhadas do show, incluindo a opção de visualizar as participações relacionadas.</p>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-calendar"></i>
+                        <strong>Dica:</strong> Shows passados não podem ser editados, apenas visualizados para manter a integridade histórica dos dados.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Participations -->
+        <section id="participations" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-link-45deg text-warning"></i> 7. Gerenciamento de Participações</h2>
+                </div>
+                <div class="card-body">
+                    <h5>O que são Participações:</h5>
+                    <p>Participações representam a relação entre bandas e shows, definindo qual banda tocará em qual show, sua ordem de apresentação e duração.</p>
+
+                    <h5>Criação de Participação:</h5>
+                    <ol>
+                        <li>Clique em "Nova Participação"</li>
+                        <li>Selecione a banda e o show</li>
+                        <li>Defina a ordem de apresentação (posição da banda no show)</li>
+                        <li>Especifique a duração em minutos</li>
+                        <li>Salve a participação</li>
+                    </ol>
+
+                    <h5>Informações Exibidas:</h5>
+                    <ul>
+                        <li><strong>Banda:</strong> Nome e gênero musical</li>
+                        <li><strong>Show:</strong> Local e público estimado</li>
+                        <li><strong>Data:</strong> Data do show com indicador se é hoje</li>
+                        <li><strong>Ordem:</strong> Posição da banda na apresentação</li>
+                        <li><strong>Duração:</strong> Tempo de apresentação em minutos</li>
+                        <li><strong>Status:</strong> Agendado, hoje ou realizado</li>
+                    </ul>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <strong>Regra:</strong> Uma banda não pode participar do mesmo show duas vezes.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filter -->
+        <section id="search-filter" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-search text-info"></i> 8. Busca e Filtros</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Funcionalidades de Busca:</h5>
+                    
+                    <h6>Busca por Texto:</h6>
+                    <ul>
+                        <li><strong>Bandas:</strong> Busca por nome, gênero ou país</li>
+                        <li><strong>Shows:</strong> Busca por local</li>
+                        <li><strong>Participações:</strong> Busca por nome da banda ou local do show</li>
+                    </ul>
+
+                    <h6>Filtros Avançados:</h6>
+                    <ul>
+                        <li><strong>Bandas:</strong> Filtrar por gênero e país de origem</li>
+                        <li><strong>Shows:</strong> Filtrar por local específico e mês/ano</li>
+                        <li><strong>Participações:</strong> Filtrar por banda específica ou show específico</li>
+                    </ul>
+
+                    <h5>Ordenação:</h5>
+                    <p>Clique nos cabeçalhos das colunas para ordenar os dados. Uma segunda clique inverte a ordem (crescente/decrescente).</p>
+
+                    <h5>Paginação:</h5>
+                    <p>Use os controles de paginação na parte inferior das tabelas. Você pode alterar o número de itens por página (10, 25, 50 ou 100).</p>
+
+                    <div class="alert alert-success">
+                        <i class="bi bi-lightning"></i>
+                        <strong>Desempenho:</strong> A busca é otimizada e funciona em tempo real conforme você digita.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Import Export -->
+        <section id="import-export" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-arrow-down-up text-secondary"></i> 9. Importação e Exportação</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Formatos Suportados:</h5>
+                    <ul>
+                        <li><strong>CSV:</strong> Formato de planilha, compatível com Excel</li>
+                        <li><strong>JSON:</strong> Formato estruturado para desenvolvedores</li>
+                        <li><strong>XML:</strong> Formato estruturado padrão</li>
+                    </ul>
+
+                    <h5>Exportação de Dados:</h5>
+                    <ol>
+                        <li>Na página desejada (Bandas, Shows ou Participações)</li>
+                        <li>Clique no botão "Exportar"</li>
+                        <li>Escolha o formato desejado</li>
+                        <li>O arquivo será baixado automaticamente</li>
+                    </ol>
+
+                    <h5>Importação de Dados:</h5>
+                    <ol>
+                        <li>Prepare seu arquivo no formato correto</li>
+                        <li>Use a seção "Importar" na página correspondente</li>
+                        <li>Selecione o arquivo</li>
+                        <li>Escolha o formato</li>
+                        <li>Clique em "Importar"</li>
+                    </ol>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-file-text"></i>
+                        <strong>Estrutura CSV para Bandas:</strong><br>
+                        <code>id,nome,genero,pais_origem,ano_formacao</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-file-text"></i>
+                        <strong>Estrutura CSV para Shows:</strong><br>
+                        <code>id,local,data,publico_estimado</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-file-text"></i>
+                        <strong>Estrutura CSV para Participações:</strong><br>
+                        <code>id_banda,id_show,ordem_apresentacao,tempo_execucao_min</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions -->
+        <section id="permissions" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-person-check text-danger"></i> 10. Permissões de Usuário</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Matriz de Permissões:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ação</th>
+                                    <th>Admin</th>
+                                    <th>Músico</th>
+                                    <th>Organizador</th>
+                                    <th>Usuário</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Visualizar dados</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                </tr>
+                                <tr>
+                                    <td>Criar/Editar bandas</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-danger">✗</td>
+                                    <td class="text-center text-danger">✗</td>
+                                </tr>
+                                <tr>
+                                    <td>Criar/Editar shows</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-danger">✗</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-danger">✗</td>
+                                </tr>
+                                <tr>
+                                    <td>Gerenciar participações</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-danger">✗</td>
+                                </tr>
+                                <tr>
+                                    <td>Importar/Exportar</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-success">✓</td>
+                                    <td class="text-center text-danger">✗</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <strong>Importante:</strong> Algumas funcionalidades só aparecem na interface se o usuário tiver as permissões necessárias.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile -->
+        <section id="mobile" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-phone text-info"></i> 11. Uso em Dispositivos Móveis</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Design Responsivo:</h5>
+                    <p>O sistema foi desenvolvido com design responsivo, adaptando-se automaticamente a diferentes tamanhos de tela.</p>
+
+                    <h5>Funcionalidades Mobile:</h5>
+                    <ul>
+                        <li><strong>Menu Colapsível:</strong> Menu principal se transforma em hamburger menu</li>
+                        <li><strong>Tabelas Responsivas:</strong> Scroll horizontal automático em tabelas grandes</li>
+                        <li><strong>Botões Adaptados:</strong> Botões maiores e mais fáceis de tocar</li>
+                        <li><strong>Formulários Otimizados:</strong> Campos apropriados para toque</li>
+                    </ul>
+
+                    <h5>Dicas para Uso Mobile:</h5>
+                    <ul>
+                        <li>Use o modo paisagem para melhor visualização de tabelas</li>
+                        <li>Os filtros podem ser acessados rolando horizontalmente</li>
+                        <li>Modais se adaptam ao tamanho da tela automaticamente</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section id="troubleshooting" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="bi bi-tools text-warning"></i> 12. Solução de Problemas</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Problemas Comuns:</h5>
+                    
+                    <div class="accordion" id="troubleshootingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem1">
+                                    Não consigo fazer login
+                                </button>
+                            </h2>
+                            <div id="problem1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Verifique se o email e senha estão corretos</li>
+                                        <li>Tente usar uma das credenciais de demonstração</li>
+                                        <li>Verifique se há mensagens de erro específicas</li>
+                                        <li>Limpe o cache do navegador</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem2">
+                                    Dados não carregam
+                                </button>
+                            </h2>
+                            <div id="problem2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Verifique sua conexão com a internet</li>
+                                        <li>Clique no botão "Atualizar" da página</li>
+                                        <li>Recarregue a página do navegador (F5)</li>
+                                        <li>Verifique se você está logado corretamente</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem3">
+                                    Não consigo criar/editar registros
+                                </button>
+                            </h2>
+                            <div id="problem3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Verifique se você tem as permissões necessárias</li>
+                                        <li>Confira se todos os campos obrigatórios estão preenchidos</li>
+                                        <li>Verifique se os dados inseridos são válidos</li>
+                                        <li>Tente fazer logout e login novamente</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem4">
+                                    Problemas de importação
+                                </button>
+                            </h2>
+                            <div id="problem4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Verifique se o arquivo está no formato correto</li>
+                                        <li>Confirme se as colunas estão na ordem certa</li>
+                                        <li>Certifique-se de que não há caracteres especiais inválidos</li>
+                                        <li>Verifique se o arquivo não excede o tamanho máximo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>Suporte:</strong> Se os problemas persistirem, entre em contato com o administrador do sistema ou consulte os logs de erro no console do navegador (F12).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 border-top">
+            <p class="text-muted">
+                <i class="bi bi-music-note-beamed"></i> Rock Manager - Sistema de Gerenciamento Musical
+                <br>
+                <small>Desenvolvido com Bootstrap 5 e tecnologias web modernas</small>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

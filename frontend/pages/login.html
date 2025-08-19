@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Rock Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Voltar ao Início</a>
+                <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-music-note-beamed fs-1 text-primary"></i>
+                            <h2 class="card-title mt-2">Login</h2>
+                            <p class="text-muted">Acesse sua conta no Rock Manager</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="invalid-feedback" id="emailError"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Senha</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback" id="passwordError"></div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Lembrar de mim
+                                </label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary" id="loginBtn">
+                                    <span class="btn-text">Entrar</span>
+                                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+                            <p class="mb-2">Não possui uma conta?</p>
+                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                Criar conta
+                            </button>
+                        </div>
+
+                        <!-- Demo Credentials -->
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <h6 class="text-muted mb-2"><i class="bi bi-info-circle"></i> Credenciais de Demonstração:</h6>
+                            <div class="small">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Admin:</strong><br>
+                                        admin@rockapi.com<br>
+                                        admin123
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Músico:</strong><br>
+                                        musician@rockapi.com<br>
+                                        music123
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-6">
+                                        <strong>Organizador:</strong><br>
+                                        organizer@rockapi.com<br>
+                                        org123
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Usuário:</strong><br>
+                                        user@rockapi.com<br>
+                                        user123
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-person-plus"></i> Criar Conta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="regUsername" class="form-label">Nome de Usuário</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="regUsername" name="username" required>
+                            </div>
+                            <div class="invalid-feedback" id="regUsernameError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regEmail" class="form-label">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="regEmail" name="email" required>
+                            </div>
+                            <div class="invalid-feedback" id="regEmailError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regPassword" class="form-label">Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="regPassword" name="password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="toggleRegPassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback" id="regPasswordError"></div>
+                            <div class="form-text">A senha deve ter pelo menos 6 caracteres.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regPasswordConfirm" class="form-label">Confirmar Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="regPasswordConfirm" name="passwordConfirm" required>
+                            </div>
+                            <div class="invalid-feedback" id="regPasswordConfirmError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regRole" class="form-label">Tipo de Usuário</label>
+                            <select class="form-select" id="regRole" name="role" required>
+                                <option value="">Selecione...</option>
+                                <option value="user">Usuário</option>
+                                <option value="musician">Músico</option>
+                                <option value="organizador">Organizador</option>
+                            </select>
+                            <div class="invalid-feedback" id="regRoleError"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="registerForm" class="btn btn-primary" id="registerBtn">
+                        <span class="btn-text">Criar Conta</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/login.js"></script>
+</body>
+</html>

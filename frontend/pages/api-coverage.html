@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobertura de API - Rock Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="bi bi-house"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bands.html"><i class="bi bi-people"></i> Bandas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="band-members.html"><i class="bi bi-person-plus"></i> Membros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shows.html"><i class="bi bi-calendar-event"></i> Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="participations.html"><i class="bi bi-link-45deg"></i> Participações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="api-coverage.html"><i class="bi bi-check2-square"></i> Cobertura API</a>
+                    </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="username"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="user-profile.html"><i class="bi bi-person"></i> Meu Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="loginMenu">
+                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1><i class="bi bi-check2-square"></i> Cobertura de API</h1>
+                        <p class="text-muted">Status da implementação do frontend para todos os endpoints da API</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="bi bi-check-circle fs-1 mb-2"></i>
+                        <h3 class="mb-0">47</h3>
+                        <p class="mb-0">Endpoints Implementados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="bi bi-collection fs-1 mb-2"></i>
+                        <h3 class="mb-0">6</h3>
+                        <p class="mb-0">Categorias de API</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <i class="bi bi-arrow-repeat fs-1 mb-2"></i>
+                        <h3 class="mb-0">18</h3>
+                        <p class="mb-0">Import/Export</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="bi bi-person-gear fs-1 mb-2"></i>
+                        <h3 class="mb-0">8</h3>
+                        <p class="mb-0">Funções Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Categories -->
+        <div class="row">
+            <!-- Authentication -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-shield-lock"></i> Autenticação</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/login</code></td>
+                                        <td><a href="login.html">Login</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/register</code></td>
+                                        <td><a href="login.html">Login (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bands -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="bi bi-people"></i> Bandas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands</code></td>
+                                        <td><a href="bands.html">Bandas</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/{id}</code></td>
+                                        <td><a href="bands.html">Bandas (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands</code></td>
+                                        <td><a href="bands.html">Bandas (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">PUT</span></td>
+                                        <td><code>/bands/{id}</code></td>
+                                        <td><a href="bands.html">Bandas (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">DELETE</span></td>
+                                        <td><code>/bands/{id}</code></td>
+                                        <td><a href="bands.html">Bandas (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/exportar/csv</code></td>
+                                        <td><a href="bands.html">Bandas (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/exportar/json</code></td>
+                                        <td><a href="bands.html">Bandas (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/exportar/xml</code></td>
+                                        <td><a href="bands.html">Bandas (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/importar/csv</code></td>
+                                        <td><a href="bands.html">Bandas (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/importar/json</code></td>
+                                        <td><a href="bands.html">Bandas (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/importar/xml</code></td>
+                                        <td><a href="bands.html">Bandas (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Band Members -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="bi bi-person-plus"></i> Membros de Bandas <span class="badge bg-success">NOVO</span></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/members</code></td>
+                                        <td><a href="band-members.html">Membros</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/{id}/members</code></td>
+                                        <td><a href="band-members.html">Membros (filtro)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/members/{user}/{band}</code></td>
+                                        <td><a href="band-members.html">Membros (detalhes)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/members</code></td>
+                                        <td><a href="band-members.html">Membros (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">PUT</span></td>
+                                        <td><code>/bands/members/{user}/{band}</code></td>
+                                        <td><a href="band-members.html">Membros (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">DELETE</span></td>
+                                        <td><code>/bands/members/{user}/{band}</code></td>
+                                        <td><a href="band-members.html">Membros (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/members/exportar/csv</code></td>
+                                        <td><a href="band-members.html">Membros (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/members/exportar/json</code></td>
+                                        <td><a href="band-members.html">Membros (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/members/exportar/xml</code></td>
+                                        <td><a href="band-members.html">Membros (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/members/importar/csv</code></td>
+                                        <td><a href="band-members.html">Membros (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/members/importar/json</code></td>
+                                        <td><a href="band-members.html">Membros (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/bands/members/importar/xml</code></td>
+                                        <td><a href="band-members.html">Membros (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shows -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-calendar-event"></i> Shows</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/shows</code></td>
+                                        <td><a href="shows.html">Shows</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/shows/{id}</code></td>
+                                        <td><a href="shows.html">Shows (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/shows</code></td>
+                                        <td><a href="shows.html">Shows (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">PUT</span></td>
+                                        <td><code>/shows/{id}</code></td>
+                                        <td><a href="shows.html">Shows (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">DELETE</span></td>
+                                        <td><code>/shows/{id}</code></td>
+                                        <td><a href="shows.html">Shows (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/shows/exportar/csv</code></td>
+                                        <td><a href="shows.html">Shows (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/shows/exportar/json</code></td>
+                                        <td><a href="shows.html">Shows (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/shows/exportar/xml</code></td>
+                                        <td><a href="shows.html">Shows (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/shows/importar/csv</code></td>
+                                        <td><a href="shows.html">Shows (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/shows/importar/json</code></td>
+                                        <td><a href="shows.html">Shows (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/shows/importar/xml</code></td>
+                                        <td><a href="shows.html">Shows (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participations -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0"><i class="bi bi-link-45deg"></i> Participações</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/participacoes</code></td>
+                                        <td><a href="participations.html">Participações</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/participacoes/{band}/{show}</code></td>
+                                        <td><a href="participations.html">Participações (detalhes)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/bands/{id}/shows</code></td>
+                                        <td><a href="participations.html">Participações (filtro)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/participacoes</code></td>
+                                        <td><a href="participations.html">Participações (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">PUT</span></td>
+                                        <td><code>/participacoes/{band}/{show}</code></td>
+                                        <td><a href="participations.html">Participações (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">DELETE</span></td>
+                                        <td><code>/participacoes/{band}/{show}</code></td>
+                                        <td><a href="participations.html">Participações (modal)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/participacoes/exportar/csv</code></td>
+                                        <td><a href="participations.html">Participações (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/participacoes/exportar/json</code></td>
+                                        <td><a href="participations.html">Participações (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/participacoes/exportar/xml</code></td>
+                                        <td><a href="participations.html">Participações (dropdown)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/participacoes/importar/csv</code></td>
+                                        <td><a href="participations.html">Participações (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/participacoes/importar/json</code></td>
+                                        <td><a href="participations.html">Participações (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">POST</span></td>
+                                        <td><code>/participacoes/importar/xml</code></td>
+                                        <td><a href="participations.html">Participações (seção)</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="bi bi-server"></i> Backup & Admin</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Página Frontend</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info">GET</span></td>
+                                        <td><code>/backup</code></td>
+                                        <td><a href="admin-panel.html">Admin Panel</a></td>
+                                        <td><i class="bi bi-check-circle text-success"></i> Implementado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3">
+                            <h6>Funcionalidades Administrativas Adicionais:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="bi bi-check-circle text-success"></i> Exportação completa de dados (JSON)</li>
+                                <li><i class="bi bi-check-circle text-success"></i> Importação seletiva por tipo e formato</li>
+                                <li><i class="bi bi-check-circle text-success"></i> Limpeza de dados órfãos</li>
+                                <li><i class="bi bi-check-circle text-success"></i> Gerenciamento de usuários</li>
+                                <li><i class="bi bi-check-circle text-success"></i> Visualização de logs do sistema</li>
+                                <li><i class="bi bi-check-circle text-success"></i> Informações do sistema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
