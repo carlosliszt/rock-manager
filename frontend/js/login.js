@@ -165,11 +165,6 @@ class LoginPage {
             isValid = false;
         }
         
-        if (!userData.role) {
-            this.showFormError('regRole', 'Tipo de usuário é obrigatório');
-            isValid = false;
-        }
-        
         return isValid;
     }
     
@@ -189,7 +184,7 @@ class LoginPage {
     clearFormErrors(formType) {
         const prefix = formType === 'register' ? 'reg' : '';
         const fields = formType === 'register' 
-            ? ['regUsername', 'regEmail', 'regPassword', 'regPasswordConfirm', 'regRole']
+            ? ['regUsername', 'regEmail', 'regPassword', 'regPasswordConfirm']
             : ['email', 'password'];
             
         fields.forEach(fieldId => {
