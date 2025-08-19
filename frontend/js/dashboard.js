@@ -21,6 +21,8 @@ class Dashboard {
             await this.loadShowsCount();
             
             await this.loadParticipationsCount();
+
+            await this.loadUsersCount();
             
             this.updateStatsUI();
             
@@ -45,6 +47,24 @@ class Dashboard {
             }
         } catch (error) {
             console.error('Error loading bands count:', error);
+        }
+    }
+
+    async loadUsersCount() {
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS, {
+                method: 'GET',
+                headers: getDefaultHeaders()
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data && data.data.usuarios) {
+                    this.stats.users = data.data.usuarios.length;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading users count:', error);
         }
     }
     
