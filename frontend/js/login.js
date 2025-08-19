@@ -149,10 +149,10 @@ class LoginPage {
             isValid = false;
         }
         
-        if (!userData.password) {
+        if (!userData.senha) {
             this.showFormError('regPassword', 'Senha é obrigatória');
             isValid = false;
-        } else if (userData.password.length < API_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH) {
+        } else if (userData.senha.length < API_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH) {
             this.showFormError('regPassword', API_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH_MESSAGE);
             isValid = false;
         }
@@ -160,7 +160,7 @@ class LoginPage {
         if (!passwordConfirm) {
             this.showFormError('regPasswordConfirm', 'Confirmação de senha é obrigatória');
             isValid = false;
-        } else if (userData.password !== passwordConfirm) {
+        } else if (userData.senha !== passwordConfirm) {
             this.showFormError('regPasswordConfirm', 'Senhas não coincidem');
             isValid = false;
         }
@@ -283,7 +283,6 @@ class LoginPage {
     }
 }
 
-// Initialize login page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     new LoginPage();
 });
