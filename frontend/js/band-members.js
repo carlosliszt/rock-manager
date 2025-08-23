@@ -17,10 +17,10 @@ class BandMembersManager {
     }
     
     init() {
-        if (!auth.isAuthenticated()) {
+        /*if (!auth.isAuthenticated()) {
             window.location.href = 'login.html';
             return;
-        }
+        } */
         
         this.setupEventListeners();
         
@@ -74,11 +74,9 @@ class BandMembersManager {
     
     async loadData() {
         try {
-            await Promise.all([
-                this.loadMembers(),
-                this.loadBands(),
-                this.loadUsers()
-            ]);
+            await this.loadBands();
+            await this.loadUsers();
+            await this.loadMembers();
         } catch (error) {
             console.error('Error loading data:', error);
             showToast('Erro ao carregar dados iniciais', 'error');

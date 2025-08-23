@@ -70,6 +70,9 @@ class Auth {
                 if (entityType === 'participation') {
                     return userRole === 'admin' || userRole === 'musician' || userRole === 'organizador';
                 }
+                if (entityType === "member") {
+                    return userRole === 'admin' || userRole === 'musician';
+                }
                 break;
                 
             case 'edit':
