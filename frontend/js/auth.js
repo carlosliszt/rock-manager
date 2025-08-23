@@ -46,7 +46,6 @@ class Auth {
     }
     
     isAuthenticated() {
-        console.log(this.token);
         return this.token && this.user;
     }
     
@@ -70,7 +69,7 @@ class Auth {
                 if (entityType === 'participation') {
                     return userRole === 'admin' || userRole === 'musician' || userRole === 'organizador';
                 }
-                if (entityType === "member") {
+                if (entityType === "band_member") {
                     return userRole === 'admin' || userRole === 'musician';
                 }
                 break;
