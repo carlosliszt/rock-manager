@@ -9,7 +9,7 @@ class AdminPanel {
             window.location.href = 'login.html';
             return;
         }
-        
+
         if (!auth.hasRole('admin')) {
             this.showAccessDenied();
             return;
@@ -38,60 +38,73 @@ class AdminPanel {
             showToast('Erro ao carregar estatísticas do sistema', 'error');
         }
     }
-    
+
     async loadBandsCount() {
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.BANDS, {
                 headers: getDefaultHeaders()
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    document.getElementById('totalBands').textContent = data.data.length || 0;
+                    document.getElementById('totalBands').textContent = data.data.bandas.length || 0;
                 }
             }
         } catch (error) {
             console.error('Error loading bands count:', error);
         }
     }
-    
+
     async loadShowsCount() {
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.SHOWS, {
                 headers: getDefaultHeaders()
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    document.getElementById('totalShows').textContent = data.data.length || 0;
+                    document.getElementById('totalShows').textContent = data.data.shows.length || 0;
                 }
             }
         } catch (error) {
             console.error('Error loading shows count:', error);
         }
     }
-    
+
     async loadParticipationsCount() {
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.PARTICIPATIONS, {
                 headers: getDefaultHeaders()
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    document.getElementById('totalParticipations').textContent = data.data.length || 0;
+                    document.getElementById('totalParticipations').textContent = data.data.participacoes.length || 0;
                 }
             }
         } catch (error) {
             console.error('Error loading participations count:', error);
         }
     }
-    
+
     async loadUsersCount() {
-        document.getElementById('totalUsers').textContent = '5+';
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS, {
+                headers: getDefaultHeaders()
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data) {
+                    document.getElementById('totalUsers').textContent = data.data.usuarios.length || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading participations count:', error);
+        }
     }
     
     async loadUsers() {
