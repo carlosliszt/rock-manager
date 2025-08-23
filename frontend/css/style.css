@@ -130,8 +130,9 @@ body {
 }
 
 .pagination .page-item.active .page-link {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    color: #fff !important;
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
 }
 
 /* Search and Filter */
@@ -263,4 +264,65 @@ body {
 @keyframes slideIn {
     from { transform: translateX(-100%); }
     to { transform: translateX(0); }
+}
+/* modal close button */
+
+.btn-close-circle {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: #dc3545;
+    opacity: 1;                   /* sai bootstrap */
+    background-image: none !important; /* removendo svg padrão */
+    box-shadow: none;
+    transition: background-color .15s ease-in-out, transform .15s;
+}
+
+.modal-header .btn-close:not(.btn-close-circle) {
+    filter: invert(1);
+}
+
+.modal-header .btn-close-circle {
+    margin-right: 0.25rem; /* antes era -0.5rem via Bootstrap; desloca ~0.75rem para a esquerda */
+}
+
+.btn-close-circle {
+    background-color: #dc3545 !important;
+    filter: none !important;
+}
+
+.btn-close-circle:hover {
+    background-color: #b02a37 !important;
+}
+
+.btn-close-circle:active {
+    transform: scale(.92);
+}
+
+.btn-close-circle:focus {
+    outline: none;
+    box-shadow: 0 0 0 .25rem rgba(220,53,69,.35);
+}
+
+.btn-close-circle::before,
+.btn-close-circle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 2px;
+    background: #fff;
+    transform-origin: center;
+}
+
+.btn-close-circle::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.btn-close-circle::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }

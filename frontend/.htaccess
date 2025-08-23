@@ -41,7 +41,7 @@ RewriteEngine On
 # This would need server-side logic to check authentication properly
 
 # Error pages
-ErrorDocument 404 /frontend/index.html
+ErrorDocument 404 /frontend/pages/404.html
 ErrorDocument 403 /frontend/login.html
 
 # Allow access to API endpoints (proxy to backend if on same server)

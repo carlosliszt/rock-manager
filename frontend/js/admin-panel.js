@@ -308,7 +308,7 @@ class AdminPanel {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Importar Dados</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close btn-close-circle" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-warning">
@@ -441,7 +441,7 @@ class AdminPanel {
                             <h5 class="modal-title">
                                 <i class="bi bi-exclamation-triangle"></i> Limpeza de Dados
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close btn-close-circle" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger">
@@ -553,7 +553,7 @@ class AdminPanel {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Editar Usuário</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close btn-close-circle" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <form id="editUserForm">

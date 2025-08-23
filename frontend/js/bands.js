@@ -480,6 +480,46 @@ class BandsManager {
         const modal = new bootstrap.Modal(document.getElementById('bandModal'));
         modal.show();
     }
+
+     viewBandDetails(bandId) {
+        const band = bandsManager.bands.find(b => b.id === bandId);
+        if (!band) return;
+
+        const content = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="bi bi-person-badge"></i> Nome</h6>
+                <p class="lead">${band.nome}</p>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="bi bi-music-note"></i> Gênero</h6>
+                <p class="lead">${band.genero || 'Não informado'}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="bi bi-flag"></i> País de Origem</h6>
+                <p>${band.pais_origem || 'Não informado'}</p>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="bi bi-calendar"></i> Ano de Formação</h6>
+                <p>${band.ano_formacao || 'Não informado'}</p>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h6><i class="bi bi-hash"></i> ID da Banda</h6>
+                <p>${band.id}</p>
+            </div>
+        </div>
+    `;
+
+        document.getElementById('bandDetailsContent').innerHTML = content;
+
+        const modal = new bootstrap.Modal(document.getElementById('bandDetailsModal'));
+        modal.show();
+    }
     
     async deleteBand(bandId) {
         try {
@@ -632,25 +672,14 @@ function deleteBand(bandId) {
 function confirmDeleteBand() {
     if (bandsManager.bandToDelete) {
         bandsManager.deleteBand(bandsManager.bandToDelete);
-        
+
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteBandModal'));
         modal.hide();
     }
 }
 
 function viewBandDetails(bandId) {
-    const band = bandsManager.bands.find(b => b.id === bandId);
-    if (!band) return;
-    
-    const details = `
-        <strong>ID:</strong> ${band.id}<br>
-        <strong>Nome:</strong> ${band.nome}<br>
-        <strong>Gênero:</strong> ${band.genero || 'Não informado'}<br>
-        <strong>País:</strong> ${band.pais_origem || 'Não informado'}<br>
-        <strong>Ano de Formação:</strong> ${band.ano_formacao || 'Não informado'}
-    `;
-    
-    showToast(`<strong>${band.nome}</strong><br><br>${details}`, 'info', 8000);
+    bandsManager.viewBandDetails(bandId);
 }
 
 function exportBands(format) {
