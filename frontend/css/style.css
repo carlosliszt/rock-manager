@@ -286,7 +286,7 @@ body {
 }
 
 .modal-header .btn-close-circle {
-    margin-right: 0.25rem; /* antes era -0.5rem via Bootstrap; desloca ~0.75rem para a esquerda */
+    margin-right: calc(0.25rem - 2px); /* antes era -0.5rem via Bootstrap; desloca ~0.75rem para a esquerda */
 }
 
 .btn-close-circle {

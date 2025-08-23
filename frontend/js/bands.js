@@ -4,7 +4,7 @@ class BandsManager {
         this.filteredBands = [];
         this.currentPage = 1;
         this.pageSize = 10;
-        this.sortColumn = 'nome';
+        this.sortColumn = 'id';
         this.sortDirection = 'asc';
         this.searchTerm = '';
         this.genreFilter = '';
@@ -207,23 +207,30 @@ class BandsManager {
             </tr>
         `;
     }
-    
+
     sortBands() {
+        const numericColumns = ['id', 'ano_formacao'];
+
         this.filteredBands.sort((a, b) => {
-            let aValue = a[this.sortColumn];
-            let bValue = b[this.sortColumn];
-            
-            if (aValue == null) aValue = '';
-            if (bValue == null) bValue = '';
-            
-            aValue = aValue.toString().toLowerCase();
-            bValue = bValue.toString().toLowerCase();
-            
-            if (this.sortDirection === 'asc') {
-                return aValue.localeCompare(bValue);
-            } else {
-                return bValue.localeCompare(aValue);
+            const col = this.sortColumn;
+
+            if (numericColumns.includes(col)) {
+                const aNum = a[col] !== null && a[col] !== undefined ? Number(a[col]) : Number.NEGATIVE_INFINITY;
+                const bNum = b[col] !== null && b[col] !== undefined ? Number(b[col]) : Number.NEGATIVE_INFINITY;
+                return this.sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
             }
+
+            // texto (case-insensitive)
+            let aVal = a[col];
+            let bVal = b[col];
+            if (aVal == null) aVal = '';
+            if (bVal == null) bVal = '';
+            aVal = aVal.toString().toLowerCase();
+            bVal = bVal.toString().toLowerCase();
+
+            return this.sortDirection === 'asc'
+                ? aVal.localeCompare(bVal)
+                : bVal.localeCompare(aVal);
         });
     }
     
@@ -633,16 +640,22 @@ function sortBands(column) {
         bandsManager.sortColumn = column;
         bandsManager.sortDirection = 'asc';
     }
-    
-    document.querySelectorAll('th .bi').forEach(icon => {
-        icon.className = 'bi bi-chevron-expand text-muted';
+
+    document.querySelectorAll('th[data-column]').forEach(th => {
+        const icon = th.querySelector('.bi');
+        if (icon) icon.className = 'bi bi-chevron-expand text-muted';
+        th.removeAttribute('aria-sort');
     });
-    
-    const currentHeader = document.querySelector(`th[onclick="sortBands('${column}')"] .bi`);
+
+    const currentHeader = document.querySelector(`th[data-column="${column}"]`);
     if (currentHeader) {
-        currentHeader.className = `bi bi-chevron-${bandsManager.sortDirection === 'asc' ? 'up' : 'down'} text-primary`;
+        const icon = currentHeader.querySelector('.bi');
+        if (icon) {
+            icon.className = `bi bi-chevron-${bandsManager.sortDirection === 'asc' ? 'up' : 'down'} text-primary`;
+        }
+        currentHeader.setAttribute('aria-sort', bandsManager.sortDirection === 'asc' ? 'ascending' : 'descending');
     }
-    
+
     bandsManager.displayBands();
 }
 
