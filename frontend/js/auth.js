@@ -108,9 +108,10 @@ class Auth {
                 localStorage.setItem('authToken', this.token);
                 localStorage.setItem('user', JSON.stringify(this.user));
 
+                showToast('Login realizado com sucesso!', 'success');
+
                 this.updateUI();
 
-                showToast('Login realizado com sucesso!', 'success');
                 return { success: true };
             } else {
                 throw new Error(data.message || 'Erro no login');
@@ -149,7 +150,7 @@ class Auth {
         }
     }
 
-    logout() {
+    logout(reason = "user_initiated") {
         this.token = null;
         this.user = null;
 
@@ -157,7 +158,16 @@ class Auth {
         localStorage.removeItem('user');
 
         this.updateUI();
-        showToast('Logout realizado com sucesso!', 'info');
+        switch(reason) {
+            case "user_initiated":
+                showToast('Logout realizado com sucesso!', 'info');
+                break;
+            case "token_expired":
+                showToast('Sua sessão expirou. Por favor, faça login novamente.', 'warning');
+                break;
+            default:
+                showToast('Você saiu.', 'info');
+        }
 
         if (window.location.pathname.includes('pages/') &&
             !window.location.pathname.includes('login.html') &&
@@ -175,12 +185,11 @@ class Auth {
             const currentTime = Math.floor(Date.now() / 1000);
 
             if (payload.exp && payload.exp < currentTime) {
-                showToast('Sua sessão expirou. Por favor, faça login novamente.', 'warning');
-                this.logout();
+                this.logout("token_expired");
             }
         } catch (error) {
             console.error('Error checking token expiration:', error);
-            this.logout();
+            this.logout("token_expired");
         }
     }
 

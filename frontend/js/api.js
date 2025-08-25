@@ -60,7 +60,7 @@ class API {
 
             // Se o token expirou, o logout é forçado.
             if (response.status === 401) {
-                Auth.logout();
+                Auth.logout("token_expired");
                 return { success: false, message: 'Session expired' };
             }
 
@@ -283,7 +283,7 @@ function handleApiError(error, action = 'perform action') {
     // Caso típico de sessão expirada.
     if (error.message && error.message.includes('401')) {
         showToast('Session Expired', 'Please log in again', 'warning');
-        auth.logout();
+        auth.logout("token_expired");
         return;
     }
 

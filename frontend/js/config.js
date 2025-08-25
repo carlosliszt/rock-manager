@@ -28,7 +28,7 @@ const API_CONFIG = {
         // participações
         PARTICIPATIONS: '/participacoes',
         PARTICIPATIONS_BY_IDS: '/participacoes',
-        PARTICIPATIONS_BY_BAND: '/bands',
+        PARTICIPATIONS_BY_BAND: '/bands/%id/shows',
         PARTICIPATIONS_EXPORT_CSV: '/participacoes/exportar/csv',
         PARTICIPATIONS_EXPORT_JSON: '/participacoes/exportar/json',
         PARTICIPATIONS_EXPORT_XML: '/participacoes/exportar/xml',
@@ -39,7 +39,7 @@ const API_CONFIG = {
         // membros da banda
         BAND_MEMBERS: '/bands/members',
         BAND_MEMBERS_BY_BAND: '/bands',
-        BAND_MEMBERS_BY_IDS: '/bands/members',
+        BAND_MEMBERS_BY_IDS: '/bands/%id/members',
         BAND_MEMBERS_EXPORT_CSV: '/bands/members/exportar/csv',
         BAND_MEMBERS_EXPORT_JSON: '/bands/members/exportar/json',
         BAND_MEMBERS_EXPORT_XML: '/bands/members/exportar/xml',
