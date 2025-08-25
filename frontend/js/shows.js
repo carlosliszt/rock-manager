@@ -240,21 +240,18 @@ class ShowsManager {
             let aVal = a[col];
             let bVal = b[col];
 
-            // Datas
             if (dateColumns.includes(col)) {
                 const aDate = aVal ? new Date(aVal) : new Date(0);
                 const bDate = bVal ? new Date(bVal) : new Date(0);
                 return this.sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
             }
 
-            // Numéricos
             if (numericColumns.includes(col)) {
                 const aNum = (aVal !== null && aVal !== undefined && aVal !== '') ? Number(aVal) : Number.NEGATIVE_INFINITY;
                 const bNum = (bVal !== null && bVal !== undefined && bVal !== '') ? Number(bVal) : Number.NEGATIVE_INFINITY;
                 return this.sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
             }
 
-            // Texto
             aVal = (aVal ?? '').toString().toLowerCase();
             bVal = (bVal ?? '').toString().toLowerCase();
             const cmp = aVal.localeCompare(bVal);

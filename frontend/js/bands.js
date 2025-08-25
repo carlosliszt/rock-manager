@@ -20,7 +20,6 @@ class BandsManager {
         this.updateUIBasedOnAuth();
     }
     
-    // atualiza UI de acordo com a autenticação
     updateUIBasedOnAuth() {
         const addBandBtn = document.getElementById('addBandBtn');
         
@@ -220,7 +219,6 @@ class BandsManager {
                 return this.sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
             }
 
-            // texto (case-insensitive)
             let aVal = a[col];
             let bVal = b[col];
             if (aVal == null) aVal = '';

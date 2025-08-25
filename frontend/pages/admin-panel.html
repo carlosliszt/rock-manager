@@ -6,15 +6,11 @@
     <link rel="icon" type="image/png" href="../assets/favicon.ico">
     <title>Painel Administrativo - Rock Manager</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
@@ -46,9 +42,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="api-coverage.html"><i class="bi bi-check2-square"></i> Cobertura API</a>
                     </li>
-                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
-                        <a class="nav-link active" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
-                    </li>
                 </ul>
                 
                 <ul class="navbar-nav">
@@ -65,14 +58,15 @@
                     <li class="nav-item" id="loginMenu">
                         <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
                     </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container-fluid mt-4">
-        <!-- Page Header -->
         <div class="row mb-4">
             <div class="col-12">
                 <h1><i class="bi bi-gear text-danger"></i> Painel Administrativo</h1>
@@ -80,7 +74,6 @@
             </div>
         </div>
 
-        <!-- System Stats -->
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card bg-primary text-white">
@@ -139,7 +132,6 @@
             </div>
         </div>
 
-        <!-- Admin Tools -->
         <div class="row mb-4">
             <div class="col-12">
                 <h3><i class="bi bi-tools"></i> Ferramentas Administrativas</h3>
@@ -147,7 +139,6 @@
         </div>
 
         <div class="row mb-4">
-            <!-- System Management -->
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-header bg-danger text-white">
@@ -169,7 +160,6 @@
                 </div>
             </div>
 
-            <!-- Data Management -->
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-header bg-success text-white">
@@ -192,7 +182,6 @@
             </div>
         </div>
 
-        <!-- User Management -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card">
@@ -230,7 +219,6 @@
             </div>
         </div>
 
-        <!-- Recent Activity -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -252,7 +240,6 @@
         </div>
     </div>
 
-    <!-- Access Denied Modal -->
     <div class="modal fade" id="accessDeniedModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -272,11 +259,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- Custom JS -->
     <script src="../js/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/admin-panel.js"></script>

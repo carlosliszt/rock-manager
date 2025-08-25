@@ -6,15 +6,11 @@
     <link rel="icon" type="image/png" href="../assets/favicon.ico">
     <title>Perfil do Usuário - Rock Manager</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
@@ -43,8 +39,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
                     </li>
-                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
-                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="api-coverage.html"><i class="bi bi-check2-square"></i> Cobertura API</a>
                     </li>
                 </ul>
                 
@@ -62,16 +58,17 @@
                     <li class="nav-item" id="loginMenu">
                         <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a>
                     </li>
+                    <li class="nav-item" id="adminPanelMenu" style="display: none;">
+                        <a class="nav-link" href="admin-panel.html"><i class="bi bi-gear"></i> Painel Admin</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1><i class="bi bi-person-circle"></i> Meu Perfil</h1>
                     <button type="button" class="btn btn-outline-danger" onclick="logout()">
@@ -79,14 +76,12 @@
                     </button>
                 </div>
 
-                <!-- User Information Card -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0"><i class="bi bi-info-circle"></i> Informações da Conta</h5>
                     </div>
                     <div class="card-body">
                         <div id="userInfo" class="row">
-                            <!-- Loading state -->
                             <div class="col-12 text-center">
                                 <div class="spinner-border text-primary" role="status">
                                     <span class="visually-hidden">Carregando...</span>
@@ -97,31 +92,28 @@
                     </div>
                 </div>
 
-                <!-- User Stats Card -->
                 <div class="card shadow-sm mt-4" id="userStatsCard" style="display: none;">
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Estatísticas</h5>
                     </div>
                     <div class="card-body">
                         <div class="row text-center" id="userStats">
-                            <!-- Stats will be loaded here -->
+                            <!-- gerado? -->
                         </div>
                     </div>
                 </div>
 
-                <!-- User Activity Card -->
                 <div class="card shadow-sm mt-4" id="userActivityCard" style="display: none;">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0"><i class="bi bi-clock-history"></i> Atividade Recente</h5>
                     </div>
                     <div class="card-body">
                         <div id="userActivity">
-                            <!-- Activity will be loaded here -->
+                            <!-- js vai gerar -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Actions Card -->
                 <div class="card shadow-sm mt-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0"><i class="bi bi-lightning"></i> Ações Rápidas</h5>
@@ -156,11 +148,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- Custom JS -->
     <script src="../js/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/user-profile.js"></script>

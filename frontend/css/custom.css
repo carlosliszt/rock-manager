@@ -1,6 +1,3 @@
-/* Custom Styles for Rock API Frontend */
-
-/* General Styles */
 :root {
     --rock-primary: #8B0000;
     --rock-secondary: #2C3E50;
@@ -15,7 +12,6 @@ body {
     background-color: var(--rock-light);
 }
 
-/* Navigation Improvements */
 .navbar-brand {
     font-weight: bold;
     font-size: 1.5rem;
@@ -37,7 +33,6 @@ body {
     font-weight: 600;
 }
 
-/* Content Sections */
 .content-section {
     animation: fadeIn 0.5s ease-in-out;
 }
@@ -53,7 +48,6 @@ body {
     }
 }
 
-/* Cards */
 .card {
     border: none;
     border-radius: 0.75rem;
@@ -73,7 +67,6 @@ body {
     font-weight: 600;
 }
 
-/* Statistics Cards */
 .bg-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
@@ -90,7 +83,6 @@ body {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
 }
 
-/* Tables */
 .table {
     border-radius: 0.5rem;
     overflow: hidden;
@@ -119,7 +111,6 @@ body {
     transition: all 0.2s ease;
 }
 
-/* Buttons */
 .btn {
     border-radius: 0.5rem;
     font-weight: 500;
@@ -162,7 +153,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* Forms */
 .form-control {
     border-radius: 0.5rem;
     border: 1px solid #ced4da;
@@ -187,7 +177,6 @@ body {
     border-color: #ced4da;
 }
 
-/* Form Validation */
 .was-validated .form-control:valid {
     border-color: #28a745;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.9-.4-.9-.4c-.4.8-.7 1.5-.9 2.1z'/%3e%3c/svg%3e");
@@ -198,7 +187,6 @@ body {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6 2.4 2.4'/%3e%3cpath d='m8.2 3.6-2.4 2.4'/%3e%3c/svg%3e");
 }
 
-/* Loading Spinner */
 #loading-spinner {
     position: fixed;
     top: 50%;
@@ -211,7 +199,6 @@ body {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
-/* Modals */
 .modal-content {
     border-radius: 1rem;
     border: none;
@@ -234,7 +221,6 @@ body {
     border-radius: 0 0 1rem 1rem;
 }
 
-/* Pagination */
 .pagination {
     margin: 0;
 }
@@ -260,7 +246,6 @@ body {
     border-color: var(--rock-primary);
 }
 
-/* Toasts */
 .toast {
     border-radius: 0.75rem;
     border: none;
@@ -273,7 +258,6 @@ body {
     font-weight: 600;
 }
 
-/* Alerts */
 .alert {
     border-radius: 0.75rem;
     border: none;
@@ -300,7 +284,6 @@ body {
     color: #c62828;
 }
 
-/* Accordion */
 .accordion-button {
     border-radius: 0.5rem;
     font-weight: 500;
@@ -325,7 +308,6 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Dropdown */
 .dropdown-menu {
     border-radius: 0.5rem;
     border: none;
@@ -344,7 +326,6 @@ body {
     transform: translateX(5px);
 }
 
-/* List Group */
 .list-group-item {
     border: none;
     border-radius: 0;
@@ -363,7 +344,6 @@ body {
     border-color: var(--rock-secondary);
 }
 
-/* Login Page Specific */
 .bg-light {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
@@ -372,7 +352,6 @@ body {
     min-height: 100vh;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container-fluid {
         padding-left: 1rem;
@@ -422,7 +401,6 @@ body {
     }
 }
 
-/* Dark theme support */
 @media (prefers-color-scheme: dark) {
     :root {
         --rock-light: #2C3E50;
@@ -455,7 +433,6 @@ body {
     }
 }
 
-/* Animation utilities */
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
@@ -490,7 +467,6 @@ body {
     }
 }
 
-/* Utility classes */
 .cursor-pointer {
     cursor: pointer;
 }
@@ -507,7 +483,6 @@ body {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 }
 
-/* Print styles */
 @media print {
     .navbar,
     .btn,

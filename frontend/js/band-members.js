@@ -1,4 +1,3 @@
-// frontend/js/band-members.js
 class BandMembersManager {
     constructor() {
         this.members = [];
