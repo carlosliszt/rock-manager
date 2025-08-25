@@ -39,6 +39,41 @@ INSERT INTO `banda` (`id`, `nome`, `pais_origem`, `ano_formacao`, `genero`) VALU
 INSERT INTO `banda` (`id`, `nome`, `pais_origem`, `ano_formacao`, `genero`) VALUES ('26', 'Linkin Park', 'Estados Unidos', '1996', 'Nu Metal');
 
 
+CREATE TABLE `shows` (
+                         `id` int NOT NULL AUTO_INCREMENT,
+                         `local` varchar(100) NOT NULL,
+                         `data` date NOT NULL,
+                         `publico_estimado` int DEFAULT NULL,
+                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
+
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('1', 'Download Festival - Inglaterra', '2023-06-10', '85000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('2', 'Rock in Rio - Brasil', '2022-09-02', '100000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('3', 'Hellfest - França', '2024-07-15', '60000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('4', 'Allianz Park', '2025-08-30', '80000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('5', 'Martins Pereira', '2025-08-21', '10000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('6', 'Wacken Open Air - Alemanha', '2025-09-05', '75000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('7', 'Madison Square Garden - EUA', '2025-09-10', '20000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('8', 'Estádio do Morumbi - Brasil', '2025-09-15', '65000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('9', 'Lollapalooza - Brasil', '2025-09-20', '90000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('10', 'Teatro Apollo - NY', '2025-09-25', '5000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('11', 'Rock am Ring - Alemanha', '2025-09-30', '80000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('12', 'Reading Festival - Inglaterra', '2025-10-05', '85000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('13', 'Estádio Nacional - Chile', '2025-10-10', '70000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('14', 'Palacio de los Deportes - México', '2025-10-15', '22000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('15', 'Tokyo Dome - Japão', '2025-10-20', '55000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('16', 'Sydney Opera House - Austrália', '2025-10-25', '12000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('17', 'Estádio Nacional - Portugal', '2025-10-30', '60000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('18', 'Maracanã - Brasil', '2025-11-05', '90000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('19', 'Estádio do Dragão - Portugal', '2025-11-10', '50000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('20', 'Estádio Monumental - Argentina', '2025-11-15', '70000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('21', 'Estádio Centenario - Uruguai', '2025-11-20', '60000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('22', 'Estádio Olímpico - Espanha', '2025-11-25', '68000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('23', 'Allianz Arena - Alemanha', '2025-12-01', '75000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('24', 'Estádio Olímpico - Itália', '2025-12-05', '70000');
+INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('25', 'Stade de France - França', '2025-12-10', '80000');
+
+
 CREATE TABLE `participacao` (
                                 `id_banda` int NOT NULL,
                                 `id_show` int NOT NULL,
@@ -117,157 +152,6 @@ INSERT INTO `participacao` (`id_banda`, `id_show`, `ordem_apresentacao`, `tempo_
 INSERT INTO `participacao` (`id_banda`, `id_show`, `ordem_apresentacao`, `tempo_execucao_min`) VALUES ('26', '5', '1', '110');
 INSERT INTO `participacao` (`id_banda`, `id_show`, `ordem_apresentacao`, `tempo_execucao_min`) VALUES ('26', '7', '3', '125');
 INSERT INTO `participacao` (`id_banda`, `id_show`, `ordem_apresentacao`, `tempo_execucao_min`) VALUES ('26', '25', '2', '120');
-
-
-CREATE TABLE `shows` (
-                         `id` int NOT NULL AUTO_INCREMENT,
-                         `local` varchar(100) NOT NULL,
-                         `data` date NOT NULL,
-                         `publico_estimado` int DEFAULT NULL,
-                         PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
-
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('1', 'Download Festival - Inglaterra', '2023-06-10', '85000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('2', 'Rock in Rio - Brasil', '2022-09-02', '100000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('3', 'Hellfest - França', '2024-07-15', '60000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('4', 'Allianz Park', '2025-08-30', '80000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('5', 'Martins Pereira', '2025-08-21', '10000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('6', 'Wacken Open Air - Alemanha', '2025-09-05', '75000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('7', 'Madison Square Garden - EUA', '2025-09-10', '20000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('8', 'Estádio do Morumbi - Brasil', '2025-09-15', '65000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('9', 'Lollapalooza - Brasil', '2025-09-20', '90000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('10', 'Teatro Apollo - NY', '2025-09-25', '5000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('11', 'Rock am Ring - Alemanha', '2025-09-30', '80000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('12', 'Reading Festival - Inglaterra', '2025-10-05', '85000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('13', 'Estádio Nacional - Chile', '2025-10-10', '70000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('14', 'Palacio de los Deportes - México', '2025-10-15', '22000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('15', 'Tokyo Dome - Japão', '2025-10-20', '55000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('16', 'Sydney Opera House - Austrália', '2025-10-25', '12000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('17', 'Estádio Nacional - Portugal', '2025-10-30', '60000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('18', 'Maracanã - Brasil', '2025-11-05', '90000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('19', 'Estádio do Dragão - Portugal', '2025-11-10', '50000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('20', 'Estádio Monumental - Argentina', '2025-11-15', '70000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('21', 'Estádio Centenario - Uruguai', '2025-11-20', '60000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('22', 'Estádio Olímpico - Espanha', '2025-11-25', '68000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('23', 'Allianz Arena - Alemanha', '2025-12-01', '75000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('24', 'Estádio Olímpico - Itália', '2025-12-05', '70000');
-INSERT INTO `shows` (`id`, `local`, `data`, `publico_estimado`) VALUES ('25', 'Stade de France - França', '2025-12-10', '80000');
-
-
-CREATE TABLE `usuariobanda` (
-                                `id_usuario` int NOT NULL,
-                                `id_banda` int NOT NULL,
-                                `funcao` varchar(50) DEFAULT NULL,
-                                PRIMARY KEY (`id_usuario`,`id_banda`),
-                                KEY `id_banda` (`id_banda`),
-                                CONSTRAINT `usuariobanda_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
-                                CONSTRAINT `usuariobanda_ibfk_2` FOREIGN KEY (`id_banda`) REFERENCES `banda` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('5', '1', 'vocalista/baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('6', '1', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('7', '1', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('8', '1', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('9', '2', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('10', '2', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('11', '2', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('12', '2', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('13', '3', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('14', '3', 'guitarrista/vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('15', '3', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('16', '3', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('17', '4', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('18', '4', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('19', '4', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('20', '4', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('21', '5', 'vocalista/tecladista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('22', '5', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('23', '5', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('24', '5', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('25', '6', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('26', '6', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('27', '6', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('28', '6', 'tecladista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('29', '7', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('30', '7', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('31', '7', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('32', '7', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('33', '8', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('34', '8', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('35', '8', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('36', '8', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('37', '9', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('38', '9', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('39', '9', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('40', '9', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('41', '10', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('42', '10', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('43', '10', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('44', '10', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('45', '11', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('46', '11', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('47', '11', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('48', '11', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('49', '12', 'guitarrista/vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('50', '12', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('51', '12', 'tecladista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('52', '12', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('53', '13', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('54', '13', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('55', '13', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('56', '13', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('57', '14', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('58', '14', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('59', '14', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('60', '14', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('61', '15', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('62', '15', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('63', '15', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('64', '15', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('65', '16', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('66', '16', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('67', '16', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('68', '16', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('69', '17', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('70', '17', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('71', '17', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('72', '17', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('73', '18', 'vocalista/baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('74', '18', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('75', '18', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('76', '18', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('77', '19', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('78', '19', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('79', '19', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('80', '19', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('81', '20', 'vocalista/baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('82', '20', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('83', '20', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('84', '20', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('85', '21', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('86', '21', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('87', '21', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('88', '21', 'tecladista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('89', '22', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('90', '22', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('91', '22', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('92', '22', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('93', '23', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('94', '23', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('95', '23', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('96', '23', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('97', '24', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('98', '24', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('99', '24', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('100', '24', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('101', '25', 'vocalista/guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('102', '25', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('103', '25', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('104', '25', 'baterista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('105', '26', 'vocalista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('106', '26', 'guitarrista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('107', '26', 'baixista');
-INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('108', '26', 'baterista');
 
 
 CREATE TABLE `usuarios` (
@@ -392,3 +276,118 @@ INSERT INTO `usuarios` (`id`, `username`, `email`, `password_hash`, `role`, `ati
 INSERT INTO `usuarios` (`id`, `username`, `email`, `password_hash`, `role`, `ativo`, `criado_em`) VALUES ('107', 'brad', 'brad@linkinpark.com', '$2y$10$9cguIjkZmUylJse1yHexCOf7amjDwuzoAhkYN8SpO8QwUGz00OdNW', 'musician', '1', '2025-08-23 19:47:26');
 INSERT INTO `usuarios` (`id`, `username`, `email`, `password_hash`, `role`, `ativo`, `criado_em`) VALUES ('108', 'rob', 'rob@linkinpark.com', '$2y$10$9cguIjkZmUylJse1yHexCOf7amjDwuzoAhkYN8SpO8QwUGz00OdNW', 'musician', '1', '2025-08-23 19:47:26');
 
+
+CREATE TABLE `usuariobanda` (
+                                `id_usuario` int NOT NULL,
+                                `id_banda` int NOT NULL,
+                                `funcao` varchar(50) DEFAULT NULL,
+                                PRIMARY KEY (`id_usuario`,`id_banda`),
+                                KEY `id_banda` (`id_banda`),
+                                CONSTRAINT `usuariobanda_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+                                CONSTRAINT `usuariobanda_ibfk_2` FOREIGN KEY (`id_banda`) REFERENCES `banda` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('5', '1', 'vocalista/baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('6', '1', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('7', '1', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('8', '1', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('9', '2', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('10', '2', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('11', '2', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('12', '2', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('13', '3', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('14', '3', 'guitarrista/vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('15', '3', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('16', '3', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('17', '4', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('18', '4', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('19', '4', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('20', '4', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('21', '5', 'vocalista/tecladista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('22', '5', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('23', '5', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('24', '5', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('25', '6', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('26', '6', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('27', '6', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('28', '6', 'tecladista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('29', '7', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('30', '7', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('31', '7', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('32', '7', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('33', '8', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('34', '8', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('35', '8', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('36', '8', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('37', '9', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('38', '9', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('39', '9', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('40', '9', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('41', '10', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('42', '10', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('43', '10', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('44', '10', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('45', '11', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('46', '11', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('47', '11', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('48', '11', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('49', '12', 'guitarrista/vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('50', '12', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('51', '12', 'tecladista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('52', '12', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('53', '13', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('54', '13', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('55', '13', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('56', '13', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('57', '14', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('58', '14', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('59', '14', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('60', '14', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('61', '15', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('62', '15', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('63', '15', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('64', '15', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('65', '16', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('66', '16', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('67', '16', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('68', '16', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('69', '17', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('70', '17', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('71', '17', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('72', '17', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('73', '18', 'vocalista/baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('74', '18', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('75', '18', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('76', '18', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('77', '19', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('78', '19', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('79', '19', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('80', '19', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('81', '20', 'vocalista/baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('82', '20', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('83', '20', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('84', '20', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('85', '21', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('86', '21', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('87', '21', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('88', '21', 'tecladista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('89', '22', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('90', '22', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('91', '22', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('92', '22', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('93', '23', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('94', '23', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('95', '23', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('96', '23', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('97', '24', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('98', '24', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('99', '24', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('100', '24', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('101', '25', 'vocalista/guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('102', '25', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('103', '25', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('104', '25', 'baterista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('105', '26', 'vocalista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('106', '26', 'guitarrista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('107', '26', 'baixista');
+INSERT INTO `usuariobanda` (`id_usuario`, `id_banda`, `funcao`) VALUES ('108', '26', 'baterista');
