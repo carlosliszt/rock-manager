@@ -1,12 +1,11 @@
-// Configuration for Rock Manager
 const API_CONFIG = {
     BASE_URL: window.location.origin,
     ENDPOINTS: {
-        // Authentication
+        // autenticação
         LOGIN: '/login',
         REGISTER: '/register',
         
-        // Bands
+        // bandas
         BANDS: '/bands',
         BANDS_BY_ID: '/bands',
         BANDS_EXPORT_CSV: '/bands/exportar/csv',
@@ -16,7 +15,7 @@ const API_CONFIG = {
         BANDS_IMPORT_JSON: '/bands/importar/json',
         BANDS_IMPORT_XML: '/bands/importar/xml',
         
-        // Shows
+        // shows
         SHOWS: '/shows',
         SHOWS_BY_ID: '/shows',
         SHOWS_EXPORT_CSV: '/shows/exportar/csv',
@@ -26,7 +25,7 @@ const API_CONFIG = {
         SHOWS_IMPORT_JSON: '/shows/importar/json',
         SHOWS_IMPORT_XML: '/shows/importar/xml',
         
-        // Participations
+        // participações
         PARTICIPATIONS: '/participacoes',
         PARTICIPATIONS_BY_IDS: '/participacoes',
         PARTICIPATIONS_BY_BAND: '/bands',
@@ -37,7 +36,7 @@ const API_CONFIG = {
         PARTICIPATIONS_IMPORT_JSON: '/participacoes/importar/json',
         PARTICIPATIONS_IMPORT_XML: '/participacoes/importar/xml',
         
-        // User-Band relationships
+        // membros da banda
         BAND_MEMBERS: '/bands/members',
         BAND_MEMBERS_BY_BAND: '/bands',
         BAND_MEMBERS_BY_IDS: '/bands/members',
@@ -48,21 +47,21 @@ const API_CONFIG = {
         BAND_MEMBERS_IMPORT_JSON: '/bands/members/importar/json',
         BAND_MEMBERS_IMPORT_XML: '/bands/members/importar/xml',
 
-        // User management
+        // gerenciamento de usuários -- não implementado (25/08/2025)
 
         USERS: '/users',
         
-        // Backup
+        // backup
         BACKUP: '/backup'
     },
     
-    // Pagination settings
+    // paginação padrão e opções.
     PAGINATION: {
         DEFAULT_PAGE_SIZE: 10,
         PAGE_SIZE_OPTIONS: [5, 10, 25, 50, 100]
     },
     
-    // Toast settings
+    // configurações da exibição do toast.
     TOAST: {
         SUCCESS_DURATION: 3000,
         ERROR_DURATION: 5000,
@@ -70,7 +69,7 @@ const API_CONFIG = {
         INFO_DURATION: 3000
     },
     
-    // Form validation
+    // validação do formulário
     VALIDATION: {
         REQUIRED_FIELD_MESSAGE: 'Este campo é obrigatório',
         EMAIL_INVALID_MESSAGE: 'Por favor, insira um email válido',
@@ -78,7 +77,7 @@ const API_CONFIG = {
         PASSWORD_MIN_LENGTH_MESSAGE: 'A senha deve ter pelo menos 6 caracteres'
     },
     
-    // User roles
+    // cargos de usuário
     USER_ROLES: {
         ADMIN: 'admin',
         MUSICIAN: 'musician',
@@ -87,6 +86,7 @@ const API_CONFIG = {
     }
 };
 
+// headers padrão para requisições API com autenticação
 const getDefaultHeaders = () => {
     const headers = {
         'Content-Type': 'application/json',
@@ -101,6 +101,7 @@ const getDefaultHeaders = () => {
     return headers;
 };
 
+// utils diversos
 const Utils = {
     formatDate: (dateString) => {
         if (!dateString) return '-';

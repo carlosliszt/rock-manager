@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandas - Rock Manager Frontend</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.ico">
+    <title>Bandas - Rock Manager</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html"><i class="bi bi-music-note-beamed"></i> Rock Manager</a>
@@ -42,6 +39,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="docs.html"><i class="bi bi-book"></i> Documentação</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="api-coverage.html"><i class="bi bi-check2-square"></i> Cobertura API</a>
+                    </li>
                 </ul>
                 
                 <ul class="navbar-nav">
@@ -64,9 +64,7 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container-fluid mt-4">
-        <!-- Page Header -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
@@ -96,7 +94,6 @@
             </div>
         </div>
 
-        <!-- Search and Filter Section -->
         <div class="search-filter-section">
             <div class="row">
                 <div class="col-md-4">
@@ -130,7 +127,6 @@
             </div>
         </div>
 
-        <!-- Import Section -->
         <div class="row mb-3">
             <div class="col-12">
                 <div class="card border-primary">
@@ -160,7 +156,6 @@
             </div>
         </div>
 
-        <!-- Bands Table -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -208,19 +203,17 @@
             </div>
         </div>
 
-        <!-- Pagination -->
         <div class="row mt-3">
             <div class="col-12">
                 <nav aria-label="Paginação de bandas">
                     <ul class="pagination justify-content-center" id="bandsPagination">
-                        <!-- Pagination items will be inserted here -->
+                        <!-- será gerado no js -->
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
 
-    <!-- Band Modal -->
     <div class="modal fade" id="bandModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -228,7 +221,7 @@
                     <h5 class="modal-title" id="bandModalTitle">
                         <i class="bi bi-plus-circle"></i> Nova Banda
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-circle" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="bandForm">
@@ -276,7 +269,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="bandForm" class="btn btn-primary" id="saveBandBtn">
+                    <button type="submit" form="bandForm" class="btn btn-success" id="saveBandBtn">
                         <span class="btn-text">Salvar</span>
                         <span class="spinner-border spinner-border-sm d-none" role="status"></span>
                     </button>
@@ -285,13 +278,12 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteBandModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-circle" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <p>Tem certeza que deseja excluir a banda <strong id="deleteBandName"></strong>?</p>
@@ -308,11 +300,25 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <div class="modal fade" id="bandDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title"><i class="bi bi-info-circle"></i> Detalhes da Banda</h5>
+                    <button type="button"
+                            class="btn-close btn-close-circle"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body" id="bandDetailsContent">
+                    <!-- vai ser gerado no js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- Custom JS -->
     <script src="../js/config.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/bands.js"></script>

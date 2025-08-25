@@ -4,8 +4,8 @@ class ShowsManager {
         this.filteredShows = [];
         this.currentPage = 1;
         this.pageSize = 10;
-        this.sortColumn = 'data';
-        this.sortDirection = 'desc';
+        this.sortColumn = 'id';
+        this.sortDirection = 'asc';
         this.searchTerm = '';
         this.localFilter = '';
         this.dateFilter = '';
@@ -230,31 +230,32 @@ class ShowsManager {
             </tr>
         `;
     }
-    
+
     sortShows() {
+        const numericColumns = ['id', 'publico_estimado'];
+        const dateColumns = ['data'];
+
         this.filteredShows.sort((a, b) => {
-            let aValue = a[this.sortColumn];
-            let bValue = b[this.sortColumn];
-            
-            if (aValue == null) aValue = '';
-            if (bValue == null) bValue = '';
-            
-            if (this.sortColumn === 'data') {
-                aValue = new Date(aValue);
-                bValue = new Date(bValue);
-            } else if (this.sortColumn === 'publico_estimado') {
-                aValue = parseInt(aValue) || 0;
-                bValue = parseInt(bValue) || 0;
-            } else {
-                aValue = aValue.toString().toLowerCase();
-                bValue = bValue.toString().toLowerCase();
+            const col = this.sortColumn;
+            let aVal = a[col];
+            let bVal = b[col];
+
+            if (dateColumns.includes(col)) {
+                const aDate = aVal ? new Date(aVal) : new Date(0);
+                const bDate = bVal ? new Date(bVal) : new Date(0);
+                return this.sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
             }
-            
-            if (this.sortDirection === 'asc') {
-                return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-            } else {
-                return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
+
+            if (numericColumns.includes(col)) {
+                const aNum = (aVal !== null && aVal !== undefined && aVal !== '') ? Number(aVal) : Number.NEGATIVE_INFINITY;
+                const bNum = (bVal !== null && bVal !== undefined && bVal !== '') ? Number(bVal) : Number.NEGATIVE_INFINITY;
+                return this.sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
             }
+
+            aVal = (aVal ?? '').toString().toLowerCase();
+            bVal = (bVal ?? '').toString().toLowerCase();
+            const cmp = aVal.localeCompare(bVal);
+            return this.sortDirection === 'asc' ? cmp : -cmp;
         });
     }
     
@@ -692,16 +693,16 @@ function sortShows(column) {
         showsManager.sortColumn = column;
         showsManager.sortDirection = 'asc';
     }
-    
+
     document.querySelectorAll('th .bi').forEach(icon => {
         icon.className = 'bi bi-chevron-expand text-muted';
     });
-    
+
     const currentHeader = document.querySelector(`th[onclick="sortShows('${column}')"] .bi`);
     if (currentHeader) {
         currentHeader.className = `bi bi-chevron-${showsManager.sortDirection === 'asc' ? 'up' : 'down'} text-primary`;
     }
-    
+
     showsManager.displayShows();
 }
 

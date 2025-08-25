@@ -4,26 +4,26 @@ class Auth {
         this.user = Utils.safeJsonParse(localStorage.getItem('user'));
         this.init();
     }
-    
+
     init() {
         this.updateUI();
         this.bindEvents();
     }
-    
+
     updateUI() {
         const userMenu = document.getElementById('userMenu');
         const loginMenu = document.getElementById('loginMenu');
         const usernameSpan = document.getElementById('username');
         const adminPanelMenu = document.getElementById('adminPanelMenu');
         const adminPanelMenuMain = document.getElementById('adminPanelMenuMain');
-        
+
         if (this.isAuthenticated()) {
             if (userMenu) userMenu.style.display = 'block';
             if (loginMenu) loginMenu.style.display = 'none';
             if (usernameSpan && this.user) {
                 usernameSpan.textContent = this.user.username || this.user.email || 'Usuário';
             }
-            
+
             // Show admin panel menu for admins
             if (this.hasRole('admin')) {
                 if (adminPanelMenu) adminPanelMenu.style.display = 'block';
@@ -36,29 +36,28 @@ class Auth {
             if (adminPanelMenuMain) adminPanelMenuMain.style.display = 'none';
         }
     }
-    
+
     bindEvents() {
         this.checkTokenExpiration();
-        
+
         setInterval(() => {
             this.checkTokenExpiration();
         }, 60000); // verificando a cada 60 segundos
     }
-    
+
     isAuthenticated() {
-        console.log(this.token);
         return this.token && this.user;
     }
-    
+
     hasRole(role) {
         return this.isAuthenticated() && this.user.role === role;
     }
-    
+
     canPerform(action, entityType = null) {
         if (!this.isAuthenticated()) return false;
-        
+
         const userRole = this.user.role;
-        
+
         switch (action) {
             case 'create':
                 if (entityType === 'band') {
@@ -70,20 +69,22 @@ class Auth {
                 if (entityType === 'participation') {
                     return userRole === 'admin' || userRole === 'musician' || userRole === 'organizador';
                 }
+                if (entityType === "band_member") {
+                    return userRole === 'admin' || userRole === 'musician';
+                }
                 break;
-                
+
             case 'edit':
             case 'delete':
                 return userRole === 'admin' || userRole === 'musician' || userRole === 'organizador';
-                
+
             default:
                 return true; // visualização é normalmente permitida
         }
-        
+
         return false;
     }
-    
-    // Login user
+
     async login(email, password) {
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.LOGIN, {
@@ -97,18 +98,18 @@ class Auth {
                     }
                 )
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 this.token = data.data.token;
                 this.user = data.data.usuario;
-                
+
                 localStorage.setItem('authToken', this.token);
                 localStorage.setItem('user', JSON.stringify(this.user));
-                
+
                 this.updateUI();
-                
+
                 showToast('Login realizado com sucesso!', 'success');
                 return { success: true };
             } else {
@@ -120,8 +121,7 @@ class Auth {
             return { success: false, error: error.message };
         }
     }
-    
-    // Register user
+
     async register(userData) {
         try {
             const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.REGISTER, {
@@ -133,9 +133,9 @@ class Auth {
                     usuario: userData
                 })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 showToast('Registro realizado com sucesso! Faça login para continuar.', 'success');
                 return { success: true };
@@ -148,34 +148,32 @@ class Auth {
             return { success: false, error: error.message };
         }
     }
-    
-    // Logout user
+
     logout() {
         this.token = null;
         this.user = null;
-        
+
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
-        
+
         this.updateUI();
         showToast('Logout realizado com sucesso!', 'info');
-        
-        // Redireciona pro login se a página atual for uma página interna
-        if (window.location.pathname.includes('pages/') && 
-            !window.location.pathname.includes('login.html') && 
+
+        if (window.location.pathname.includes('pages/') &&
+            !window.location.pathname.includes('login.html') &&
             !window.location.pathname.includes('docs.html')) {
             window.location.href = '../index.html';
         }
     }
-    
+
     checkTokenExpiration() {
         if (!this.token) return;
-        
+
         try {
             // payload eeee
             const payload = JSON.parse(atob(this.token.split('.')[1]));
             const currentTime = Math.floor(Date.now() / 1000);
-            
+
             if (payload.exp && payload.exp < currentTime) {
                 showToast('Sua sessão expirou. Por favor, faça login novamente.', 'warning');
                 this.logout();
@@ -185,11 +183,11 @@ class Auth {
             this.logout();
         }
     }
-    
+
     getUser() {
         return this.user;
     }
-    
+
     getToken() {
         return this.token;
     }
@@ -204,7 +202,7 @@ function logout() {
 function showToast(message, type = 'info', duration = null) {
     const existingToasts = document.querySelectorAll('.toast');
     existingToasts.forEach(toast => toast.remove());
-    
+
     let toastContainer = document.getElementById('toastContainer');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -213,7 +211,7 @@ function showToast(message, type = 'info', duration = null) {
         toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
-    
+
     let bgClass, iconClass, toastDuration;
     switch (type) {
         case 'success':
@@ -236,7 +234,7 @@ function showToast(message, type = 'info', duration = null) {
             iconClass = 'bi-info-circle';
             toastDuration = duration || API_CONFIG.TOAST.INFO_DURATION;
     }
-    
+
     const toastId = Utils.generateId();
     const toastHtml = `
         <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -250,15 +248,15 @@ function showToast(message, type = 'info', duration = null) {
             </div>
         </div>
     `;
-    
+
     toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-    
+
     const toastElement = document.getElementById(toastId);
     const bsToast = new bootstrap.Toast(toastElement, {
         delay: toastDuration
     });
     bsToast.show();
-    
+
     toastElement.addEventListener('hidden.bs.toast', () => {
         toastElement.remove();
     });

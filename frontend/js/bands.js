@@ -4,7 +4,7 @@ class BandsManager {
         this.filteredBands = [];
         this.currentPage = 1;
         this.pageSize = 10;
-        this.sortColumn = 'nome';
+        this.sortColumn = 'id';
         this.sortDirection = 'asc';
         this.searchTerm = '';
         this.genreFilter = '';
@@ -20,7 +20,6 @@ class BandsManager {
         this.updateUIBasedOnAuth();
     }
     
-    // atualiza UI de acordo com a autenticação
     updateUIBasedOnAuth() {
         const addBandBtn = document.getElementById('addBandBtn');
         
@@ -207,23 +206,29 @@ class BandsManager {
             </tr>
         `;
     }
-    
+
     sortBands() {
+        const numericColumns = ['id', 'ano_formacao'];
+
         this.filteredBands.sort((a, b) => {
-            let aValue = a[this.sortColumn];
-            let bValue = b[this.sortColumn];
-            
-            if (aValue == null) aValue = '';
-            if (bValue == null) bValue = '';
-            
-            aValue = aValue.toString().toLowerCase();
-            bValue = bValue.toString().toLowerCase();
-            
-            if (this.sortDirection === 'asc') {
-                return aValue.localeCompare(bValue);
-            } else {
-                return bValue.localeCompare(aValue);
+            const col = this.sortColumn;
+
+            if (numericColumns.includes(col)) {
+                const aNum = a[col] !== null && a[col] !== undefined ? Number(a[col]) : Number.NEGATIVE_INFINITY;
+                const bNum = b[col] !== null && b[col] !== undefined ? Number(b[col]) : Number.NEGATIVE_INFINITY;
+                return this.sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
             }
+
+            let aVal = a[col];
+            let bVal = b[col];
+            if (aVal == null) aVal = '';
+            if (bVal == null) bVal = '';
+            aVal = aVal.toString().toLowerCase();
+            bVal = bVal.toString().toLowerCase();
+
+            return this.sortDirection === 'asc'
+                ? aVal.localeCompare(bVal)
+                : bVal.localeCompare(aVal);
         });
     }
     
@@ -480,6 +485,46 @@ class BandsManager {
         const modal = new bootstrap.Modal(document.getElementById('bandModal'));
         modal.show();
     }
+
+     viewBandDetails(bandId) {
+        const band = bandsManager.bands.find(b => b.id === bandId);
+        if (!band) return;
+
+        const content = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="bi bi-person-badge"></i> Nome</h6>
+                <p class="lead">${band.nome}</p>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="bi bi-music-note"></i> Gênero</h6>
+                <p class="lead">${band.genero || 'Não informado'}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="bi bi-flag"></i> País de Origem</h6>
+                <p>${band.pais_origem || 'Não informado'}</p>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="bi bi-calendar"></i> Ano de Formação</h6>
+                <p>${band.ano_formacao || 'Não informado'}</p>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h6><i class="bi bi-hash"></i> ID da Banda</h6>
+                <p>${band.id}</p>
+            </div>
+        </div>
+    `;
+
+        document.getElementById('bandDetailsContent').innerHTML = content;
+
+        const modal = new bootstrap.Modal(document.getElementById('bandDetailsModal'));
+        modal.show();
+    }
     
     async deleteBand(bandId) {
         try {
@@ -593,16 +638,22 @@ function sortBands(column) {
         bandsManager.sortColumn = column;
         bandsManager.sortDirection = 'asc';
     }
-    
-    document.querySelectorAll('th .bi').forEach(icon => {
-        icon.className = 'bi bi-chevron-expand text-muted';
+
+    document.querySelectorAll('th[data-column]').forEach(th => {
+        const icon = th.querySelector('.bi');
+        if (icon) icon.className = 'bi bi-chevron-expand text-muted';
+        th.removeAttribute('aria-sort');
     });
-    
-    const currentHeader = document.querySelector(`th[onclick="sortBands('${column}')"] .bi`);
+
+    const currentHeader = document.querySelector(`th[data-column="${column}"]`);
     if (currentHeader) {
-        currentHeader.className = `bi bi-chevron-${bandsManager.sortDirection === 'asc' ? 'up' : 'down'} text-primary`;
+        const icon = currentHeader.querySelector('.bi');
+        if (icon) {
+            icon.className = `bi bi-chevron-${bandsManager.sortDirection === 'asc' ? 'up' : 'down'} text-primary`;
+        }
+        currentHeader.setAttribute('aria-sort', bandsManager.sortDirection === 'asc' ? 'ascending' : 'descending');
     }
-    
+
     bandsManager.displayBands();
 }
 
@@ -632,25 +683,14 @@ function deleteBand(bandId) {
 function confirmDeleteBand() {
     if (bandsManager.bandToDelete) {
         bandsManager.deleteBand(bandsManager.bandToDelete);
-        
+
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteBandModal'));
         modal.hide();
     }
 }
 
 function viewBandDetails(bandId) {
-    const band = bandsManager.bands.find(b => b.id === bandId);
-    if (!band) return;
-    
-    const details = `
-        <strong>ID:</strong> ${band.id}<br>
-        <strong>Nome:</strong> ${band.nome}<br>
-        <strong>Gênero:</strong> ${band.genero || 'Não informado'}<br>
-        <strong>País:</strong> ${band.pais_origem || 'Não informado'}<br>
-        <strong>Ano de Formação:</strong> ${band.ano_formacao || 'Não informado'}
-    `;
-    
-    showToast(`<strong>${band.nome}</strong><br><br>${details}`, 'info', 8000);
+    bandsManager.viewBandDetails(bandId);
 }
 
 function exportBands(format) {

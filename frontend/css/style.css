@@ -24,7 +24,6 @@ body {
     border: none;
 }
 
-/* Cards */
 .card {
     border: none;
     border-radius: 10px;
@@ -37,7 +36,6 @@ body {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
-/* Tables */
 .table {
     background-color: white;
     border-radius: 10px;
@@ -58,7 +56,6 @@ body {
     background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* Buttons */
 .btn {
     border-radius: 6px;
     font-weight: 500;
@@ -75,7 +72,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* Forms */
 .form-control, .form-select {
     border-radius: 6px;
     border: 1px solid #dee2e6;
@@ -93,14 +89,12 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Alerts */
 .alert {
     border: none;
     border-radius: 8px;
     font-weight: 500;
 }
 
-/* Loading */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -121,7 +115,6 @@ body {
     text-align: center;
 }
 
-/* Pagination */
 .pagination .page-link {
     border-radius: 6px;
     margin: 0 2px;
@@ -130,11 +123,11 @@ body {
 }
 
 .pagination .page-item.active .page-link {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    color: #fff !important;
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
 }
 
-/* Search and Filter */
 .search-filter-section {
     background-color: white;
     border-radius: 10px;
@@ -143,20 +136,17 @@ body {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-/* Action buttons */
 .action-buttons .btn {
     margin-right: 5px;
     margin-bottom: 5px;
 }
 
-/* Status badges */
 .badge {
     font-size: 0.75rem;
     font-weight: 500;
     padding: 0.375rem 0.75rem;
 }
 
-/* Modal customizations */
 .modal-content {
     border: none;
     border-radius: 10px;
@@ -172,7 +162,6 @@ body {
     filter: invert(1);
 }
 
-/* Toast notifications */
 .toast {
     border: none;
     border-radius: 8px;
@@ -183,7 +172,6 @@ body {
     color: white;
 }
 
-/* Footer */
 .footer {
     background-color: var(--dark-color);
     color: white;
@@ -191,7 +179,6 @@ body {
     margin-top: 3rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .jumbotron {
         padding: 2rem 1rem;
@@ -221,7 +208,6 @@ body {
     }
 }
 
-/* Utility classes */
 .cursor-pointer {
     cursor: pointer;
 }
@@ -246,7 +232,6 @@ body {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
 }
 
-/* Animation classes */
 .fade-in {
     animation: fadeIn 0.5s ease-in;
 }
@@ -263,4 +248,64 @@ body {
 @keyframes slideIn {
     from { transform: translateX(-100%); }
     to { transform: translateX(0); }
+}
+
+.btn-close-circle {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: #dc3545;
+    opacity: 1;                   /* sai bootstrap */
+    background-image: none !important; /* removendo svg padrão */
+    box-shadow: none;
+    transition: background-color .15s ease-in-out, transform .15s;
+}
+
+.modal-header .btn-close:not(.btn-close-circle) {
+    filter: invert(1);
+}
+
+.modal-header .btn-close-circle {
+    margin-right: calc(0.25rem - 2px); /* antes era -0.5rem via Bootstrap; desloca ~0.75rem para a esquerda */
+}
+
+.btn-close-circle {
+    background-color: #dc3545 !important;
+    filter: none !important;
+}
+
+.btn-close-circle:hover {
+    background-color: #b02a37 !important;
+}
+
+.btn-close-circle:active {
+    transform: scale(.92);
+}
+
+.btn-close-circle:focus {
+    outline: none;
+    box-shadow: 0 0 0 .25rem rgba(220,53,69,.35);
+}
+
+.btn-close-circle::before,
+.btn-close-circle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 2px;
+    background: #fff;
+    transform-origin: center;
+}
+
+.btn-close-circle::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.btn-close-circle::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
