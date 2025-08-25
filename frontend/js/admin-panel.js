@@ -1,7 +1,7 @@
 class AdminPanel {
     constructor() {
         this.init();
-        this.mockUsers = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
+        this.users = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
     }
     
     init() {
@@ -117,7 +117,7 @@ class AdminPanel {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    this.mockUsers = data.data.usuarios;
+                    this.users = data.data.usuarios;
                 }
             }
         } catch (error) {
@@ -127,7 +127,7 @@ class AdminPanel {
         const tbody = document.querySelector('#usersTable tbody');
         tbody.innerHTML = '';
         
-        this.mockUsers.forEach(user => {
+        this.users.forEach(user => {
             const row = this.createUserRow(user);
             tbody.appendChild(row);
         });
@@ -554,7 +554,7 @@ class AdminPanel {
     }
     
     editUser(userId) {
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
@@ -641,12 +641,12 @@ class AdminPanel {
         }, 1000);
     }
     
-    getMockUserById(userId) {
-        return this.mockUsers.find(user => user.id === userId);
+    getUserById(userId) {
+        return this.users.find(user => user.id === userId);
     }
     
     toggleUserStatus(userId) {
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
@@ -667,7 +667,7 @@ class AdminPanel {
     }
     
     deleteUser(userId) {
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
@@ -739,7 +739,7 @@ class AdminPanel {
             return;
         }
         
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         
         showToast('Excluindo usuário...', 'info');
         
