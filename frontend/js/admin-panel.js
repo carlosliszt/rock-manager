@@ -527,7 +527,8 @@ class AdminPanel {
         }
         
         showToast('Iniciando limpeza de dados...', 'info');
-        
+
+        //falso, apenas para visualização de como será no sistema completo.
         setTimeout(() => {
             let cleanedItems = [];
             

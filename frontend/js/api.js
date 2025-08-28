@@ -2,6 +2,7 @@
  *
  * Objetivo: centralizar chamadas à API, padronizar headers, tratamento de erros,
  * exibição de loading e utilidades auxiliares (formatadores e validações).
+ * não implementado por completo - (25/08/2025)
  *
  *  @author Carlos Miguel, Lucas Baruel e Mario Rodrigues.
  */
