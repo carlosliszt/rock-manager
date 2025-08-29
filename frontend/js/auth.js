@@ -239,7 +239,7 @@ function showToast(message, type = 'info', duration = null) {
             toastDuration = duration || API_CONFIG.TOAST.WARNING_DURATION;
             break;
         default:
-            bgClass = 'bg-info';
+            bgClass = 'bg-indigo';
             iconClass = 'bi-info-circle';
             toastDuration = duration || API_CONFIG.TOAST.INFO_DURATION;
     }

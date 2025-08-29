@@ -268,7 +268,7 @@ function showToast(title, message, type = 'info') {
     } else if (type === 'warning') {
         toastEl.classList.add('bg-warning', 'text-dark');
     } else {
-        toastEl.classList.add('bg-info', 'text-white');
+        toastEl.classList.add('bg-indigo', 'text-white');
     }
 
     const toast = new bootstrap.Toast(toastEl);

@@ -202,14 +202,14 @@ class ShowsManager {
                 </td>
                 <td>
                     ${show.publico_estimado ? 
-                        `<span class="badge bg-info">${show.publico_estimado.toLocaleString()}</span>` : 
+                        `<span class="badge bg-primary">${show.publico_estimado.toLocaleString()}</span>` : 
                         '<span class="text-muted">-</span>'
                     }
                 </td>
                 <td>${statusBadge}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn btn-sm btn-outline-info" onclick="viewShowDetails(${show.id})" title="Ver detalhes">
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewShowDetails(${show.id})" title="Ver detalhes">
                             <i class="bi bi-eye"></i>
                         </button>
                         ${canEdit ? `
