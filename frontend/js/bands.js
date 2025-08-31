@@ -188,7 +188,7 @@ class BandsManager {
                 <td>${band.ano_formacao || '<span class="text-muted">-</span>'}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn btn-sm btn-outline-info" onclick="viewBandDetails(${band.id})" title="Ver detalhes">
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewBandDetails(${band.id})" title="Ver detalhes">
                             <i class="bi bi-eye"></i>
                         </button>
                         ${canEdit ? `

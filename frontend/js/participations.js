@@ -305,7 +305,7 @@ class ParticipationsManager {
                     <span class="badge bg-primary">${participation.ordem_apresentacao}°</span>
                 </td>
                 <td>
-                    <span class="badge bg-info">${participation.tempo_execucao_min} min</span>
+                    <span class="badge bg-secondary">${participation.tempo_execucao_min} min</span>
                 </td>
                 <td>${statusBadge}</td>
                 <td>
@@ -320,7 +320,7 @@ class ParticipationsManager {
                                 <i class="bi bi-trash"></i>
                             </button>
                         ` : ''}
-                        <button class="btn btn-sm btn-outline-info" onclick="viewBandShows(${participation.id_banda})" title="Ver shows da banda">
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewBandShows(${participation.id_banda})" title="Ver shows da banda">
                             <i class="bi bi-calendar-event"></i>
                         </button>
                     </div>

@@ -105,11 +105,10 @@ class UsuarioDAO
 
     public function update(Usuario $usuario): bool
     {
-        $query = 'UPDATE Usuarios SET username = :username, email = :email, password_hash = :password_hash, role = :role, ativo = :ativo, criado_em = :criado_em WHERE id = :id';
+        $query = 'UPDATE Usuarios SET username = :username, email = :email, role = :role, ativo = :ativo, criado_em = :criado_em WHERE id = :id';
         $statement = Database::getConnection()->prepare($query);
         $statement->bindValue(':username', $usuario->getUsername(), PDO::PARAM_STR);
         $statement->bindValue(':email', $usuario->getEmail(), PDO::PARAM_STR);
-        $statement->bindValue(':password_hash', $usuario->getPasswordHash(), PDO::PARAM_STR);
         $statement->bindValue(':role', $usuario->getRole(), PDO::PARAM_STR);
         $statement->bindValue(':ativo', $usuario->getAtivo(), PDO::PARAM_INT);
         $statement->bindValue(':criado_em', $usuario->getCriadoEm(), PDO::PARAM_STR);

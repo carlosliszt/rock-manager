@@ -27,6 +27,14 @@ class UsuarioBandaDAO
         return $stmt->rowCount() > 0;
     }
 
+    public function deleteOrfas(): int
+    {
+        $query = 'DELETE FROM UsuarioBanda WHERE id_banda NOT IN (SELECT id FROM Banda) OR id_usuario NOT IN (SELECT id FROM Usuarios)';
+        $stmt = Database::getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
     public function readAll(): array
     {
         $sql = "SELECT ub.id_usuario, u.username AS nome_usuario, ub.id_banda, b.nome AS nome_banda, ub.funcao

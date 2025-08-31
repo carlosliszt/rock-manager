@@ -2,6 +2,7 @@
  *
  * Objetivo: centralizar chamadas à API, padronizar headers, tratamento de erros,
  * exibição de loading e utilidades auxiliares (formatadores e validações).
+ * não implementado por completo - (25/08/2025)
  *
  *  @author Carlos Miguel, Lucas Baruel e Mario Rodrigues.
  */
@@ -60,7 +61,7 @@ class API {
 
             // Se o token expirou, o logout é forçado.
             if (response.status === 401) {
-                Auth.logout();
+                Auth.logout("token_expired");
                 return { success: false, message: 'Session expired' };
             }
 
@@ -267,7 +268,7 @@ function showToast(title, message, type = 'info') {
     } else if (type === 'warning') {
         toastEl.classList.add('bg-warning', 'text-dark');
     } else {
-        toastEl.classList.add('bg-info', 'text-white');
+        toastEl.classList.add('bg-indigo', 'text-white');
     }
 
     const toast = new bootstrap.Toast(toastEl);
@@ -283,7 +284,7 @@ function handleApiError(error, action = 'perform action') {
     // Caso típico de sessão expirada.
     if (error.message && error.message.includes('401')) {
         showToast('Session Expired', 'Please log in again', 'warning');
-        auth.logout();
+        auth.logout("token_expired");
         return;
     }
 

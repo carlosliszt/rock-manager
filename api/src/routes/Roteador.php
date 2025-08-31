@@ -38,6 +38,7 @@ class Roteador
         $this->setupUsuarioBandaRoutes();
         $this->setupLoginRoutes();
         $this->setupUsuarioRoutes();
+        $this->setupSystemRoutes();
     }
 
     private function setup404Route(): void
@@ -85,6 +86,79 @@ class Roteador
                 (new UsuarioController())->index();
             } catch (Throwable $throwable) {
                 $this->sendErrorResponse($throwable, 'Erro ao buscar usuários');
+            }
+            exit();
+        });
+
+        $this->router->get('/users/me', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $id = $payload->id ?? null;
+                if (!$id) {
+                    (new Response(
+                        success: false,
+                        message: 'Usuário não autenticado',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Token inválido ou usuário não identificado'
+                        ],
+                        httpCode: 401
+                    ))->send();
+                    exit();
+                }
+                (new UsuarioController())->profile((int)$id);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar perfil do usuário');
+            }
+            exit();
+        });
+
+        $this->router->put('/users/(\d+)', function ($id): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+                if ($role !== 'admin' || $payload->id == $id) {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode atualizar outros usuários'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+                $requestBody = file_get_contents("php://input");
+                (new UsuarioController())->update((int)$id, $requestBody);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao atualizar usuário');
+            }
+            exit();
+        });
+
+        $this->router->delete('/users/(\d+)', function ($id): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+                if ($role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode excluir usuários'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+                (new UsuarioController())->destroy((int)$id);
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao excluir usuário');
             }
             exit();
         });
@@ -1023,8 +1097,143 @@ class Roteador
         });
     }
 
+    private function setupSystemRoutes(): void
+    {
+        $this->router->get('/sys/activity', function (): never {
+            try {
+                $logFile = "system/log.log";
+                $separador = str_repeat('*', 100);
+                $blocks = [];
+                if (file_exists($logFile)) {
+                    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                    $block = [];
+                    for ($i = 0; $i < count($lines); $i++) {
+                        $block[] = $lines[$i];
+                        if (trim($lines[$i]) === $separador) {
+                            $blocks[] = implode("\n", $block);
+                            $block = [];
+                        }
+                    }
+                    $blocks = array_slice($blocks, -20);
+                }
+                (new Response(
+                    success: true,
+                    message: 'Atividade recente do sistema.',
+                    data: ['activity' => array_reverse($blocks)],
+                    httpCode: 200
+                ))->send();
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar atividade do sistema');
+            }
+            exit();
+        });
+
+        $this->router->get('/sys/logs', function (): never {
+            try {
+                $logFile = "system/log.log";
+                $separador = str_repeat('*', 100);
+                $blocks = [];
+                if (file_exists($logFile)) {
+                    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                    $block = [];
+                    for ($i = 0; $i < count($lines); $i++) {
+                        $block[] = $lines[$i];
+                        if (trim($lines[$i]) === $separador) {
+                            $blocks[] = implode("\n", $block);
+                            $block = [];
+                        }
+                    }
+                }
+                (new Response(
+                    success: true,
+                    message: 'Logs do sistema.',
+                    data: ['logs' => $blocks],
+                    httpCode: 200
+                ))->send();
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao buscar logs do sistema');
+            }
+            exit();
+        });
+
+        $this->router->post('/sys/cleanup', function (): never {
+            try {
+                $tokenMiddleware = new JWTMiddleware();
+                $payload = $tokenMiddleware->isValidToken();
+                $role = $payload->role ?? null;
+                if ($role !== 'admin') {
+                    (new Response(
+                        success: false,
+                        message: 'Ação não permitida',
+                        error: [
+                            'code' => 'authorization_error',
+                            'message' => 'Apenas admin pode executar limpeza'
+                        ],
+                        httpCode: 403
+                    ))->send();
+                    exit();
+                }
+                $body = file_get_contents('php://input');
+                $params = json_decode($body, true);
+                $result = [];
+                if (!empty($params['cleanupParticipations'])) {
+                    require_once 'api/src/DAO/ParticipacaoDAO.php';
+                    $dao = new ParticipacaoDAO();
+                    $qtd = $dao->deleteOrfas();
+                    $result[] = "$qtd participações órfãs removidas";
+                }
+                if (!empty($params['cleanupMembers'])) {
+                    require_once 'api/src/DAO/UsuarioBandaDAO.php';
+                    $dao = new UsuarioBandaDAO();
+                    $qtd = $dao->deleteOrfas();
+                    $result[] = "$qtd membros órfãos removidos";
+                }
+                if (!empty($params['cleanupLogs'])) {
+                    $logFile = 'system/log.log';
+                    $separador = str_repeat('*', 100);
+                    if (file_exists($logFile)) {
+                        $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                        $now = time();
+                        $kept = [];
+                        $removed = 0;
+                        $block = [];
+                        $removeBlock = false;
+                        foreach ($lines as $line) {
+                            if (preg_match('/^\[(.*?)\]/', $line, $m)) {
+                                $date = strtotime($m[1]);
+                                $removeBlock = ($date !== false && ($now - $date) > 30*24*60*60);
+                            }
+                            $block[] = $line;
+                            if (trim($line) === $separador) {
+                                if (!$removeBlock) {
+                                    $kept = array_merge($kept, $block);
+                                } else {
+                                    $removed += count($block);
+                                }
+                                $block = [];
+                                $removeBlock = false;
+                            }
+                        }
+                        file_put_contents($logFile, implode("\n", $kept));
+                        $result[] = "$removed linhas de logs antigos removidas";
+                    }
+                }
+                (new Response(
+                    success: true,
+                    message: 'Limpeza concluída.',
+                    data: ['result' => $result],
+                    httpCode: 200
+                ))->send();
+            } catch (Throwable $throwable) {
+                $this->sendErrorResponse($throwable, 'Erro ao executar limpeza de dados');
+            }
+            exit();
+        });
+    }
+
     public function start(): void
     {
         $this->router->run();
     }
 }
+

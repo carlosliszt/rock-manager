@@ -1,7 +1,9 @@
 class AdminPanel {
     constructor() {
         this.init();
-        this.mockUsers = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
+        this.users = []; //carregando da API apenas para exibição, não para manipulação real (não implementado - 19/08/2025)
+        this.sortColumn = 'username';
+        this.sortDirection = 'asc';
     }
     
     init() {
@@ -117,35 +119,71 @@ class AdminPanel {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.data) {
-                    this.mockUsers = data.data.usuarios;
+                    this.users = data.data.usuarios;
                 }
             }
         } catch (error) {
             console.error('Error loading bands:', error);
         }
         
+        this.renderUsersTable();
+    }
+
+    renderUsersTable() {
         const tbody = document.querySelector('#usersTable tbody');
         tbody.innerHTML = '';
-        
-        this.mockUsers.forEach(user => {
+        if (!this.users || this.users.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Nenhum usuário encontrado.</td></tr>`;
+            return;
+        }
+        this.users.forEach(user => {
             const row = this.createUserRow(user);
             tbody.appendChild(row);
         });
+        this.updateSortIcons();
     }
-    
+
+    sortUsers(column, toggle = true) {
+        if (toggle) {
+            if (this.sortColumn === column) {
+                this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.sortColumn = column;
+                this.sortDirection = 'asc';
+            }
+        }
+        const dir = this.sortDirection === 'asc' ? 1 : -1;
+        this.users.sort((a, b) => {
+            let valA = a[column];
+            let valB = b[column];
+            if (column === 'criado_em') {
+                valA = new Date(valA);
+                valB = new Date(valB);
+            } else if (column === 'ativo') {
+                valA = Number(valA);
+                valB = Number(valB);
+            } else if (typeof valA === 'string' && typeof valB === 'string') {
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+            }
+            if (valA < valB) return -1 * dir;
+            if (valA > valB) return 1 * dir;
+            return 0;
+        });
+        this.renderUsersTable();
+    }
+
     createUserRow(user) {
         const row = document.createElement('tr');
-        
         const roleBadgeClass = this.getRoleBadgeClass(user.role);
         const roleDisplayName = this.getRoleDisplayName(user.role);
-        
         row.innerHTML = `
             <td>${user.id}</td>
             <td>${user.username}</td>
             <td>${user.email}</td>
             <td><span class="badge ${roleBadgeClass}">${roleDisplayName}</span></td>
-            <td><span class="badge bg-success">Ativo</span></td>
-            <td>${Utils.formatDate(user.created_at)}</td>
+            <td><span class="badge ${user.ativo === 1 ? 'bg-success' : 'bg-secondary'}">${user.ativo === 1 ? 'Ativo' : 'Inativo'}</span></td>
+            <td>${Utils.formatDate(user.criado_em)}</td>
             <td>
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-outline-primary" onclick="adminPanel.editUser(${user.id})" title="Editar">
@@ -160,58 +198,41 @@ class AdminPanel {
                 </div>
             </td>
         `;
-        
+
         return row;
     }
     
-    loadSystemActivity() {
-        const activityHtml = `
-            <div class="activity-item d-flex align-items-center mb-3 p-3 border-start border-primary border-4">
-                <div class="activity-icon me-3">
-                    <i class="bi bi-server text-success fs-4"></i>
-                </div>
-                <div class="activity-content flex-grow-1">
-                    <h6 class="mb-1">Sistema iniciado</h6>
-                    <p class="mb-1 text-muted">Servidor web iniciado com sucesso</p>
-                    <small class="text-muted">Há 2 horas</small>
-                </div>
-            </div>
-            <div class="activity-item d-flex align-items-center mb-3 p-3 border-start border-info border-4">
-                <div class="activity-icon me-3">
-                    <i class="bi bi-person-plus text-primary fs-4"></i>
-                </div>
-                <div class="activity-content flex-grow-1">
-                    <h6 class="mb-1">Novo usuário registrado</h6>
-                    <p class="mb-1 text-muted">Um novo usuário se registrou no sistema</p>
-                    <small class="text-muted">Há 3 horas</small>
-                </div>
-            </div>
-            <div class="activity-item d-flex align-items-center mb-3 p-3 border-start border-success border-4">
-                <div class="activity-icon me-3">
-                    <i class="bi bi-database text-info fs-4"></i>
-                </div>
-                <div class="activity-content flex-grow-1">
-                    <h6 class="mb-1">Backup automático concluído</h6>
-                    <p class="mb-1 text-muted">Backup diário do banco de dados realizado</p>
-                    <small class="text-muted">Há 6 horas</small>
-                </div>
-            </div>
-            <div class="activity-item d-flex align-items-center mb-3 p-3 border-start border-warning border-4">
-                <div class="activity-icon me-3">
-                    <i class="bi bi-music-note text-warning fs-4"></i>
-                </div>
-                <div class="activity-content flex-grow-1">
-                    <h6 class="mb-1">Nova banda cadastrada</h6>
-                    <p class="mb-1 text-muted">Uma nova banda foi adicionada ao sistema</p>
-                    <small class="text-muted">Ontem</small>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('systemActivity').innerHTML = activityHtml;
+    async loadSystemActivity() {
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + '/sys/activity', {
+                headers: getDefaultHeaders()
+            });
+            let activityHtml = '';
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data && Array.isArray(data.data.activity) && data.data.activity.length > 0) {
+                    activityHtml = data.data.activity.map(line => `
+                        <div class="activity-item d-flex align-items-center mb-3 p-3 border-start border-primary border-4">
+                            <div class="activity-icon me-3">
+                                <i class="bi bi-clock-history text-info fs-4"></i>
+                            </div>
+                            <div class="activity-content flex-grow-1">
+                                <span class="text-muted small">${line}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    activityHtml = `<div class="text-center text-muted">Nenhuma atividade recente encontrada.</div>`;
+                }
+            } else {
+                activityHtml = `<div class="alert alert-danger">Erro ao carregar atividade do sistema.</div>`;
+            }
+            document.getElementById('systemActivity').innerHTML = activityHtml;
+        } catch (err) {
+            document.getElementById('systemActivity').innerHTML = `<div class="alert alert-danger">Erro ao carregar atividade do sistema.</div>`;
+        }
     }
     
-    // Admin action methods
     async exportBackup() {
         try {
             showToast('Iniciando backup do sistema...', 'info');
@@ -221,7 +242,6 @@ class AdminPanel {
             });
             
             if (response.ok) {
-                // Create download link
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -243,7 +263,50 @@ class AdminPanel {
     }
     
     viewLogs() {
-        showToast('Funcionalidade de logs em desenvolvimento', 'info');
+        const existingModal = document.getElementById('logsModal');
+        if (existingModal) existingModal.remove();
+
+        const modalHtml = `
+            <div class="modal fade" id="logsModal" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title"><i class="bi bi-file-text"></i> Logs do Sistema</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" id="logsModalBody">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-2">Carregando logs...</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        const modal = new bootstrap.Modal(document.getElementById('logsModal'));
+        modal.show();
+
+        fetch(API_CONFIG.BASE_URL + '/sys/logs', {
+            headers: getDefaultHeaders()
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            let html = '';
+            if (data.success && data.data && Array.isArray(data.data.logs) && data.data.logs.length > 0) {
+                html = `<pre style="font-size:0.95em; background:#f8f9fa; color:#222; padding:1em; border-radius:6px; max-height:60vh; overflow:auto;">${data.data.logs.map(line => line).join('\n')}</pre>`;
+            } else {
+                html = `<div class="alert alert-info">Nenhum log encontrado.</div>`;
+            }
+            document.getElementById('logsModalBody').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('logsModalBody').innerHTML = `<div class='alert alert-danger'>Erro ao carregar logs: ${err.message}</div>`;
+        });
     }
     
     systemInfo() {
@@ -510,7 +573,7 @@ class AdminPanel {
         modal.show();
     }
     
-    executeCleanup() {
+    async executeCleanup() {
         const confirmCheckbox = document.getElementById('confirmCleanup');
         const cleanupParticipations = document.getElementById('cleanupParticipations').checked;
         const cleanupMembers = document.getElementById('cleanupMembers').checked;
@@ -527,39 +590,42 @@ class AdminPanel {
         }
         
         showToast('Iniciando limpeza de dados...', 'info');
-        
-        setTimeout(() => {
-            let cleanedItems = [];
-            
-            if (cleanupParticipations) {
-                cleanedItems.push('2 participações órfãs removidas');
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + '/sys/cleanup', {
+                method: 'POST',
+                headers: {
+                    ...getDefaultHeaders(),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cleanupParticipations,
+                    cleanupMembers,
+                    cleanupLogs
+                })
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                let cleanedItems = data.data && data.data.result ? data.data.result : [];
+                const message = `Limpeza concluída:<br>• ${cleanedItems.join('<br>• ')}`;
+                showToast(message, 'success', 8000);
+                const modal = bootstrap.Modal.getInstance(document.getElementById('cleanupDataModal'));
+                modal.hide();
+                this.loadSystemStats();
+            } else {
+                throw new Error(data.message || 'Erro ao executar limpeza');
             }
-            
-            if (cleanupMembers) {
-                cleanedItems.push('1 membro órfão removido');
-            }
-            
-            if (cleanupLogs) {
-                cleanedItems.push('15 logs antigos removidos');
-            }
-            
-            const message = `Limpeza concluída:<br>• ${cleanedItems.join('<br>• ')}`;
-            showToast(message, 'success', 8000);
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('cleanupDataModal'));
-            modal.hide();
-            
-            this.loadSystemStats();
-        }, 2000);
+        } catch (error) {
+            showToast('Erro ao executar limpeza: ' + error.message, 'error');
+        }
     }
-    
+
     editUser(userId) {
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
         }
-        
+
         const modalHtml = `
             <div class="modal fade" id="editUserModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -590,8 +656,8 @@ class AdminPanel {
                                 <div class="mb-3">
                                     <label for="editStatus" class="form-label">Status</label>
                                     <select class="form-select" id="editStatus">
-                                        <option value="active" ${user.status === 'Ativo' ? 'selected' : ''}>Ativo</option>
-                                        <option value="inactive" ${user.status !== 'Ativo' ? 'selected' : ''}>Inativo</option>
+                                        <option value="active" ${user.ativo === 1 ? 'selected' : ''}>Ativo</option>
+                                        <option value="inactive" ${user.ativo !== 1 ? 'selected' : ''}>Inativo</option>
                                     </select>
                                 </div>
                             </form>
@@ -606,78 +672,136 @@ class AdminPanel {
                 </div>
             </div>
         `;
-        
+
         const existingModal = document.getElementById('editUserModal');
         if (existingModal) {
             existingModal.remove();
         }
-        
+
         document.body.insertAdjacentHTML('beforeend', modalHtml);
-        
+
         const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
         modal.show();
     }
-    
-    saveUser(userId) {
+
+    async saveUser(userId) {
         const username = document.getElementById('editUsername').value;
         const email = document.getElementById('editEmail').value;
         const role = document.getElementById('editRole').value;
         const status = document.getElementById('editStatus').value;
-        
+
         if (!username || !email || !role) {
             showToast('Preencha todos os campos obrigatórios', 'warning');
             return;
         }
-        
+
         showToast('Salvando alterações...', 'info');
-        
-        setTimeout(() => {
-            showToast(`Usuário ${username} atualizado com sucesso!`, 'success');
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
-            modal.hide();
-            
-            this.loadUsers();
-        }, 1000);
+        try {
+            const body = JSON.stringify({
+                username,
+                email,
+                role,
+                ativo: status === 'active' ? 1 : 0
+            });
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS + '/' + userId, {
+                method: 'PUT',
+                headers: {
+                    ...getDefaultHeaders(),
+                    'Content-Type': 'application/json'
+                },
+                body
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                showToast(`Usuário ${username} atualizado com sucesso!`, 'success');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+                modal.hide();
+                this.loadUsers();
+            } else {
+                throw new Error(data.message || 'Erro ao atualizar usuário');
+            }
+        } catch (err) {
+            showToast('Erro ao salvar usuário: ' + err.message, 'error');
+        }
     }
-    
-    getMockUserById(userId) {
-        return this.mockUsers.find(user => user.id === userId);
-    }
-    
-    toggleUserStatus(userId) {
-        const user = this.getMockUserById(userId);
+
+    async toggleUserStatus(userId) {
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
         }
-        
-        const currentStatus = user.status === 'Ativo' ? 'ativo' : 'inativo';
-        const newStatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
-        const action = newStatus === 'ativo' ? 'ativar' : 'desativar';
-        
+        const currentStatus = user.ativo === 1 ? 'ativo' : 'inativo';
+        const newStatus = currentStatus === 'ativo' ? 0 : 1;
+        const action = newStatus === 1 ? 'ativar' : 'desativar';
         if (confirm(`Tem certeza que deseja ${action} o usuário ${user.username}?`)) {
             showToast(`${action === 'ativar' ? 'Ativando' : 'Desativando'} usuário...`, 'info');
-            
-            setTimeout(() => {
-                showToast(`Usuário ${user.username} ${action === 'ativar' ? 'ativado' : 'desativado'} com sucesso!`, 'success');
-                this.loadUsers(); // Refresh user list
-            }, 1000);
+            try {
+                const body = JSON.stringify({ ativo: newStatus });
+                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS + '/' + userId, {
+                    method: 'PUT',
+                    headers: {
+                        ...getDefaultHeaders(),
+                        'Content-Type': 'application/json'
+                    },
+                    body
+                });
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showToast(`Usuário ${user.username} ${action === 'ativar' ? 'ativado' : 'desativado'} com sucesso!`, 'success');
+                    this.loadUsers();
+                } else {
+                    throw new Error(data.message || 'Erro ao alterar status');
+                }
+            } catch (err) {
+                showToast('Erro ao alterar status: ' + err.message, 'error');
+            }
         }
     }
-    
+
+    async confirmUserDeletion(userId) {
+        const confirmCheckbox = document.getElementById('confirmUserDeletion');
+        if (!confirmCheckbox.checked) {
+            showToast('Você deve confirmar que entende as consequências desta ação', 'warning');
+            return;
+        }
+        const user = this.getUserById(userId);
+        showToast('Excluindo usuário...', 'info');
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.USERS + '/' + userId, {
+                method: 'DELETE',
+                headers: getDefaultHeaders()
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                showToast(`Usuário ${user.username} excluído com sucesso!`, 'success');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteUserModal'));
+                modal.hide();
+                this.loadUsers();
+            } else {
+                throw new Error(data.message || 'Erro ao excluir usuário');
+            }
+        } catch (err) {
+            showToast('Erro ao excluir usuário: ' + err.message, 'error');
+        }
+    }
+
+    getUserById(userId) {
+        return this.users.find(user => user.id === userId);
+    }
+
     deleteUser(userId) {
-        const user = this.getMockUserById(userId);
+        const user = this.getUserById(userId);
         if (!user) {
             showToast('Usuário não encontrado', 'error');
             return;
         }
-        
+
         if (user.role === 'admin') {
             showToast('Não é possível excluir usuários administradores', 'error');
             return;
         }
-        
+
         const modalHtml = `
             <div class="modal fade" id="deleteUserModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -719,40 +843,18 @@ class AdminPanel {
                 </div>
             </div>
         `;
-        
+
         const existingModal = document.getElementById('deleteUserModal');
         if (existingModal) {
             existingModal.remove();
         }
-        
+
         document.body.insertAdjacentHTML('beforeend', modalHtml);
-        
+
         const modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
         modal.show();
     }
-    
-    confirmUserDeletion(userId) {
-        const confirmCheckbox = document.getElementById('confirmUserDeletion');
-        
-        if (!confirmCheckbox.checked) {
-            showToast('Você deve confirmar que entende as consequências desta ação', 'warning');
-            return;
-        }
-        
-        const user = this.getMockUserById(userId);
-        
-        showToast('Excluindo usuário...', 'info');
-        
-        setTimeout(() => {
-            showToast(`Usuário ${user.username} excluído com sucesso!`, 'success');
-            
-            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteUserModal'));
-            modal.hide();
-            
-            this.loadUsers();
-        }, 1500);
-    }
-    
+
     getRoleBadgeClass(role) {
         switch (role) {
             case 'admin':
@@ -765,7 +867,7 @@ class AdminPanel {
                 return 'bg-secondary';
         }
     }
-    
+
     getRoleDisplayName(role) {
         switch (role) {
             case 'admin':
@@ -776,8 +878,38 @@ class AdminPanel {
                 return 'Organizador';
             default:
                 return 'Usuário';
+
         }
     }
+
+    createUserRow(user) {
+        const row = document.createElement('tr');
+        const roleBadgeClass = this.getRoleBadgeClass(user.role);
+        const roleDisplayName = this.getRoleDisplayName(user.role);
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td><span class="badge ${roleBadgeClass}">${roleDisplayName}</span></td>
+            <td><span class="badge ${user.ativo === 1 ? 'bg-success' : 'bg-secondary'}">${user.ativo === 1 ? 'Ativo' : 'Inativo'}</span></td>
+            <td>${Utils.formatDate(user.criado_em)}</td>
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary" onclick="adminPanel.editUser(${user.id})" title="Editar">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-warning" onclick="adminPanel.toggleUserStatus(${user.id})" title="Ativar/Desativar">
+                        <i class="bi bi-toggle-on"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" onclick="adminPanel.deleteUser(${user.id})" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        return row;
+    }
+
 }
 
 let adminPanel;
