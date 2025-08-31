@@ -145,7 +145,7 @@ class AdminPanel {
             <td>${user.email}</td>
             <td><span class="badge ${roleBadgeClass}">${roleDisplayName}</span></td>
             <td><span class="badge bg-success">Ativo</span></td>
-            <td>${Utils.formatDate(user.created_at)}</td>
+            <td>${Utils.formatDate(user.criado_em)}</td>
             <td>
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-outline-primary" onclick="adminPanel.editUser(${user.id})" title="Editar">
@@ -591,8 +591,8 @@ class AdminPanel {
                                 <div class="mb-3">
                                     <label for="editStatus" class="form-label">Status</label>
                                     <select class="form-select" id="editStatus">
-                                        <option value="active" ${user.status === 'Ativo' ? 'selected' : ''}>Ativo</option>
-                                        <option value="inactive" ${user.status !== 'Ativo' ? 'selected' : ''}>Inativo</option>
+                                        <option value="active" ${user.ativo === 1 ? 'selected' : ''}>Ativo</option>
+                                        <option value="inactive" ${user.ativo !== 1 ? 'selected' : ''}>Inativo</option>
                                     </select>
                                 </div>
                             </form>
@@ -653,7 +653,7 @@ class AdminPanel {
             return;
         }
         
-        const currentStatus = user.status === 'Ativo' ? 'ativo' : 'inativo';
+        const currentStatus = user.ativo === 1 ? 'ativo' : 'inativo';
         const newStatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
         const action = newStatus === 'ativo' ? 'ativar' : 'desativar';
         

@@ -26,32 +26,40 @@ class UsuarioController
         $usuario = $this->usuarioDAO->login($dados->email, $dados->senha);
 
         if ($usuario) {
-            $resposta = $usuario->jsonSerialize();
-            unset($resposta['password_hash']);
+            if($usuario->getAtivo() == 1) {
+                $resposta = $usuario->jsonSerialize();
+                unset($resposta['password_hash']);
 
-            $claims = new stdClass();
-            $claims->payload = new stdClass();
-            $claims->payload->public = (object)[
-                'id' => $usuario->getId(),
-                'username' => $usuario->getUsername(),
-                'role' => $usuario->getRole()
-            ];
-            $claims->payload->private = (object)[
-                'email' => $usuario->getEmail(),
-            ];
+                $claims = new stdClass();
+                $claims->payload = new stdClass();
+                $claims->payload->public = (object)[
+                    'id' => $usuario->getId(),
+                    'username' => $usuario->getUsername(),
+                    'role' => $usuario->getRole()
+                ];
+                $claims->payload->private = (object)[
+                    'email' => $usuario->getEmail(),
+                ];
 
-            $jwt = new JWTToken();
-            $token = $jwt->generateToken($claims);
+                $jwt = new JWTToken();
+                $token = $jwt->generateToken($claims);
 
-            (new Response(
-                success: true,
-                message: 'Login realizado com sucesso.',
-                data: [
-                    'usuario' => $resposta,
-                    'token' => $token
-                ],
-                httpCode: 200
-            ))->send();
+                (new Response(
+                    success: true,
+                    message: 'Login realizado com sucesso.',
+                    data: [
+                        'usuario' => $resposta,
+                        'token' => $token
+                    ],
+                    httpCode: 200
+                ))->send();
+            } else {
+                (new Response(
+                    success: false,
+                    message: 'Usuário inativo. Contate o administrador.',
+                    httpCode: 403
+                ))->send();
+            }
         } else {
             (new Response(
                 success: false,
