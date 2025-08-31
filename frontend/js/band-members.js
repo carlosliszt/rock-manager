@@ -282,7 +282,7 @@ class BandMembersManager {
         const actionButtons = (canEdit || canDelete) ? `
             <div class="btn-group btn-group-sm" role="group">
                 ${canEdit ? `
-                <button type="button" class="btn btn-outline-primary" onclick="bandMembers.editMember(${member.id_usuario}, ${member.id_banda})" title="Editar">
+                <button type="button" class="btn btn-outline-warning" onclick="bandMembers.editMember(${member.id_usuario}, ${member.id_banda})" title="Editar">
                     <i class="bi bi-pencil"></i>
                 </button>` : ''}
                 ${canDelete ? `
@@ -319,7 +319,7 @@ class BandMembersManager {
         const badges = {
             'vocalista': {class: 'bg-primary', label: 'Vocalista'},
             'guitarrista': {class: 'bg-success', label: 'Guitarrista'},
-            'baixista': {class: 'bg-info', label: 'Baixista'},
+            'baixista': {class: 'bg-indigo', label: 'Baixista'},
             'baterista': {class: 'bg-warning text-dark', label: 'Baterista'},
             'tecladista': {class: 'bg-secondary', label: 'Tecladista'},
             'outro': {class: 'bg-dark', label: 'Outro'}
