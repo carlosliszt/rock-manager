@@ -22,6 +22,9 @@ require_once "api/src/utils/Logger.php";
 require_once "api/src/utils/JWTToken.php";
 require_once "api/src/http/Response.php";
 
+require_once "api/src/DAO/UsuarioBandaDAO.php";
+require_once "api/src/DAO/ParticipacaoDAO.php";
+
 class Roteador
 {
     public function __construct(private Router $router = new Router())
@@ -874,7 +877,6 @@ class Roteador
                 $id_banda = $stdParticipacao->participacao->id_banda;
 
                 if ($role !== 'admin' && $role !== 'organizador') {
-                    require_once 'api/src/dao/UsuarioBandaDAO.php';
                     $usuarioBandaDAO = new UsuarioBandaDAO();
                     if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
                         (new Response(
@@ -919,7 +921,6 @@ class Roteador
                         ))->send();
                         exit();
                     }
-                    require_once 'api/src/dao/UsuarioBandaDAO.php';
                     $usuarioBandaDAO = new UsuarioBandaDAO();
                     if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
                         (new Response(
@@ -970,7 +971,6 @@ class Roteador
                         ))->send();
                         exit();
                     }
-                    require_once 'api/src/dao/UsuarioBandaDAO.php';
                     $usuarioBandaDAO = new UsuarioBandaDAO();
                     if (!$usuarioBandaDAO->existeVinculo((int)$id_usuario, (int)$id_banda)) {
                         (new Response(
@@ -1177,13 +1177,11 @@ class Roteador
                 $params = json_decode($body, true);
                 $result = [];
                 if (!empty($params['cleanupParticipations'])) {
-                    require_once 'api/src/DAO/ParticipacaoDAO.php';
                     $dao = new ParticipacaoDAO();
                     $qtd = $dao->deleteOrfas();
                     $result[] = "$qtd participações órfãs removidas";
                 }
                 if (!empty($params['cleanupMembers'])) {
-                    require_once 'api/src/DAO/UsuarioBandaDAO.php';
                     $dao = new UsuarioBandaDAO();
                     $qtd = $dao->deleteOrfas();
                     $result[] = "$qtd membros órfãos removidos";
