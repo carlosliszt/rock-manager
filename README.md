@@ -1,6 +1,6 @@
 # 🎸 Rock Manager API
 
-Uma API REST didática e sistema de gerenciamento web completo para bandas de rock, shows e participações em eventos musicais. Desenvolvido para ensinar conceitos fundamentais da arquitetura REST e padrão MVC (Model-View-Controller) de forma prática e acessível.
+Uma API REST didática e sistema de gerenciamento web completo para bandas de rock, shows, participações e usuários. Desenvolvido para ensinar conceitos fundamentais da arquitetura REST e padrão MVC (Model-View-Controller) de forma prática e acessível.
 
 ## 📋 Índice
 
@@ -14,6 +14,7 @@ Uma API REST didática e sistema de gerenciamento web completo para bandas de ro
 - [API Endpoints](#-api-endpoints)
 - [Credenciais de Demonstração](#-credenciais-de-demonstração)
 - [Importação/Exportação](#-importaçãoexportação)
+- [Notas de Release](#-notas-de-release)
 - [Contribuindo](#-contribuindo)
 - [Licença](#-licença)
 - [Créditos](#-créditos)
@@ -26,17 +27,21 @@ Uma API REST didática e sistema de gerenciamento web completo para bandas de ro
 - **Gerenciamento de Shows**: Criação e controle de eventos musicais
 - **Participações**: Vinculação de bandas aos shows com controle de ordem e duração
 - **Sistema de Autenticação**: Login baseado em JWT com diferentes níveis de permissão
-- **Gerenciamento de Usuários**: Controle de usuários e suas associações com bandas
+- **Gerenciamento de Usuários**: Listagem, ordenação, edição, ativação/desativação e exclusão de usuários via painel admin
+- **Backup e Exportação Completa**: Backup SQL do banco e exportação de todos os dados em JSON
+- **Importação/Exportação Completa**: Bandas, shows, participações e membros em CSV, JSON e XML
+- **Limpeza de Dados**: Remoção de dados órfãos e logs antigos via painel
+- **Logs do Sistema**: Visualização de logs e atividades recentes pelo painel admin
 
 ### Recursos Avançados
-- **Import/Export**: Suporte para CSV, JSON e XML
+- **Import/Export**: Suporte para CSV, JSON e XML em todos os tipos de dados
 - **Design Responsivo**: Interface adaptável para desktop, tablet e smartphone
 - **API RESTful**: Endpoints bem documentados seguindo padrões REST
-- **Segurança**: Autenticação JWT, validação de dados, proteção CSRF
-- **Logs**: Sistema de logging para auditoria e debug
+- **Segurança**: Autenticação JWT, validação de dados, proteção CSRF, permissões administrativas
+- **Logs**: Sistema de logging para auditoria, debug e rastreio de atividades
 
 ### Tipos de Usuário
-- **Admin**: Acesso total ao sistema
+- **Admin**: Acesso total ao sistema e painel administrativo
 - **Organizador**: Pode gerenciar shows e eventos
 - **Músico**: Pode gerenciar bandas e participações
 - **Usuário**: Acesso básico de visualização
@@ -180,6 +185,11 @@ rock_api/
 - `POST /login` - Fazer login
 - `POST /register` - Registrar usuário
 
+### Usuários
+- `GET /users` - Listar usuários
+- `PUT /users/{id}` - Atualizar usuário
+- `DELETE /users/{id}` - Excluir usuário
+
 ### Bandas
 - `GET /bands` - Listar bandas
 - `GET /bands/{id}` - Obter banda específica
@@ -200,17 +210,34 @@ rock_api/
 - `PUT /participacoes/{id_banda}/{id_show}` - Atualizar participação
 - `DELETE /participacoes/{id_banda}/{id_show}` - Excluir participação
 
+### Membros de Banda
+- `GET /bands/members` - Listar membros
+- `POST /bands/members` - Adicionar membro
+- `PUT /bands/members/{user}/{band}` - Atualizar membro
+- `DELETE /bands/members/{user}/{band}` - Remover membro
+
 ### Import/Export
 - `POST /bands/importar/{formato}` - Importar bandas (CSV/JSON/XML)
 - `GET /bands/exportar/{formato}` - Exportar bandas (CSV/JSON/XML)
 - `POST /shows/importar/{formato}` - Importar shows
 - `GET /shows/exportar/{formato}` - Exportar shows
+- `POST /participacoes/importar/{formato}` - Importar participações
+- `GET /participacoes/exportar/{formato}` - Exportar participações
+- `POST /bands/members/importar/{formato}` - Importar membros
+- `GET /bands/members/exportar/{formato}` - Exportar membros
+
+### Administração e Sistema
+- `GET /backup` - Exportar backup SQL do banco
+- `GET /export-all` - Exportar todos os dados em JSON
+- `GET /sys/logs` - Visualizar logs do sistema
+- `GET /sys/activity` - Visualizar atividades recentes
+- `POST /sys/cleanup` - Limpar dados órfãos e logs antigos
 
 Para documentação completa da API, acesse `/frontend/pages/docs.html` após a instalação.
 
 ## 📥📤 Importação/Exportação
 
-O sistema suporta importação e exportação de dados em três formatos:
+O sistema suporta importação e exportação de dados em três formatos para todos os tipos:
 
 ### Formatos Suportados
 - **CSV**: Compatível com Excel e planilhas
@@ -236,6 +263,36 @@ id,local,data,publico_estimado
 id_banda,id_show,ordem_apresentacao,tempo_execucao_min
 1,1,2,70
 ```
+
+#### Membros
+```csv
+id_usuario,id_banda,funcao
+2,1,Guitarrista
+```
+
+## 📝 Notas de Release
+
+### Release 0.2 (Atual)
+- Gerenciamento completo de usuários no Painel Admin: listagem, ordenação, edição, ativação/desativação e exclusão (exceto admins)
+- Exportação de backup completo do banco de dados em SQL
+- Exportação de todos os dados do sistema em JSON (migração/integração)
+- Importação de bandas, shows, participações e membros em CSV, JSON e XML
+- Limpeza de dados órfãos (participações/membros) e logs antigos via painel
+- Visualização de logs do sistema e atividades recentes
+- Dashboard aprimorado com estatísticas e ações rápidas
+- Melhorias de segurança: validação de permissões em todas as ações administrativas
+- Correções de bugs e otimizações de performance
+
+### Release 0.1
+- Primeira versão funcional do sistema de gestão musical
+- Autenticação JWT (login, registro, logout) com controle básico de roles
+- CRUD de Bandas, Shows e Participações
+- Exportação de Bandas, Shows, Participações em CSV, JSON e XML
+- Importação de Bandas em múltiplos formatos
+- Dashboard mostrando usuários recentes
+- Menus dinâmicos conforme autenticação e permissões
+- Sistema de toasts unificado e feedback de carregamento
+- Validações básicas e download de arquivos via Blob
 
 ## 🤝 Contribuindo
 
