@@ -133,14 +133,14 @@ class AdminPanel {
         const tbody = document.querySelector('#usersTable tbody');
         tbody.innerHTML = '';
         if (!this.users || this.users.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Nenhum usuário encontrado.</td></tr>`;
+            const colCount = document.querySelectorAll('#usersTable thead th').length;
+            tbody.innerHTML = `<tr><td colspan="${colCount}" class="text-center text-muted">Nenhum usuário encontrado.</td></tr>`;
             return;
         }
         this.users.forEach(user => {
             const row = this.createUserRow(user);
             tbody.appendChild(row);
         });
-        this.updateSortIcons();
     }
 
     sortUsers(column, toggle = true) {
@@ -880,34 +880,6 @@ class AdminPanel {
                 return 'Usuário';
 
         }
-    }
-
-    createUserRow(user) {
-        const row = document.createElement('tr');
-        const roleBadgeClass = this.getRoleBadgeClass(user.role);
-        const roleDisplayName = this.getRoleDisplayName(user.role);
-        row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.email}</td>
-            <td><span class="badge ${roleBadgeClass}">${roleDisplayName}</span></td>
-            <td><span class="badge ${user.ativo === 1 ? 'bg-success' : 'bg-secondary'}">${user.ativo === 1 ? 'Ativo' : 'Inativo'}</span></td>
-            <td>${Utils.formatDate(user.criado_em)}</td>
-            <td>
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="adminPanel.editUser(${user.id})" title="Editar">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-warning" onclick="adminPanel.toggleUserStatus(${user.id})" title="Ativar/Desativar">
-                        <i class="bi bi-toggle-on"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger" onclick="adminPanel.deleteUser(${user.id})" title="Excluir">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </td>
-        `;
-        return row;
     }
 
 }
