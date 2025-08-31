@@ -134,4 +134,109 @@ class UsuarioController
         }
     }
 
+    public function update(int $id, string $requestBody): never
+    {
+        $usuarioDAO = $this->usuarioDAO;
+        $usuario = $usuarioDAO->readById($id);
+        if (!$usuario) {
+            (new Response(
+                success: false,
+                message: 'Usuário não encontrado.',
+                httpCode: 404
+            ))->send();
+        }
+        $data = json_decode($requestBody);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            (new Response(
+                success: false,
+                message: 'JSON inválido.',
+                httpCode: 400
+            ))->send();
+        }
+
+        if (isset($data->username)) {
+            $usuario->setUsername($data->username);
+        }
+        if (isset($data->email)) {
+            $usuario->setEmail($data->email);
+        }
+        if (isset($data->role)) {
+            $usuario->setRole($data->role);
+        }
+        if (isset($data->ativo)) {
+            $usuario->setAtivo((int)$data->ativo);
+        }
+
+        $ok = $usuarioDAO->update($usuario);
+        if ($ok) {
+            (new Response(
+                success: true,
+                message: 'Usuário atualizado com sucesso.',
+                data: $usuario->jsonSerialize(),
+                httpCode: 200
+            ))->send();
+        } else {
+            (new Response(
+                success: false,
+                message: 'Erro ao atualizar usuário.',
+                httpCode: 500
+            ))->send();
+        }
+    }
+
+    public function destroy(int $id): never
+    {
+        $usuarioDAO = $this->usuarioDAO;
+        $usuario = $usuarioDAO->readById($id);
+        if (!$usuario) {
+            (new Response(
+                success: false,
+                message: 'Usuário não encontrado.',
+                httpCode: 404
+            ))->send();
+        }
+        if ($usuario->getRole() === 'admin') {
+            (new Response(
+                success: false,
+                message: 'Não é possível excluir usuários administradores.',
+                httpCode: 403
+            ))->send();
+        }
+        $ok = $usuarioDAO->delete($id);
+        if ($ok) {
+            (new Response(
+                success: true,
+                message: 'Usuário excluído com sucesso.',
+                httpCode: 200
+            ))->send();
+        } else {
+            (new Response(
+                success: false,
+                message: 'Erro ao excluir usuário.',
+                httpCode: 500
+            ))->send();
+        }
+    }
+
+    public function profile(int $id): never
+    {
+        $usuario = $this->usuarioDAO->readById($id);
+        if (!$usuario) {
+            (new Response(
+                success: false,
+                message: 'Usuário não encontrado.',
+                httpCode: 404
+            ))->send();
+        } else {
+            $data = $usuario->jsonSerialize();
+            unset($data['password_hash']);
+            (new Response(
+                success: true,
+                message: 'Perfil do usuário encontrado.',
+                data: ['usuario' => $data],
+                httpCode: 200
+            ))->send();
+        }
+    }
+
 }

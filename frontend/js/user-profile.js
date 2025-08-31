@@ -24,23 +24,37 @@ class UserProfile {
 
         const user = auth.getUser();
         if (user && user.role === 'musician') {
-            // Primeiro precisa saber em quais bandas está
             this.loadMembers();
         }
 
         this.loadUserInfo();
-        this.loadUserStats(); // placeholders iniciais
+        this.loadUserStats();
         this.loadUserActivity();
     }
 
     // --- UI Base ---
-    loadUserInfo() {
-        const user = auth.getUser();
+    async fetchUserProfile() {
+        try {
+            const response = await fetch(API_CONFIG.BASE_URL + '/users/me', {
+                headers: getDefaultHeaders()
+            });
+            if (!response.ok) throw new Error('Erro ao buscar perfil do usuário');
+            const data = await response.json();
+            if (!data.success || !data.data || !data.data.usuario) throw new Error(data.message || 'Erro ao buscar perfil');
+            return data.data.usuario;
+        } catch (err) {
+            console.error('Erro ao buscar perfil do usuário:', err);
+            return null;
+        }
+    }
+
+    async loadUserInfo() {
+        const user = await this.fetchUserProfile();
         if (!user) {
             this.showError('Não foi possível carregar as informações do usuário.');
             return;
         }
-
+        const statusBadge = user.ativo === 1 ? '<span class="badge bg-success fs-6">Ativo</span>' : '<span class="badge bg-secondary fs-6">Inativo</span>';
         const userInfoHtml = `
             <div class="col-md-6">
                 <div class="info-item mb-3">
@@ -65,7 +79,7 @@ class UserProfile {
                 </div>
                 <div class="info-item mb-3">
                     <label class="fw-bold text-muted">Status:</label>
-                    <span class="badge bg-success fs-6">Ativo</span>
+                    ${statusBadge}
                 </div>
                 <div class="info-item mb-3">
                     <label class="fw-bold text-muted">Data de Criação:</label>
@@ -74,6 +88,8 @@ class UserProfile {
             </div>
         `;
         document.getElementById('userInfo').innerHTML = userInfoHtml;
+
+        this.currentUser = user;
     }
 
     async loadUserStats() {

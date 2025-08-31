@@ -29,6 +29,14 @@ class ParticipacaoDAO
         return $statement->rowCount() > 0;
     }
 
+    public function deleteOrfas(): int
+    {
+        $query = 'DELETE FROM Participacao WHERE id_banda NOT IN (SELECT id FROM Banda) OR id_show NOT IN (SELECT id FROM Shows)';
+        $stmt = Database::getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
     public function readAll(): array
     {
         $resultados = [];

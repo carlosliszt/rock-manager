@@ -193,12 +193,12 @@
                             <table class="table table-striped" id="usersTable">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nome de Usuário</th>
-                                        <th>Email</th>
-                                        <th>Tipo</th>
-                                        <th>Status</th>
-                                        <th>Data de Criação</th>
+                                        <th data-sort="id" style="cursor:pointer" onclick="adminPanel.sortUsers('id')">ID</th>
+                                        <th data-sort="username" style="cursor:pointer" onclick="adminPanel.sortUsers('username')">Nome de Usuário</th>
+                                        <th data-sort="email" style="cursor:pointer" onclick="adminPanel.sortUsers('email')">Email</th>
+                                        <th data-sort="role" style="cursor:pointer" onclick="adminPanel.sortUsers('role')">Tipo</th>
+                                        <th data-sort="ativo" style="cursor:pointer" onclick="adminPanel.sortUsers('ativo')">Status</th>
+                                        <th data-sort="criado_em" style="cursor:pointer" onclick="adminPanel.sortUsers('criado_em')">Data de Criação</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
